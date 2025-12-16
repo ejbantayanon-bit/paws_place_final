@@ -3,9 +3,13 @@
 ## Summary
 The Paws Place cafe POS and Inventory Management system has been successfully updated with:
 - ✅ CSS file separation and linking in all main pages
+- ✅ Responsive design across all interfaces (mobile, tablet, desktop)
 - ✅ API endpoint integration for real-time database operations
-- ✅ Session-based authentication across all pages
+- ✅ Session-based authentication with role-based access control
+- ✅ Kiosk fully integrated with database (dynamic menu, modifiers, categories)
 - ✅ Complete data flow from database → API → Frontend
+- ✅ Staff exit validation using secure password verification
+- ✅ Admin can access any role; Cashiers restricted to POS and Kiosk only
 
 ---
 
@@ -15,29 +19,36 @@ The Paws Place cafe POS and Inventory Management system has been successfully up
 paw_place/
 ├── client/
 │   ├── 1_login.php              (Login page - role selection + auth)
+│   ├── 2_kiosk_ordering.php     (Customer kiosk interface - session-protected)
 │   ├── 3_index.php              (POS page - order processing)
 │   ├── 5_adminDashboard.php     (Admin page - dashboard & management)
-│   ├── 2_kiosk_ordering.html    (Customer kiosk interface)
 │   ├── css/
-│   │   ├── login.css            (Login page styles)
-│   │   ├── pos.css              (POS page styles)
-│   │   └── admin.css            (Admin page styles)
+│   │   ├── login.css            (Login page styles + responsive)
+│   │   ├── kiosk.css            (Kiosk styles + responsive + scrollable categories)
+│   │   ├── pos.css              (POS page styles + responsive)
+│   │   └── admin.css            (Admin page styles + responsive)
 │   └── js/
-│       └── login.js             (Login form handler)
+│       ├── login.js             (Login form handler)
+│       ├── kiosk.js             (Kiosk menu & cart logic + DB integration)
+│       ├── pos.js               (POS order processing)
+│       └── admin.js             (Admin dashboard)
 ├── server/
-│   ├── auth_login.php           (Authentication endpoint)
+│   ├── auth_login.php           (Authentication endpoint + role-based access)
 │   ├── auth_check.php           (Session protection include)
 │   ├── logout.php               (Session destruction)
 │   ├── migrate_hash_passwords.php (Password hashing utility)
+│   ├── hash_passwords_now.php   (Force-hash passwords to bcrypt)
 │   └── api/
 │       ├── get_categories.php      (Menu categories)
 │       ├── get_menu_items.php      (Menu items with prices)
+│       ├── get_modifiers.php       (Modifiers/add-ons by category)
 │       ├── get_orders.php          (Orders with nested items)
 │       ├── place_order.php         (Create new order + consume inventory)
 │       ├── update_order_status.php (Update order status)
 │       ├── get_inventory.php       (Raw materials with low-stock flags)
 │       ├── update_inventory.php    (Adjust stock + logging)
-│       └── inventory_logs.php      (Inventory audit trail)
+│       ├── inventory_logs.php      (Inventory audit trail)
+│       └── validate_staff_password.php (Validate staff password for kiosk exit)
 └── image/
     └── Paws place.jpeg          (Cafe background image)
 ```
@@ -49,6 +60,7 @@ paw_place/
 ### Menu & Ordering
 - **GET `/server/api/get_categories.php`** → Categories list
 - **GET `/server/api/get_menu_items.php?category_id=X`** → Menu items (optional filter)
+- **GET `/server/api/get_modifiers.php`** → Modifiers/add-ons by category
 - **POST `/server/api/place_order.php`** → Create order + auto-consume inventory
 
 ### Order Management
@@ -60,22 +72,33 @@ paw_place/
 - **POST `/server/api/update_inventory.php`** → Adjust stock + log change
 - **GET `/server/api/inventory_logs.php?limit=50`** → Audit trail
 
+### Authentication & Validation
+- **POST `/server/api/validate_staff_password.php`** → Validate staff (Admin/Cashier) password for kiosk exit
+
 ---
 
-## 🔐 Authentication Flow
+## 🔐 Authentication & Role-Based Access Control
 
+### Login Flow
 1. User visits `client/1_login.php`
 2. Session check: If logged in → redirects to dashboard
 3. User selects role (KIOSK / CASHIER / ADMIN)
 4. Form POST to `server/auth_login.php` via fetch
-5. Server verifies credentials → creates $_SESSION
+5. Server verifies credentials + enforces role access rules (see below)
 6. JavaScript redirects to appropriate dashboard
 7. Protected pages include `auth_check.php` → verify session
 
-### Roles
-- **KIOSK**: Any admin/cashier password unlocks
-- **CASHIER**: Username + password + role = "Cashier"
-- **ADMIN**: Username + password + role = "Admin"
+### Role Access Rules
+- **KIOSK Access**: Any Admin or Cashier password unlocks (both staff roles can unlock kiosk)
+- **CASHIER (POS) Access**: Only Cashier or Admin users → redirects to `3_index.php`
+- **ADMIN Access**: Only Admin users → redirects to `5_adminDashboard.php`
+- **Admin Privilege**: Admin can authenticate for any requested role (full system access)
+- **Cashier Restriction**: Cashiers can only authenticate for KIOSK or CASHIER; denied for ADMIN
+
+### Kiosk Exit Security
+- Staff clicking paw icon on kiosk triggers password modal
+- Password validated against Admin/Cashier users via `validate_staff_password.php`
+- On success, session is destroyed and user returns to login page
 
 ---
 

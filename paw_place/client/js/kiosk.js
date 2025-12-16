@@ -11,12 +11,18 @@ const ADDON_PRICES = {
 };
 
 const CATEGORY_ICONS = {
-    'Milktea': '🧋',
     'Coffee': '☕',
-    'Fruity Soda': '🍹',
-    'Specialty': '⭐',
-    'Milk': '🥛',
-    'Ice Cream': '🍦'
+    'Milktea': '🧋',
+    'Milk Tea': '🧋',
+    'Fruity Soda': '🥤',
+    'Fruity': '🥤',
+    'Specialty': '🌟',
+    'Add Ons': '➕',
+    'Ice Cream': '🍨',
+    'Ice Cream in Cups': '🍨',
+    'Ice Cream Bar': '🍦',
+    'Milk Drink': '🥛',
+    'Default': '🍽️'
 };
 
 let cart = [];      
@@ -26,13 +32,47 @@ let selectedItemForModal = null;
 document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
 
 function exitKiosk() {
-    const password = prompt("Enter Staff Password to Exit Kiosk Mode:");
-    if (password === 'password') { 
-        alert("Closing Kiosk...");
-        window.location.href = '1_login.html';
-    } else if (password !== null) {
-        alert("Incorrect Password.");
-    }
+    // Show in-app modal for staff exit password (avoids browser alert/prompt)
+    const modal = document.getElementById('modal-container');
+    modal.innerHTML = `
+        <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up">
+            <h3 class="text-lg font-bold mb-2">Staff Exit</h3>
+            <p class="text-sm text-gray-500 mb-4">Enter staff password to exit kiosk mode.</p>
+            <input id="exit-password-input" type="password" class="input-field w-full mb-2" placeholder="Password" />
+            <p id="exit-error" class="text-sm text-red-600 mb-3 hidden">Incorrect password.</p>
+            <div class="flex gap-3">
+                <button onclick="closeModal()" class="flex-1 py-2 bg-gray-200 rounded-md">Cancel</button>
+                <button id="exit-confirm-btn" class="flex-1 py-2 bg-[#800000] text-white rounded-md">Exit</button>
+            </div>
+        </div>
+    `;
+    modal.classList.remove('hidden');
+
+    // wire up confirm -> validate against server (Admin/Cashier passwords)
+    document.getElementById('exit-confirm-btn').onclick = async () => {
+        const pw = document.getElementById('exit-password-input').value;
+        const err = document.getElementById('exit-error');
+        err.classList.add('hidden');
+        try {
+            const res = await fetch('../server/api/validate_staff_password.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ password: pw })
+            });
+            const data = await res.json();
+            if (data.success) {
+                // valid staff password — perform logout to return to login page
+                window.location.href = '../server/logout.php';
+            } else {
+                err.classList.remove('hidden');
+                err.textContent = data.message || 'Incorrect password.';
+            }
+        } catch (e) {
+            err.classList.remove('hidden');
+            err.textContent = 'Server error. Try again.';
+            console.error('Exit validation error', e);
+        }
+    };
 }
 
 // --- Data Helpers ---
@@ -46,23 +86,40 @@ async function fetchMenuData() {
             catData.categories.forEach(c => { categoriesMap[c.category_id] = c.name; });
         }
 
+        // Load modifiers mapping (category -> modifiers)
+        const modRes = await fetch('../server/api/get_modifiers.php');
+        const modData = await modRes.json();
+        const modifiersMap = {};
+        if (modData.success && Array.isArray(modData.modifiers)) {
+            modData.modifiers.forEach(m => {
+                const catId = m.applicable_category_id ? Number(m.applicable_category_id) : null;
+                if (catId) {
+                    modifiersMap[catId] = modifiersMap[catId] || [];
+                    modifiersMap[catId].push(m.name);
+                }
+            });
+        }
+
         const response = await fetch('../server/api/get_menu_items.php');
         const data = await response.json();
         
         if (data.success && data.items) {
-            // Map database items to include icons and category names
+            // Map database items to include icons and normalized category names
             MENU = data.items.map(item => ({
                 // normalize types from API (strings -> numbers/booleans)
                 item_id: Number(item.item_id),
                 name: item.name,
                 category_id: Number(item.category_id),
-                category: categoriesMap[item.category_id] || 'Uncategorized',
+                // combine Hot/Cold Coffee into single 'Coffee' category
+                category: ([1,2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
                 base_price: parseFloat(item.base_price) || 0,
                 is_available: (item.is_available === 1 || item.is_available === '1' || item.is_available === true),
                 image_url: item.image_url || null,
-                type: item.type || null,
+                // infer hot/cold type when not provided
+                type: inferItemType(item, categoriesMap[item.category_id]),
                 icon: getIconForCategoryName(categoriesMap[item.category_id] || ''),
-                add_ons: getAddOnsForCategory(item.category_id)
+                // prefer DB modifiers when available, fallback to static mapping
+                add_ons: modifiersMap[Number(item.category_id)] || getAddOnsForCategory(item.category_id)
             }));
 
             // Set default active category to first available
@@ -80,11 +137,16 @@ async function fetchMenuData() {
 
 function getIconForCategoryName(name) {
     const n = (name || '').toLowerCase();
-    if (n.includes('coffee')) return '☕';
-    if (n.includes('milk') || n.includes('tea')) return '🧋';
-    if (n.includes('soda')) return '🍹';
-    if (n.includes('ice cream') || n.includes('ice')) return '🍦';
-    return '🍽️';
+    if (!n) return CATEGORY_ICONS['Default'];
+    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'] || '☕';
+    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'] || '🧋';
+    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'] || '🥛';
+    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'] || '🥤';
+    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'] || '🌟';
+    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'] || '➕';
+    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'] || '🍦';
+    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'] || '🍨';
+    return CATEGORY_ICONS['Default'];
 }
 
 function getAddOnsForCategory(categoryId) {
@@ -95,6 +157,22 @@ function getAddOnsForCategory(categoryId) {
         2: ['Milk', 'Coffee Jelly']     // Cold Coffee (example)
     };
     return addOnsMap[categoryId] || [];
+}
+
+function inferItemType(item, categoryName) {
+    // Prefer explicit type from API if present
+    if (item.type && typeof item.type === 'string' && item.type.trim() !== '') return item.type;
+
+    const name = (item.name || '').toLowerCase();
+    const cat = (categoryName || '').toLowerCase();
+
+    // Only infer hot/cold for Coffee or Specialty categories
+    if (cat.includes('coffee') || cat.includes('specialty')) {
+        if (name.includes('iced') || name.includes('cold') || name.includes('ice') || name.includes('frappe') || name.includes('blended') || name.includes('frozen')) return 'Cold Brew';
+        return 'Hot Brew';
+    }
+
+    return item.type || null;
 }
 
 // --- UI Functions ---
@@ -114,13 +192,21 @@ function renderMenu(menu, filter = activeCategory) {
     categoryFilter.innerHTML = '';
 
     const categories = getCategories(menu);
-    
+
+    // Make category strip horizontally scrollable and visually spaced
+    categoryFilter.style.display = 'flex';
+    categoryFilter.style.overflowX = 'auto';
+    categoryFilter.style.gap = '12px';
+    categoryFilter.style.padding = '8px 0';
+    categoryFilter.style.whiteSpace = 'nowrap';
+
     categories.forEach(cat => {
         const isActive = cat === activeCategory;
-        const icon = CATEGORY_ICONS[cat] || '🍽️';
+        const icon = getIconForCategoryName(cat);
         
         const card = document.createElement('div');
         card.className = `category-card flex-shrink-0 ${isActive ? 'active' : ''}`;
+        card.style.flex = '0 0 auto';
         card.onclick = () => renderMenu(MENU, cat);
         
         card.innerHTML = `
@@ -130,10 +216,10 @@ function renderMenu(menu, filter = activeCategory) {
         categoryFilter.appendChild(card);
     });
 
-    // SPECIAL LOGIC FOR COFFEE
-    if (filter === 'Coffee') {
-        const hotItems = menu.filter(item => item.category === 'Coffee' && item.type === 'Hot Brew');
-        const coldItems = menu.filter(item => item.category === 'Coffee' && item.type === 'Cold Brew');
+    // SPECIAL LOGIC FOR COFFEE and SPECIALTY (split by Hot/Cold types)
+    if (filter === 'Coffee' || filter.toLowerCase().includes('specialty')) {
+        const hotItems = menu.filter(item => item.category === filter && item.type === 'Hot Brew');
+        const coldItems = menu.filter(item => item.category === filter && item.type === 'Cold Brew');
 
         if (hotItems.length > 0) {
             const hotHeader = document.createElement('h3');
@@ -145,7 +231,7 @@ function renderMenu(menu, filter = activeCategory) {
             hotGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
             menuContainer.appendChild(hotGrid);
             
-            hotItems.forEach(item => hotGrid.appendChild(createItemCard(item)));
+                hotItems.forEach(item => hotGrid.appendChild(createItemCard(item)));
         }
 
         if (coldItems.length > 0) {
@@ -158,7 +244,7 @@ function renderMenu(menu, filter = activeCategory) {
             coldGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
             menuContainer.appendChild(coldGrid);
             
-            coldItems.forEach(item => coldGrid.appendChild(createItemCard(item)));
+                coldItems.forEach(item => coldGrid.appendChild(createItemCard(item)));
         }
 
     } else {

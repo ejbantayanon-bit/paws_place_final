@@ -32,6 +32,9 @@ body {
     gap: 1rem;
     overflow-x: auto;
     padding-bottom: 0.5rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -99,4 +102,27 @@ body {
         height: auto;
         min-height: 400px;
     }
+}
+
+/* Responsive adjustments for category cards and menu grid */
+@media (max-width: 1024px) {
+    .kiosk-grid { grid-template-columns: 1.6fr 1fr; }
+    .category-card { min-width: 80px; height: 80px; }
+    .category-card .text-3xl { font-size: 1.6rem; }
+}
+
+@media (max-width: 640px) {
+    .kiosk-grid { grid-template-columns: 1fr; }
+    .category-card { min-width: 68px; height: 68px; }
+    .category-card .text-3xl { font-size: 1.4rem; }
+    .category-card .text-xs { font-size: 11px; }
+    /* Make menu grid denser on small screens */
+    .menu-scroll .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+
+@media (max-width: 420px) {
+    .category-card { min-width: 60px; height: 60px; }
+    .category-card .text-3xl { font-size: 1.2rem; }
+    .menu-scroll .grid { grid-template-columns: repeat(1, minmax(0,1fr)); }
+    .touch-target { min-height: 50px; }
 }
