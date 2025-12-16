@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap');
+
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: #fcfcfc; 
+}
+
+/* FOUNDATION UNIVERSITY COLOR SCHEME */
+.color-maroon { background-color: #800000; color: #FFFFFF; }
+.text-maroon { color: #800000; }
+.color-gray-dark { background-color: #383838; color: #FFFFFF; } 
+
+.role-button {
+    transition: background-color 0.1s, box-shadow 0.2s, transform 0.1s;
+    height: 70px;
+    border: 1px solid #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.role-button:hover {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    transform: translateY(-1px);
+}
+.role-button:active {
+    transform: scale(0.99);
+}
+
+.input-field {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+}
+.input-field:focus {
+    outline: none;
+    border-color: #800000;
+    box-shadow: 0 0 0 1px #800000;
+}
+
+.hidden { display: none; } /* Utility class */
+
+/* Modernized Left Panel - Light Wood/Cafe Tone */
+.cafe-context {
+    background-color: #f5f5f5; 
+}
+.image-placeholder {
+    background-color: #e0e0e0; 
+    border: 2px solid #383838;
+}
