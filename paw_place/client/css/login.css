@@ -50,3 +50,14 @@ body {
     background-color: #e0e0e0; 
     border: 2px solid #383838;
 }
+
+/* Responsive tweaks for login */
+@media (max-width: 768px) {
+    .role-button { height: 60px; padding: 0.5rem; }
+    .input-field { font-size: 0.95rem; padding: 0.6rem; }
+}
+
+@media (max-width: 420px) {
+    .role-button { height: 54px; }
+    .input-field { font-size: 0.9rem; }
+}

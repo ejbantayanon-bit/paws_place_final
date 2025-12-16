@@ -30,13 +30,12 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin','Cashier'
         <section class="bg-white p-6 flex flex-col h-full border-r border-gray-200 overflow-hidden">
             <header class="mb-4 flex justify-between items-center flex-none">
                 <div class="flex items-center gap-3">
-                    <button onclick="exitKiosk()" class="text-gray-300 hover:text-red-500 transition p-2" title="Staff Exit">🔒</button>
+                    <div onclick="exitKiosk()" class="text-4xl text-maroon hover:cursor-pointer" title="Staff Exit">🐾</div>
                     <div>
                         <h1 class="text-4xl font-black text-[#800000]">PAWS PLACE</h1>
                         <p class="text-gray-500 mt-1 text-sm font-medium tracking-wide">TAP TO ORDER</p>
                     </div>
                 </div>
-                <div class="text-5xl text-maroon">🐾</div>
             </header>
             
             <h3 class="font-bold text-gray-700 mb-2 text-sm uppercase tracking-wider flex-none">Categories</h3>

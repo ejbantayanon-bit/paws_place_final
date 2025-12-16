@@ -69,3 +69,15 @@ body {
     opacity: 1;
     pointer-events: auto;
 }
+
+/* Responsive tweaks for admin */
+@media (max-width: 1024px) {
+    body { overflow: auto; }
+    .stat-card { padding: 0.75rem; }
+}
+
+@media (max-width: 640px) {
+    .sidebar-link { font-size: 13px; }
+    .custom-scroll { max-height: 50vh; }
+    .stat-card { font-size: 14px; }
+}

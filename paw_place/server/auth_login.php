@@ -93,6 +93,30 @@ if (!in_array($row['role'], ['Admin','Cashier'])) {
     exit;
 }
 
+// If the client specified a desired role (e.g. ADMIN or CASHIER), enforce access rules:
+// - ADMIN request: only users with DB role 'Admin' may proceed.
+// - CASHIER request: users with DB role 'Cashier' or 'Admin' may proceed (Admin allowed anywhere).
+// - Other/empty: fallback to DB role behavior.
+if (!empty($role) && strtoupper($role) !== 'KIOSK') {
+    $requested = strtoupper(trim($role));
+    $actual = strtoupper(trim($row['role']));
+
+    if ($requested === 'ADMIN' && $actual !== 'ADMIN') {
+        echo json_encode(['success' => false, 'message' => 'Selected role does not allow this user']);
+        $stmt->close();
+        $conn->close();
+        exit;
+    }
+
+    if ($requested === 'CASHIER' && !in_array($actual, ['CASHIER','ADMIN'])) {
+        echo json_encode(['success' => false, 'message' => 'Selected role does not allow this user']);
+        $stmt->close();
+        $conn->close();
+        exit;
+    }
+    // If requested is something else, fall back to DB role checks below
+}
+
 if (!verify_pass($password, $row['password_hash'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
     $stmt->close();
