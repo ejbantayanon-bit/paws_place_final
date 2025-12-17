@@ -120,11 +120,11 @@ async function loadMenuItems() {
 }
 
 function openAddMenuModal() {
-    showAlert('Menu management coming soon', 'info');
+    alert('Add menu item - TODO: Implement modal');
 }
 
 function editMenuItem(itemId) {
-    showAlert('Edit menu item ' + itemId + ' coming soon', 'info');
+    alert('Edit menu item ' + itemId + ' - TODO: Implement modal');
 }
 
 // --- INVENTORY MANAGEMENT ---
@@ -143,7 +143,6 @@ async function loadInventoryTable() {
                 <td class="p-4 text-gray-600">${item.unit}</td>
                 <td class="p-4">
                     ${item.is_low_stock ? '<span class="text-red-700 font-bold text-xs">⚠️ LOW STOCK</span>' : '<span class="text-green-700 font-bold text-xs">✓ OK</span>'}
-                    <button onclick="openAdjustInventoryModal(${item.raw_material_id})" class="ml-2 text-xs text-maroon font-bold hover:underline">Adjust</button>
                 </td>
             </tr>
         `).join('');
@@ -153,56 +152,8 @@ async function loadInventoryTable() {
     }
 }
 
-let selectedMaterialId = null;
-
-function openAdjustInventoryModal(materialId) {
-    selectedMaterialId = materialId;
-    document.getElementById('adjust-quantity').value = '';
-    document.getElementById('adjust-reason').value = '';
-    showModal('adjustInventoryModal');
-}
-
-function showModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.remove('hidden');
-    modal.classList.add('flex');
-}
-
-function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    modal.classList.add('hidden');
-    modal.classList.remove('flex');
-}
-
-async function submitAdjustInventory() {
-    const quantity = document.getElementById('adjust-quantity').value;
-    const reason = document.getElementById('adjust-reason').value;
-
-    if (!quantity || !reason) {
-        showAlert('Please fill in all fields', 'error');
-        return;
-    }
-
-    try {
-        const response = await fetch(`${API_BASE}/update_inventory.php`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                raw_material_id: selectedMaterialId,
-                quantity_changed: parseInt(quantity),
-                change_reason: reason
-            })
-        });
-
-        if (!response.ok) throw new Error('Failed to update inventory');
-        
-        showAlert('Inventory adjusted successfully', 'info');
-        closeModal('adjustInventoryModal');
-        loadInventoryTable();
-    } catch (error) {
-        console.error('Error adjusting inventory:', error);
-        showAlert('Failed to adjust inventory', 'error');
-    }
+function openAdjustInventoryModal() {
+    alert('Adjust inventory - TODO: Implement modal');
 }
 
 // --- ACTIVITY LOGS ---

@@ -183,39 +183,6 @@ if ($current_user_role !== 'Admin') {
     <!-- Alert Container -->
     <div id="alert-container" class="fixed bottom-4 right-4 z-50"></div>
 
-    <!-- ADJUST INVENTORY MODAL -->
-    <div id="adjustInventoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
-        <div class="bg-white rounded-xl shadow-xl w-96 p-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-6">Adjust Inventory</h3>
-            
-            <div class="mb-4">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Quantity Change</label>
-                <input type="number" id="adjust-quantity" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-maroon" placeholder="Enter quantity (positive or negative)">
-            </div>
-
-            <div class="mb-6">
-                <label class="block text-sm font-bold text-gray-700 mb-2">Reason</label>
-                <select id="adjust-reason" class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:border-maroon">
-                    <option value="">Select reason...</option>
-                    <option value="Stock Received">Stock Received</option>
-                    <option value="Order Fulfillment">Order Fulfillment</option>
-                    <option value="Waste/Spoilage">Waste/Spoilage</option>
-                    <option value="Inventory Correction">Inventory Correction</option>
-                    <option value="Manual Adjustment">Manual Adjustment</option>
-                </select>
-            </div>
-
-            <div class="flex gap-4">
-                <button onclick="submitAdjustInventory()" class="flex-1 bg-maroon text-white py-2 rounded-lg font-bold hover:bg-red-900">
-                    Adjust
-                </button>
-                <button onclick="closeModal('adjustInventoryModal')" class="flex-1 bg-gray-200 text-gray-800 py-2 rounded-lg font-bold hover:bg-gray-300">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
-
     <script src="js/admin.js"></script>
 
 </body>

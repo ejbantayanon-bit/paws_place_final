@@ -70,14 +70,6 @@ body {
     pointer-events: auto;
 }
 
-#adjustInventoryModal {
-    display: flex;
-}
-
-#adjustInventoryModal.hidden {
-    display: none;
-}
-
 /* Responsive tweaks for admin */
 @media (max-width: 1024px) {
     body { overflow: auto; }
