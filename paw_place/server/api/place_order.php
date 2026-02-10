@@ -28,7 +28,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
     
     $order_source = isset($input['order_source']) ? $input['order_source'] : 'Manual_POS';
-    $cashier_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : null;
+    $customer_name = isset($input['customer_name']) ? trim($input['customer_name']) : null;
+    
+    // Get cashier_id from session - only if user is a staff member (not KIOSK)
+    // KIOSK users have student IDs which don't exist in the users table
+    $cashier_id = null;
+    $student_id = null;
+    $userRole = isset($_SESSION['role']) ? $_SESSION['role'] : null;
+    if ($userRole !== 'KIOSK' && isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
+        $cashier_id = (int)$_SESSION['user_id'];
+    } else if ($userRole === 'KIOSK' && isset($_SESSION['user_id'])) {
+        $student_id = (string)$_SESSION['user_id'];
+    }
     
     // Calculate total
     $total_amount = 0;
@@ -42,21 +53,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $total_amount += $item['quantity'] * $item['price_at_sale'];
     }
     
-    // Generate pre-order code
-    $pre_order_code = 'PRE-' . str_pad(rand(1, 999999), 6, '0', STR_PAD_LEFT);
+    // Generate pre-order code: 3 digits + 1 letter (e.g., 100A)
+    $pre_order_code = str_pad(rand(1, 999), 3, '0', STR_PAD_LEFT) . chr(65 + rand(0, 25));
     
     // Start transaction
     $conn->begin_transaction();
     
     try {
-        // Insert order
-        $stmt = $conn->prepare("INSERT INTO orders (pre_order_code, order_source, total_amount, status, cashier_id, time_placed) VALUES (?, ?, ?, 'PENDING PAYMENT', ?, NOW())");
-        $stmt->bind_param('ssdi', $pre_order_code, $order_source, $total_amount, $cashier_id);
+        // Insert order (cashier_id and student_id can be null depending on user type)
+        if ($cashier_id === null && $student_id === null) {
+            $stmt = $conn->prepare("INSERT INTO orders (pre_order_code, order_source, total_amount, status, cashier_id, student_id, customer_name, time_placed) VALUES (?, ?, ?, 'PENDING PAYMENT', NULL, NULL, ?, NOW())");
+            $stmt->bind_param('ssds', $pre_order_code, $order_source, $total_amount, $customer_name);
+        } else if ($cashier_id !== null) {
+            $stmt = $conn->prepare("INSERT INTO orders (pre_order_code, order_source, total_amount, status, cashier_id, student_id, customer_name, time_placed) VALUES (?, ?, ?, 'PENDING PAYMENT', ?, NULL, ?, NOW())");
+            $stmt->bind_param('ssdis', $pre_order_code, $order_source, $total_amount, $cashier_id, $customer_name);
+        } else {
+            $stmt = $conn->prepare("INSERT INTO orders (pre_order_code, order_source, total_amount, status, cashier_id, student_id, customer_name, time_placed) VALUES (?, ?, ?, 'PENDING PAYMENT', NULL, ?, ?, NOW())");
+            $stmt->bind_param('ssdss', $pre_order_code, $order_source, $total_amount, $student_id, $customer_name);
+        }
         if (!$stmt->execute()) {
-            throw new Exception($stmt->error);
+            throw new Exception('Insert order failed: ' . $stmt->error);
         }
         $order_id = $conn->insert_id;
         $stmt->close();
+        
+        // If this is a GUEST order, track it in the session
+        if ($student_id === 'GUEST') {
+            if (!isset($_SESSION['guest_order_ids'])) {
+                $_SESSION['guest_order_ids'] = [];
+            }
+            $_SESSION['guest_order_ids'][] = $order_id;
+        }
         
         // Insert order items and consume from recipes
         foreach ($input['items'] as $item) {
@@ -91,11 +118,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 $inv_stmt->close();
                 
-                // Log inventory change
-                $log_stmt = $conn->prepare("INSERT INTO inventory_logs (raw_id, user_id, change_amount, reason, log_date) VALUES (?, ?, ?, 'Order sale', NOW())");
-                $change_amount = -$consumed;
-                $log_stmt->bind_param('iid', $raw_id, $cashier_id, $change_amount);
-                $log_stmt->execute();
+                // Log inventory change (cashier_id can be null for kiosk orders)
+                if ($cashier_id !== null) {
+                    $log_stmt = $conn->prepare("INSERT INTO inventory_logs (raw_id, user_id, change_amount, reason, log_date) VALUES (?, ?, ?, 'Order sale', NOW())");
+                    $change_amount = -$consumed;
+                    $log_stmt->bind_param('iid', $raw_id, $cashier_id, $change_amount);
+                } else {
+                    $log_stmt = $conn->prepare("INSERT INTO inventory_logs (raw_id, change_amount, reason, log_date) VALUES (?, ?, 'Order sale', NOW())");
+                    $change_amount = -$consumed;
+                    $log_stmt->bind_param('id', $raw_id, $change_amount);
+                }
+                if (!$log_stmt->execute()) {
+                    throw new Exception($log_stmt->error);
+                }
                 $log_stmt->close();
             }
             $recipe_stmt->close();

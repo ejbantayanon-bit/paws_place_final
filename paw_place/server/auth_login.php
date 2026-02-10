@@ -78,6 +78,31 @@ $stmt->bind_param('s', $username);
 $stmt->execute();
 $res = $stmt->get_result();
 if ($res->num_rows === 0) {
+    // If user is not in local DB, try looking up employee via Grubhound (server token)
+    try {
+        require_once __DIR__ . '/GrubhoundAPI.php';
+        $api = new GrubhoundAPI();
+        $searchResult = $api->searchEmployees($username);
+        if (is_array($searchResult) && count($searchResult) > 0) {
+            // Use first matching employee to create a session (token-based lookup)
+            $emp = $searchResult[0];
+            $_SESSION['user_id'] = isset($emp['id']) ? (int)$emp['id'] : 0;
+            $_SESSION['username'] = $emp['username'] ?? $username;
+            // If MIS provides a role, use it; otherwise default to Cashier
+            $_SESSION['role'] = $emp['role'] ?? 'Cashier';
+            $_SESSION['full_name'] = $emp['full_name'] ?? ($emp['name'] ?? $username);
+
+            $redirect = ($_SESSION['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
+
+            echo json_encode(['success' => true, 'role' => $_SESSION['role'], 'full_name' => $_SESSION['full_name'], 'user_id' => $_SESSION['user_id'], 'redirect' => $redirect]);
+            $stmt->close();
+            $conn->close();
+            exit;
+        }
+    } catch (Exception $e) {
+        // Fall through to error response below
+    }
+
     echo json_encode(['success' => false, 'message' => 'Invalid username or password']);
     $stmt->close();
     $conn->close();

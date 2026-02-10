@@ -1,0 +1,344 @@
+2026-02-09T04:45:23+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"21"}}
+2026-02-09T04:45:23+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:24+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:25+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2180"}}
+2026-02-09T04:45:25+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:25+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218"}}
+2026-02-09T04:45:25+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:26+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-09T04:45:26+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:27+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-09T04:45:27+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario"}
+2026-02-09T04:47:45+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-09T04:47:45+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:47:45+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-09T04:47:45+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-09T04:48:05+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-09T04:48:05+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:48:06+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:50:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T04:50:37+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:50:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:04:34+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202115"}}
+2026-02-09T05:04:34+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:04:34+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:19+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2012"}}
+2026-02-09T05:45:19+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:20+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:20+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"201215"}}
+2026-02-09T05:45:20+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:26+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20215374"}}
+2026-02-09T05:45:26+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:26+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:30+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:45:31+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"201215374"}}
+2026-02-09T05:45:31+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202115374"}}
+2026-02-09T05:45:37+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:41+01:00 ERROR: cURL error: Connection timed out after 10007 milliseconds
+
+2026-02-09T05:45:41+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:45:41+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:44+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:45:44+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:46+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202115"}}
+2026-02-09T05:45:46+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:47+01:00 ERROR: cURL error: Connection timed out after 10015 milliseconds
+
+2026-02-09T05:45:48+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:45:48+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:51+01:00 ERROR: cURL error: Connection timed out after 10012 milliseconds
+
+2026-02-09T05:45:54+01:00 ERROR: cURL error: Connection timed out after 10001 milliseconds
+
+2026-02-09T05:45:56+01:00 ERROR: cURL error: Connection timed out after 10011 milliseconds
+
+2026-02-09T05:45:58+01:00 ERROR: cURL error: Connection timed out after 10016 milliseconds
+
+2026-02-09T05:49:05+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"201"}}
+2026-02-09T05:49:05+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:49:32+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:49:32+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:49:49+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:50:02+01:00 ERROR: cURL error: Connection timed out after 10011 milliseconds
+
+2026-02-09T05:53:39+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-09T05:53:39+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:46+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211q"}}
+2026-02-09T05:53:46+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:46+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-09T05:53:46+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:54:10+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:54:17+01:00 ERROR: cURL error: Connection timed out after 10004 milliseconds
+
+2026-02-09T05:54:17+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:54:24+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T05:54:24+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:54:27+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:54:27+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:54:55+01:00 ERROR: cURL error: Connection timed out after 10007 milliseconds
+
+2026-02-09T05:54:58+01:00 ERROR: cURL error: Connection timed out after 10003 milliseconds
+
+2026-02-09T05:56:15+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T05:56:15+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:15+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:17+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:56:17+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:17+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:22+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-09T05:56:22+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:22+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:23+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T05:56:23+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:23+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:24+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T05:56:24+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:24+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T06:01:28+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-09T06:01:28+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T06:01:28+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T06:01:28+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T06:01:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T06:01:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T08:12:30+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202115"}}
+2026-02-09T08:12:30+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:30+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T08:12:30+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:34+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021153"}}
+2026-02-09T08:12:34+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:34+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:36+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-09T08:12:36+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:36+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-09T08:12:37+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:13:55+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-09T08:13:55+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-09T08:13:56+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:06:12+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-10T03:06:12+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:12+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:06:12+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202115"}}
+2026-02-10T03:06:12+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:13+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:06:13+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T03:06:13+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:14+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:34+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"203211537"}}
+2026-02-10T03:18:34+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:34+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2011537"}}
+2026-02-10T03:18:37+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:38+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:38+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"205211537"}}
+2026-02-10T03:18:38+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:39+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:39+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2011537"}}
+2026-02-10T03:18:39+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:39+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:40+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T03:18:40+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:40+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:19:35+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211"}}
+2026-02-10T03:19:35+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:19:35+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:34:32+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-10T03:34:32+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:34:32+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:34:32+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-10T03:34:32+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:34:33+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:38:28+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-10T03:38:28+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:38:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:48:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218"}}
+2026-02-10T03:48:37+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:48:37+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2180"}}
+2026-02-10T03:48:37+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:48:39+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T03:48:39+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:39+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-10T03:48:39+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-10T03:51:27+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T03:51:27+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:51:27+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-10T03:51:27+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-10T05:22:05+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T05:22:05+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T05:22:05+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T05:22:11+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T05:22:11+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T05:22:11+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T05:23:14+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T05:23:14+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T05:23:14+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-10T05:23:14+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-10T06:24:11+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T06:24:11+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:24:12+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-10T06:24:12+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-10T06:51:16+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-10T06:51:16+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:51:16+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:51:18+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"202"}}
+2026-02-10T06:51:18+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:51:18+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "202",
+        "first_name": "Joel",
+        "last_name": "Tondo",
+        "middle_name": null,
+        "positon": null,
+        "department_code": "0",
+        "department_name": null
+    }
+}
+2026-02-10T06:51:18+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"202","first_name":"Joel","last_name":"Tondo","middle_name":null,"positon":null,"department_code":"0","department_name":null,"full_name":"Joel Tondo"}
+2026-02-10T06:52:42+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-10T06:52:42+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:52:42+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:52:43+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"2021"}}
+2026-02-10T06:52:43+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:52:43+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:54:39+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20"}}
+2026-02-10T06:54:39+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:54:39+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:59:22+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"218102"}}
+2026-02-10T06:59:22+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:59:23+01:00 API_RESPONSE_RAW: {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+2026-02-10T06:59:23+01:00 NORMALIZED_EMPLOYEE: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","full_name":"Roselyn Quito Nario","department":"College of Computer Studies"}
+2026-02-10T07:23:46+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T07:23:46+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:23:46+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T07:23:47+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T07:23:47+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:23:48+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T07:24:12+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-10T07:24:12+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:24:12+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+

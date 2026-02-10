@@ -241,6 +241,8 @@ CREATE TABLE `orders` (
   `total_amount` decimal(10,2) NOT NULL,
   `status` enum('PENDING PAYMENT','PREPARING','READY','SERVED','CANCELLED') DEFAULT 'PENDING PAYMENT',
   `cashier_id` int(11) DEFAULT NULL,
+  `student_id` varchar(50) DEFAULT NULL,
+  `customer_name` varchar(100) DEFAULT NULL,
   `shift_id` int(11) DEFAULT NULL,
   `time_placed` timestamp NOT NULL DEFAULT current_timestamp(),
   `time_paid` timestamp NULL DEFAULT NULL,
@@ -381,7 +383,8 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (1,'admin01','hashed_password_admin','Erika Cruz','Admin','2025-12-15 14:23:10'),(2,'cashier01','hashed_password_cashier','James Dee','Cashier','2025-12-15 14:23:10');
+INSERT INTO `users` VALUES (1,'admin01','$2y$10$wI07CGPPIzl1ajZpo3.NUnBMrPpoyk5u','Erika Cruz','Admin','2025-12-15 14:23:10'),
+(2,'cashier01','$2y$10$UO.lPootpNxLRieV8pPal04aqopL3W/W','James Dee','Cashier','2025-12-15 14:23:10');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;

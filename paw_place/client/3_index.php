@@ -14,10 +14,12 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
     <title>Paws Place Staff POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/pos.css">
+
 </head>
 <body>
 
     <div class="flex h-screen">
+    
         
         <!-- SIDEBAR NAVIGATION -->
         <aside id="main-sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20 transition-all duration-300">
@@ -34,12 +36,13 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                     <button onclick="switchView('pos')" id="nav-pos" class="sidebar-link active w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
                         <span>💳</span> Order Processing
                     </button>
-                    <button onclick="switchView('manual')" id="nav-manual" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📝</span> Walk-in Order
+                    <button onclick="switchView('preparing')" id="nav-preparing" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
+                        <span>👨‍🍳</span> Preparing Orders
                     </button>
-                    <button onclick="switchView('tracker')" id="nav-tracker" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>🍳</span> Order Tracker
+                    <button onclick="switchView('ready')" id="nav-ready" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
+                        <span>✅</span> Ready Orders
                     </button>
+
                     <button onclick="switchView('inventory')" id="nav-inventory" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
                         <span>📦</span> Availability Control
                     </button>
@@ -130,82 +133,129 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                                     <span id="change-due" class="text-lg font-black text-green-700">₱0.00</span>
                                 </div>
                                 <button onclick="processOrder()" id="pay-btn" disabled class="w-full py-4 bg-maroon text-white font-bold rounded-lg hover:bg-red-900 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg">
-                                    CONFIRM & PRINT
+                                    Confirm Payment
                                 </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- VIEW 4: WALK-IN / MANUAL ORDER (EMBEDDED KIOSK) -->
-                <div id="view-manual" class="view-section h-full hidden flex flex-col w-full">
-                    <!-- Embed Kiosk via Iframe -->
-                    <iframe src="2_kiosk_ordering.html" class="w-full h-full border-none" title="Walk-in Order Interface"></iframe>
-                </div>
-
-                <!-- VIEW 5: ORDER TRACKER -->
-                <div id="view-tracker" class="view-section h-full hidden flex flex-col">
-                    <div class="flex-1 flex p-8 gap-8 overflow-hidden">
-                        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                            <div class="bg-yellow-500 p-4 text-white font-black text-xl flex justify-between items-center">
-                                <span>⏱️ KITCHEN PREPARING</span>
-                                <span class="text-sm bg-white text-yellow-600 px-2 py-1 rounded-full" id="count-preparing">0</span>
-                            </div>
-                            <div id="tracker-preparing-list" class="p-4 custom-scroll flex-1 space-y-3 bg-gray-50"></div>
-                        </div>
-                        <div class="flex-1 flex flex-col bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                            <div class="bg-green-600 p-4 text-white font-black text-xl flex justify-between items-center">
-                                <span>✅ READY / SERVED</span>
-                                <span class="text-sm bg-white text-green-700 px-2 py-1 rounded-full" id="count-ready">0</span>
-                            </div>
-                            <div id="tracker-ready-list" class="p-4 custom-scroll flex-1 space-y-3 bg-gray-50"></div>
-                        </div>
+                <!-- VIEW 2: PREPARING ORDERS -->
+                <div id="view-preparing" class="view-section h-full hidden flex flex-col">
+                    <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-end">
+                        <button onclick="loadPreparingOrders()" class="text-maroon font-bold text-sm hover:underline flex items-center gap-1">
+                            <span>⟳</span> Refresh
+                        </button>
+                    </div>
+                    <div id="preparing-orders-container" class="p-6 custom-scroll flex-1">
+                        <div id="preparing-orders-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                     </div>
                 </div>
 
+                <!-- VIEW 2.5: READY ORDERS -->
+                <div id="view-ready" class="view-section h-full hidden flex flex-col">
+                    <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-end">
+                        <button onclick="loadReadyOrders()" class="text-maroon font-bold text-sm hover:underline flex items-center gap-1">
+                            <span>⟳</span> Refresh
+                        </button>
+                    </div>
+                    <div id="ready-orders-container" class="p-6 custom-scroll flex-1">
+                        <div id="ready-orders-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                    </div>
+                </div>
+
+
+
                 <!-- VIEW 2: AVAILABILITY CONTROL -->
-                <div id="view-inventory" class="view-section h-full hidden flex flex-col">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 custom-scroll flex-1">
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
-                            <h3 class="font-bold text-xl mb-4 text-maroon border-b pb-2">Menu Items</h3>
-                            <div id="inventory-menu-list" class="space-y-3"></div>
+                <div id="view-inventory" class="view-section h-full hidden flex flex-col bg-gray-50 overflow-hidden">
+                    <!-- MENU ITEM AVAILABILITY (Full Width Grid) -->
+                    <div class="flex-1 flex flex-col p-6 overflow-hidden">
+                        <div class="mb-6 flex-none">
+                            <h3 class="font-black text-2xl text-gray-800 mb-2">Menu Availability</h3>
+                            <p class="text-sm text-gray-500 mb-4">Click any item to toggle its availability in the kiosk.</p>
+                            
+                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Select Category</h4>
+                            <div id="inventory-categories" class="flex gap-2 overflow-x-auto pb-2 custom-scroll no-scrollbar">
+                                <!-- Populated by JS -->
+                            </div>
                         </div>
-                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 h-fit">
-                            <h3 class="font-bold text-xl mb-4 text-gray-700 border-b pb-2">Raw Materials (Critical)</h3>
-                            <div id="inventory-raw-list" class="space-y-3"></div>
+
+                        <div id="inventory-menu-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6 overflow-y-auto pr-2 custom-scroll flex-1">
+                            <!-- Populated by JS -->
                         </div>
                     </div>
                 </div>
 
                 <!-- VIEW 3: SALES HISTORY -->
                 <div id="view-history" class="view-section h-full hidden flex flex-col bg-gray-50">
-                     <div class="p-6 bg-gray-50 border-b border-gray-200 shadow-sm flex justify-end">
-                        <div class="bg-white p-2 rounded-lg border flex gap-2">
-                            <input type="date" id="history-date" class="p-2 border rounded text-sm">
-                            <input type="text" id="history-search" placeholder="Search Product..." class="p-2 border rounded text-sm w-48">
-                            <button onclick="filterHistory()" class="px-4 py-2 bg-maroon text-white rounded font-bold text-sm">Search</button>
+                     <div class="p-6 bg-gray-50 border-b border-gray-200 shadow-sm">
+                        <div class="bg-white p-4 rounded-lg border flex flex-wrap gap-3 mb-4">
+                            <div class="flex gap-2">
+                                <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Date From:</label>
+                                <input type="date" id="history-date-from" class="p-2 border rounded text-sm">
+                            </div>
+                            <div class="flex gap-2">
+                                <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Date To:</label>
+                                <input type="date" id="history-date-to" class="p-2 border rounded text-sm">
+                            </div>
+                            <div class="flex gap-2">
+                                <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Status:</label>
+                                <select id="history-status" class="p-2 border rounded text-sm">
+                                    <option value="">All Status</option>
+                                    <option value="SERVED">Served</option>
+                                    <option value="PREPARING">Preparing</option>
+                                    <option value="READY">Ready</option>
+                                    <option value="CANCELLED">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="flex gap-2 flex-1">
+                                <input type="text" id="history-search" placeholder="Search Product..." class="p-2 border rounded text-sm flex-1">
+                                <button onclick="filterHistory()" class="px-4 py-2 bg-maroon text-white rounded font-bold text-sm">Filter</button>
+                                <button onclick="resetFilter()" class="px-4 py-2 bg-gray-400 text-white rounded font-bold text-sm hover:bg-gray-500">Reset</button>
+                            </div>
                         </div>
                     </div>
-                    <div class="p-8 custom-scroll flex-1">
-                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                            <table class="w-full text-left border-collapse">
-                                <thead class="bg-gray-100 text-gray-600 uppercase text-xs font-bold">
-                                    <tr>
-                                        <th class="p-4 border-b">Order ID</th>
-                                        <th class="p-4 border-b">Date/Time</th>
-                                        <th class="p-4 border-b">Type</th>
-                                        <th class="p-4 border-b">Items</th>
-                                        <th class="p-4 border-b">Total</th>
-                                        <th class="p-4 border-b">Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="history-table-body" class="text-sm text-gray-700"></tbody>
-                            </table>
+                    <div class="p-8 custom-scroll flex-1 flex flex-col overflow-hidden">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden flex-1 flex flex-col">
+                            <div class="overflow-y-auto flex-1">
+                                <table class="w-full text-left border-collapse">
+                                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs font-bold sticky top-0">
+                                        <tr>
+                                            <th class="p-4 border-b">Order ID</th>
+                                            <th class="p-4 border-b">Date/Time</th>
+                                            <th class="p-4 border-b">Type</th>
+                                            <th class="p-4 border-b">Items</th>
+                                            <th class="p-4 border-b">Total</th>
+                                            <th class="p-4 border-b">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="history-table-body" class="text-sm text-gray-700"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
+                        <!-- Pagination Controls -->
+                        <div class="mt-6 flex justify-center items-center gap-2">
+                            <button onclick="previousPage()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-bold text-maroon disabled:opacity-50" id="prev-btn">← Previous</button>
+                            <div id="pagination-numbers" class="flex gap-1"></div>
+                            <button onclick="nextPage()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-bold text-maroon disabled:opacity-50" id="next-btn">Next →</button>
                         </div>
                     </div>
                 </div>
 
             </main>
+        </div>
+    </div>
+
+    <!-- Generic Modal -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-96 max-w-md transform transition-all scale-100">
+            <h3 class="text-xl font-black text-gray-800 mb-2" id="modal-title">Confirmation</h3>
+            <p class="text-gray-600 mb-6" id="modal-message">Are you sure you want to proceed?</p>
+            <div class="flex justify-end gap-3" id="modal-actions">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded hover:bg-gray-200">Cancel</button>
+                <button class="px-4 py-2 bg-maroon text-white font-bold rounded hover:bg-red-800">Confirm</button>
+            </div>
         </div>
     </div>
 

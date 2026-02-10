@@ -1,0 +1,9 @@
+{
+    "owner": "grubhound",
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9LCJpYXQiOjE3NzA3MDQ2NjksImV4cCI6MTc3MDcxMTg2OX0.POk9y7BWmh6zoQb6IX6ZzvTLLNTWYXvPXnyxFlA7e1E",
+    "expires_at": "2026-02-10 13:06:53",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6InJlZnJlc2hfdG9rZW4ifSwiaWF0IjoxNzY5NDc5MDc5fQ.W_QL_FPHAydS_V16Ya4jwO_Ef3BIWGBW7UYsEuBIR7g",
+    "refresh_url": "https://mis.foundationu.com/api/token/refresh",
+    "system": "grubhound",
+    "base_url": "https://mis.foundationu.com/api/grubhound"
+}

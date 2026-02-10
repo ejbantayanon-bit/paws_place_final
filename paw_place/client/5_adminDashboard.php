@@ -14,10 +14,12 @@ if ($current_user_role !== 'Admin') {
     <title>Paws Place Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/admin.css">
+
 </head>
 <body>
 
     <div class="flex h-screen">
+    
         <!-- SIDEBAR -->
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20">
             <div>
@@ -177,6 +179,18 @@ if ($current_user_role !== 'Admin') {
                 </div>
 
             </main>
+        </div>
+    </div>
+
+    <!-- Generic Modal -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-xl shadow-2xl p-6 w-96 max-w-md transform transition-all scale-100">
+            <h3 class="text-xl font-black text-gray-800 mb-2" id="modal-title">Confirmation</h3>
+            <p class="text-gray-600 mb-6" id="modal-message">Are you sure you want to proceed?</p>
+            <div class="flex justify-end gap-3" id="modal-actions">
+                <button onclick="closeModal()" class="px-4 py-2 bg-gray-100 text-gray-700 font-bold rounded hover:bg-gray-200">Cancel</button>
+                <button class="px-4 py-2 bg-maroon text-white font-bold rounded hover:bg-red-800">Confirm</button>
+            </div>
         </div>
     </div>
 

@@ -25,52 +25,36 @@ const CATEGORY_ICONS = {
     'Default': '🍽️'
 };
 
-let cart = [];      
-let activeCategory = 'Milktea'; 
-let selectedItemForModal = null; 
+let cart = [];
+let activeCategory = 'Milktea';
+let selectedItemForModal = null;
 
 document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
 
 function exitKiosk() {
-    // Show in-app modal for staff exit password (avoids browser alert/prompt)
+    // Show confirmation modal to exit to main login
     const modal = document.getElementById('modal-container');
     modal.innerHTML = `
         <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up">
-            <h3 class="text-lg font-bold mb-2">Staff Exit</h3>
-            <p class="text-sm text-gray-500 mb-4">Enter staff password to exit kiosk mode.</p>
-            <input id="exit-password-input" type="password" class="input-field w-full mb-2" placeholder="Password" />
-            <p id="exit-error" class="text-sm text-red-600 mb-3 hidden">Incorrect password.</p>
+            <h3 class="text-lg font-bold mb-2">Exit Ordering?</h3>
+            <p class="text-sm text-gray-500 mb-4">You will be returned to the login screen.</p>
             <div class="flex gap-3">
-                <button onclick="closeModal()" class="flex-1 py-2 bg-gray-200 rounded-md">Cancel</button>
-                <button id="exit-confirm-btn" class="flex-1 py-2 bg-[#800000] text-white rounded-md">Exit</button>
+                <button onclick="closeModal()" class="flex-1 py-2 bg-gray-200 rounded-md font-semibold">Continue Ordering</button>
+                <button id="exit-confirm-btn" class="flex-1 py-2 bg-[#800000] text-white rounded-md font-semibold">Exit</button>
             </div>
         </div>
     `;
     modal.classList.remove('hidden');
 
-    // wire up confirm -> validate against server (Admin/Cashier passwords)
+    // Exit directly to main login page
     document.getElementById('exit-confirm-btn').onclick = async () => {
-        const pw = document.getElementById('exit-password-input').value;
-        const err = document.getElementById('exit-error');
-        err.classList.add('hidden');
         try {
-            const res = await fetch('../server/api/validate_staff_password.php', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ password: pw })
-            });
-            const data = await res.json();
-            if (data.success) {
-                // valid staff password — perform logout to return to login page
-                window.location.href = '../server/logout.php';
-            } else {
-                err.classList.remove('hidden');
-                err.textContent = data.message || 'Incorrect password.';
-            }
+            // Clear session and redirect to main login
+            await fetch('../server/api/logout.php', { method: 'POST' });
+            window.location.href = '1_login.php';
         } catch (e) {
-            err.classList.remove('hidden');
-            err.textContent = 'Server error. Try again.';
-            console.error('Exit validation error', e);
+            console.error('Logout error', e);
+            window.location.href = '1_login.php';
         }
     };
 }
@@ -100,9 +84,9 @@ async function fetchMenuData() {
             });
         }
 
-        const response = await fetch('../server/api/get_menu_items.php');
+        const response = await fetch('../server/api/get_menu_items.php?include_hidden=1');
         const data = await response.json();
-        
+
         if (data.success && data.items) {
             // Map database items to include icons and normalized category names
             MENU = data.items.map(item => ({
@@ -111,7 +95,7 @@ async function fetchMenuData() {
                 name: item.name,
                 category_id: Number(item.category_id),
                 // combine Hot/Cold Coffee into single 'Coffee' category
-                category: ([1,2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
+                category: ([1, 2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
                 base_price: parseFloat(item.base_price) || 0,
                 is_available: (item.is_available === 1 || item.is_available === '1' || item.is_available === true),
                 image_url: item.image_url || null,
@@ -183,10 +167,10 @@ function getCategories(menu) {
 
 function renderMenu(menu, filter = activeCategory) {
     activeCategory = filter;
-    const menuContainer = document.getElementById('menu-items-container'); 
+    const menuContainer = document.getElementById('menu-items-container');
     const categoryFilter = document.getElementById('category-filter');
-    
-    if(!menuContainer) return; // Guard clause
+
+    if (!menuContainer) return; // Guard clause
 
     menuContainer.innerHTML = '';
     categoryFilter.innerHTML = '';
@@ -203,12 +187,12 @@ function renderMenu(menu, filter = activeCategory) {
     categories.forEach(cat => {
         const isActive = cat === activeCategory;
         const icon = getIconForCategoryName(cat);
-        
+
         const card = document.createElement('div');
         card.className = `category-card flex-shrink-0 ${isActive ? 'active' : ''}`;
         card.style.flex = '0 0 auto';
         card.onclick = () => renderMenu(MENU, cat);
-        
+
         card.innerHTML = `
             <span class="text-3xl mb-1">${icon}</span>
             <span class="text-xs font-bold text-center leading-tight px-1">${cat}</span>
@@ -226,12 +210,12 @@ function renderMenu(menu, filter = activeCategory) {
             hotHeader.className = 'col-span-full text-xl font-black text-gray-800 mt-4 mb-2 pb-1 border-b border-gray-200 flex items-center gap-2';
             hotHeader.innerHTML = '<span class="text-2xl">☕</span> Hot Brew';
             menuContainer.appendChild(hotHeader);
-            
+
             const hotGrid = document.createElement('div');
             hotGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
             menuContainer.appendChild(hotGrid);
-            
-                hotItems.forEach(item => hotGrid.appendChild(createItemCard(item)));
+
+            hotItems.forEach(item => hotGrid.appendChild(createItemCard(item)));
         }
 
         if (coldItems.length > 0) {
@@ -239,12 +223,12 @@ function renderMenu(menu, filter = activeCategory) {
             coldHeader.className = 'col-span-full text-xl font-black text-gray-800 mt-8 mb-2 pb-1 border-b border-gray-200 flex items-center gap-2';
             coldHeader.innerHTML = '<span class="text-2xl">🧊</span> Cold Brew';
             menuContainer.appendChild(coldHeader);
-            
+
             const coldGrid = document.createElement('div');
             coldGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
             menuContainer.appendChild(coldGrid);
-            
-                coldItems.forEach(item => coldGrid.appendChild(createItemCard(item)));
+
+            coldItems.forEach(item => coldGrid.appendChild(createItemCard(item)));
         }
 
     } else {
@@ -253,7 +237,7 @@ function renderMenu(menu, filter = activeCategory) {
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
         menuContainer.appendChild(grid);
-        
+
         const filteredMenu = menu.filter(item => item.category === filter);
         filteredMenu.forEach(item => {
             grid.appendChild(createItemCard(item));
@@ -265,8 +249,8 @@ function createItemCard(item) {
     const itemCard = document.createElement('div');
     itemCard.className = `menu-item-card p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-50 pointer-events-none' : ''}`;
     itemCard.onclick = item.is_available ? () => openItemModal(item) : null;
-    
-    const typeBadge = item.category === 'Coffee' 
+
+    const typeBadge = item.category === 'Coffee'
         ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.type === 'Cold Brew' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}">${item.type}</span>`
         : '';
 
@@ -277,7 +261,7 @@ function createItemCard(item) {
             <p class="text-sm font-bold text-gray-800 truncate">${item.name}</p>
             <p class="text-lg font-black text-[#800000]">₱${item.base_price.toFixed(2)}</p>
         </div>
-        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">SOLD OUT</div>' : ''}
+        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">UNAVAILABLE</div>' : ''}
     `;
     return itemCard;
 }
@@ -339,12 +323,12 @@ function confirmAddToCart() {
 
     const newItem = {
         ...selectedItemForModal,
-        modifiers: selectedAddons, 
+        modifiers: selectedAddons,
         final_price: selectedItemForModal.base_price + addonsCost
     };
 
-    const existingItem = cart.find(i => 
-        i.item_id === newItem.item_id && 
+    const existingItem = cart.find(i =>
+        i.item_id === newItem.item_id &&
         JSON.stringify(i.modifiers.sort()) === JSON.stringify(newItem.modifiers.sort())
     );
 
@@ -366,23 +350,12 @@ function closeModal() {
 // --- Cart Actions ---
 function updateCartItemQuantity(index, change) {
     cart[index].quantity += change;
-    if (cart[index].quantity <= 0) cart.splice(index, 1);
+    if (cart[index].quantity < 1) cart[index].quantity = 1;
     renderCart();
 }
 
 function removeItem(index) {
     cart.splice(index, 1);
-    renderCart();
-}
-
-function confirmClearCart() {
-    if (cart.length > 0 && confirm("Are you sure you want to remove all items from your tray?")) {
-        clearCart();
-    }
-}
-
-function clearCart() {
-    cart = [];
     renderCart();
 }
 
@@ -402,17 +375,13 @@ function renderCart() {
 
     if (cart.length === 0) {
         if (emptyBtn) emptyBtn.classList.add('hidden');
-        cartContainer.innerHTML = `
-            <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                <span class="text-4xl mb-2">🛒</span>
-                <p class="text-sm">Your tray is empty</p>
-            </div>`;
+        cartContainer.innerHTML = '';
         btn.disabled = true;
     } else {
         if (emptyBtn) emptyBtn.classList.remove('hidden');
-        cart.forEach((item, index) => { 
-            const addonsText = item.modifiers && item.modifiers.length > 0 
-                ? `<p class="text-xs text-gray-500 mt-1">+ ${item.modifiers.join(', ')}</p>` 
+        cart.forEach((item, index) => {
+            const addonsText = item.modifiers && item.modifiers.length > 0
+                ? `<p class="text-xs text-gray-500 mt-1">+ ${item.modifiers.join(', ')}</p>`
                 : '';
 
             const itemEl = document.createElement('div');
@@ -481,7 +450,7 @@ function promptConfirmOrder() {
             
             <div class="p-6 pt-0 flex gap-3 bg-white border-t border-gray-50">
                 <button onclick="closeModal()" class="flex-1 py-4 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300 transition">Go Back</button>
-                <button onclick="finalizeOrder()" class="flex-1 py-4 bg-[#800000] text-white font-bold rounded-xl hover:bg-red-900 shadow-lg transition">Yes, Pay Now</button>
+                <button onclick="finalizeOrder()" class="flex-1 py-4 bg-[#800000] text-white font-bold rounded-xl hover:bg-red-900 shadow-lg transition">Pay Now</button>
             </div>
         </div>
     `;
@@ -490,7 +459,7 @@ function promptConfirmOrder() {
 
 async function finalizeOrder() {
     const total = calculateCartTotal();
-    
+
     // Format items for API
     const items = cart.map(item => ({
         menu_item_id: item.item_id,
@@ -498,7 +467,7 @@ async function finalizeOrder() {
         price_at_sale: item.final_price,
         modifiers: item.modifiers || []
     }));
-    
+
     try {
         const response = await fetch('../server/api/place_order.php', {
             method: 'POST',
@@ -508,12 +477,12 @@ async function finalizeOrder() {
                 order_source: 'Kiosk'
             })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success) {
             showOrderSuccess(data.pre_order_code, total);
-            clearCart();
+
         } else {
             alert('Error placing order: ' + data.message);
         }
@@ -546,5 +515,78 @@ function showOrderSuccess(code, total) {
 
 function hideOrderConfirmation() {
     document.getElementById('modal-container').classList.add('hidden');
-    fetchMenuData(); 
+    cart = [];
+    renderCart();
+    fetchMenuData();
 }
+
+// --- ORDER HISTORY FUNCTIONS ---
+async function openOrderHistory() {
+    console.log('openOrderHistory called');
+    const modal = document.getElementById('order-history-modal');
+    if (!modal) {
+        console.error('Modal not found!');
+        alert('Order history modal not found in page');
+        return;
+    }
+    modal.classList.remove('hidden');
+    console.log('Modal opened, fetching orders...');
+
+    try {
+        const response = await fetch('../server/api/get_student_orders.php');
+        console.log('Response status:', response.status);
+        const data = await response.json();
+        console.log('Orders data:', data);
+
+        if (data.success && data.orders && data.orders.length > 0) {
+            let html = '';
+            data.orders.forEach(order => {
+                const date = new Date(order.time_placed);
+                const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
+                const statusColor = {
+                    'PENDING PAYMENT': 'bg-yellow-100 text-yellow-800',
+                    'PREPARING': 'bg-blue-100 text-blue-800',
+                    'READY': 'bg-green-100 text-green-800',
+                    'SERVED': 'bg-gray-100 text-gray-800',
+                    'CANCELLED': 'bg-red-100 text-red-800'
+                }[order.status] || 'bg-gray-100 text-gray-800';
+
+                html += `
+                    <div class="border border-gray-200 rounded-lg p-4 mb-3">
+                        <div class="flex justify-between items-start mb-2">
+                            <div>
+                                <p class="font-bold text-gray-800">Order #${order.pre_order_code}</p>
+                                <p class="text-xs text-gray-500">${dateStr}</p>
+                            </div>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${order.status}</span>
+                        </div>
+                        <div class="bg-gray-50 rounded p-3 mb-2">
+                `;
+
+                order.items.forEach(item => {
+                    html += `<p class="text-sm text-gray-700"><span class="font-semibold">${item.quantity}x</span> ${item.name} - ₱${parseFloat(item.price_at_sale).toFixed(2)}</p>`;
+                });
+
+                html += `
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <p class="text-sm text-gray-600">Total:</p>
+                            <p class="font-bold text-lg text-[#800000]">₱${parseFloat(order.total_amount).toFixed(2)}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            document.getElementById('order-history-list').innerHTML = html;
+        } else {
+            document.getElementById('order-history-list').innerHTML = '<p class="text-center text-gray-500 py-8">No orders yet. Start ordering!</p>';
+        }
+    } catch (error) {
+        console.error('Error loading order history:', error);
+        document.getElementById('order-history-list').innerHTML = '<p class="text-center text-red-500 py-8">Failed to load order history: ' + error.message + '</p>';
+    }
+}
+
+function closeOrderHistory() {
+    document.getElementById('order-history-modal').classList.add('hidden');
+}
+

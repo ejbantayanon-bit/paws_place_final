@@ -1,0 +1,1580 @@
+2026-02-03T06:09:06+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2012"}}
+2026-02-03T06:09:06+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:07+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:09:08+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:09:08+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:08+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:09:09+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:09:09+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2020"}}
+2026-02-03T06:09:36+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202"}}
+2026-02-03T06:09:39+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220"}}
+2026-02-03T06:09:39+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:43+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T06:09:43+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:09:46+01:00 ERROR: cURL error: Connection timed out after 10007 milliseconds
+
+2026-02-03T06:09:49+01:00 ERROR: cURL error: Connection timed out after 10014 milliseconds
+
+2026-02-03T06:09:49+01:00 ERROR: cURL error: Connection timed out after 10003 milliseconds
+
+2026-02-03T06:09:53+01:00 ERROR: cURL error: Connection timed out after 10012 milliseconds
+
+2026-02-03T06:10:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022"}}
+2026-02-03T06:10:01+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:04+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T06:10:04+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:10+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:10:10+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2020"}}
+2026-02-03T06:10:11+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202"}}
+2026-02-03T06:10:11+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:11+01:00 ERROR: cURL error: Connection timed out after 10015 milliseconds
+
+2026-02-03T06:10:14+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:10:14+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:10:14+01:00 ERROR: cURL error: Connection timed out after 10005 milliseconds
+
+2026-02-03T06:10:20+01:00 ERROR: cURL error: Connection timed out after 10016 milliseconds
+
+2026-02-03T06:10:21+01:00 ERROR: cURL error: Connection timed out after 10004 milliseconds
+
+2026-02-03T06:10:21+01:00 ERROR: cURL error: Connection timed out after 10001 milliseconds
+
+2026-02-03T06:10:24+01:00 ERROR: cURL error: Connection timed out after 10008 milliseconds
+
+2026-02-03T06:12:08+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:12:08+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:12:16+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212157"}}
+2026-02-03T06:12:16+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:13:40+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T06:13:40+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:13:40+01:00 API_RESPONSE_RAW: {"student":{"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies"}}
+2026-02-03T06:13:40+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies"}
+2026-02-03T06:15:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022"}}
+2026-02-03T06:15:27+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:15:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:15:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T06:15:28+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:15:28+01:00 API_RESPONSE_RAW: {"student":{"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies"}}
+2026-02-03T06:15:28+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies"}
+2026-02-03T06:17:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:17:15+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:17:16+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:17:18+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T06:17:18+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:17:19+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T06:17:19+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-03T06:17:40+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-03T06:17:40+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:17:40+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:17:43+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:17:43+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:17:44+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T06:17:44+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-03T06:17:57+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:17:57+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:17:57+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:18:03+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212157"}}
+2026-02-03T06:18:03+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:18:04+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20212157",
+        "last_name": "SANTAYO",
+        "first_name": "EDRIAN",
+        "middle_name": "SOMOZA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T06:18:04+01:00 NORMALIZED_STUDENT: {"student_id":"20212157","last_name":"SANTAYO","first_name":"EDRIAN","middle_name":"SOMOZA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EDRIAN SOMOZA SANTAYO"}
+2026-02-03T06:20:58+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:20:58+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:20:58+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:20:59+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:20:59+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:21:00+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T06:21:00+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-03T06:24:12+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T06:24:12+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:24:12+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T06:24:14+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-03T06:24:14+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T06:24:14+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T06:24:14+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-03T08:16:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T08:16:28+01:00 TOKEN: eyJ0eXAi...LOjrPhlk
+2026-02-03T08:16:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-03T08:18:16+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T08:18:16+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-03T08:18:17+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T08:18:17+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-03T08:55:51+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-03T08:55:51+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-03T08:55:51+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T08:55:52+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022"}}
+2026-02-03T08:55:52+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-03T08:55:52+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-03T08:55:54+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-03T08:55:54+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-03T08:55:54+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-03T08:55:54+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-04T02:20:44+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022"}}
+2026-02-04T02:20:44+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-04T02:20:44+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:20:45+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-04T02:20:45+01:00 TOKEN: eyJ0eXAi...zudjIVb8
+2026-02-04T02:20:46+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:00+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022012"}}
+2026-02-04T02:22:00+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:00+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-04T02:22:01+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:01+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T02:22:01+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-04T02:22:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21"}}
+2026-02-04T02:22:27+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:27+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218"}}
+2026-02-04T02:22:28+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2181"}}
+2026-02-04T02:22:28+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:29+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:29+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T02:22:29+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:29+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:33+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T02:22:33+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:33+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:52+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21810"}}
+2026-02-04T02:22:52+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:52+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:22:53+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T02:22:53+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:22:53+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:30:28+01:00 REQUEST: {"ip":"::1","payload":null}
+2026-02-04T02:30:55+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21810"}}
+2026-02-04T02:30:55+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:30:55+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:30:56+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T02:30:56+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:30:56+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:30:59+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21810"}}
+2026-02-04T02:30:59+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:30:59+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:30:59+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T02:30:59+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:00+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:04+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21810"}}
+2026-02-04T02:31:04+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:05+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:06+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-04T02:31:06+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:06+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:07+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202"}}
+2026-02-04T02:31:07+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:07+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:08+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-04T02:31:08+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:08+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:08+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-04T02:31:08+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:09+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:31:10+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-04T02:31:10+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:10+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T02:31:10+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-04T02:31:14+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021153"}}
+2026-02-04T02:31:14+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:31:15+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:46:34+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2009"}}
+2026-02-04T02:46:34+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:46:34+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T02:46:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20090936"}}
+2026-02-04T02:46:37+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T02:46:37+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20090936",
+        "last_name": "MARANGA",
+        "first_name": "IAN CHRISTIAN",
+        "middle_name": "NILLES ",
+        "program": "BSIT",
+        "year_level": "3",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T02:46:37+01:00 NORMALIZED_STUDENT: {"student_id":"20090936","last_name":"MARANGA","first_name":"IAN CHRISTIAN","middle_name":"NILLES ","program":"BSIT","year_level":"3","department":"CCS","department_name":"College of Computer Studies","full_name":"IAN CHRISTIAN NILLES MARANGA"}
+2026-02-04T03:03:17+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218"}}
+2026-02-04T03:03:17+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:03:17+01:00 NOT FOUND AS STUDENT: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+2026-02-04T03:03:17+01:00 NOT FOUND AS EMPLOYEE: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+2026-02-04T03:03:17+01:00 ID NOT FOUND: 218
+
+2026-02-04T03:03:18+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-04T03:03:18+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:03:18+01:00 NOT FOUND AS STUDENT: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+2026-02-04T03:03:19+01:00 FOUND AS EMPLOYEE
+2026-02-04T03:03:19+01:00 API_RESPONSE_RAW (EMPLOYEE): {
+    "employee": {
+        "employee_id": "218102",
+        "first_name": "Roselyn",
+        "last_name": "Nario",
+        "middle_name": "Quito",
+        "positon": "Administrative Officer",
+        "department_code": "13",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: employee
+2026-02-04T03:03:19+01:00 NORMALIZED_USER: {"employee_id":"218102","first_name":"Roselyn","last_name":"Nario","middle_name":"Quito","positon":"Administrative Officer","department_code":"13","department_name":"College of Computer Studies","student_id":"218102","full_name":"Roselyn Quito Nario","user_type":"EMPLOYEE","department":"College of Computer Studies"}
+
+2026-02-04T03:08:50+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-04T03:08:50+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:08:50+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T03:08:51+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-04T03:08:51+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:08:51+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T03:08:52+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-04T03:08:52+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:08:52+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T03:08:52+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-04T03:09:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"56544"}}
+2026-02-04T03:09:11+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:09:11+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T03:09:18+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"545"}}
+2026-02-04T03:09:18+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T03:09:18+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:44:22+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-04T05:44:22+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T05:44:23+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-04T05:44:26+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-04T05:44:26+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T05:44:26+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-04T05:44:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212157"}}
+2026-02-04T05:44:31+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T05:44:31+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-04T05:44:35+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021215"}}
+2026-02-04T05:44:35+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T05:44:35+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-04T05:44:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212157"}}
+2026-02-04T05:44:36+01:00 TOKEN: eyJ0eXAi...kD5gLwdg
+2026-02-04T05:44:36+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-04T05:45:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021215"}}
+2026-02-04T05:45:39+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:45:39+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:45:40+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212157"}}
+2026-02-04T05:45:40+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:45:40+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20212157",
+        "last_name": "SANTAYO",
+        "first_name": "EDRIAN",
+        "middle_name": "SOMOZA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T05:45:40+01:00 NORMALIZED_STUDENT: {"student_id":"20212157","last_name":"SANTAYO","first_name":"EDRIAN","middle_name":"SOMOZA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EDRIAN SOMOZA SANTAYO"}
+2026-02-04T05:46:19+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2022"}}
+2026-02-04T05:46:19+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:20+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:21+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20220120"}}
+2026-02-04T05:46:21+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:21+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T05:46:21+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-04T05:46:45+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20029"}}
+2026-02-04T05:46:45+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:46+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:47+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"200"}}
+2026-02-04T05:46:47+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:48+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:49+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"200909"}}
+2026-02-04T05:46:49+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:49+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:50+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2009096"}}
+2026-02-04T05:46:50+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:50+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:51+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"200909"}}
+2026-02-04T05:46:51+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:51+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T05:46:52+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20090936"}}
+2026-02-04T05:46:52+01:00 TOKEN: eyJ0eXAi...NDZJY75o
+2026-02-04T05:46:52+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20090936",
+        "last_name": "MARANGA",
+        "first_name": "IAN CHRISTIAN",
+        "middle_name": "NILLES ",
+        "program": "BSIT",
+        "year_level": "3",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T05:46:52+01:00 NORMALIZED_STUDENT: {"student_id":"20090936","last_name":"MARANGA","first_name":"IAN CHRISTIAN","middle_name":"NILLES ","program":"BSIT","year_level":"3","department":"CCS","department_name":"College of Computer Studies","full_name":"IAN CHRISTIAN NILLES MARANGA"}
+2026-02-04T07:11:24+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21"}}
+2026-02-04T07:11:24+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-04T07:11:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T07:11:25+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218142"}}
+2026-02-04T07:11:25+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-04T07:11:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T07:11:29+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-04T07:11:29+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-04T07:11:29+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T07:11:30+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-04T07:11:30+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-04T07:11:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-04T07:11:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-04T07:11:31+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-04T07:11:31+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-04T07:11:31+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T03:59:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-09T03:59:31+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-09T03:59:31+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T03:59:32+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T03:59:32+01:00 TOKEN: eyJ0eXAi...EBvacvPA
+2026-02-09T03:59:32+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:00+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021115"}}
+2026-02-09T04:00:00+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:00+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202111534"}}
+2026-02-09T04:00:01+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:01+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:02+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202111537"}}
+2026-02-09T04:00:02+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:02+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:14+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T04:00:14+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:14+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021153"}}
+2026-02-09T04:00:15+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:15+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:00:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:00:15+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:00:16+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:01:10+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-09T04:01:10+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:01:11+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:01:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:01:11+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:01:12+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:01:59+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T04:01:59+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:01:59+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:02:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:02:01+01:00 TOKEN: eyJ0eXAi...Ikjb0p_k
+2026-02-09T04:02:01+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:03:12+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:03:12+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:03:12+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:03:12+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:11:41+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"22"}}
+2026-02-09T04:11:41+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:11:42+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:11:42+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"223"}}
+2026-02-09T04:11:42+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:11:42+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:11:58+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"223031"}}
+2026-02-09T04:11:58+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:11:58+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:12:04+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T04:12:04+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:12:04+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:12:06+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:12:06+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:12:06+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:12:06+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:40:30+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T04:40:30+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:40:31+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:40:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T04:40:31+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:40:31+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:40:32+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:40:32+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:40:32+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:40:32+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:45:10+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:45:10+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:10+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:45:10+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:45:23+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"21"}}
+2026-02-09T04:45:23+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:23+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:24+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2180"}}
+2026-02-09T04:45:24+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:25+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218"}}
+2026-02-09T04:45:25+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:25+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:45:26+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-09T04:45:26+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:45:26+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:47:44+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-09T04:47:44+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:47:45+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:48:05+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T04:48:05+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:48:05+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:48:06+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:48:06+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:48:07+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:48:07+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:50:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T04:50:37+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:50:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T04:50:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:50:39+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:50:39+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:50:39+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T04:52:44+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T04:52:44+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T04:52:45+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T04:52:45+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T05:04:33+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-09T05:04:33+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:04:34+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:04:34+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:04:34+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:04:34+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T05:04:34+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T05:45:19+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2012"}}
+2026-02-09T05:45:19+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:19+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:20+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"201215"}}
+2026-02-09T05:45:20+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:20+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:21+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"201215374"}}
+2026-02-09T05:45:21+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:25+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20215374"}}
+2026-02-09T05:45:25+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:26+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:45:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115374"}}
+2026-02-09T05:45:27+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:31+01:00 ERROR: cURL error: Operation timed out after 10002 milliseconds with 0 bytes received
+
+2026-02-09T05:45:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:45:31+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:34+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:45:34+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-09T05:45:36+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:37+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:45:38+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:45:38+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:45:41+01:00 ERROR: cURL error: Connection timed out after 10004 milliseconds
+
+2026-02-09T05:45:44+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:45:46+01:00 ERROR: cURL error: Connection timed out after 10014 milliseconds
+
+2026-02-09T05:45:48+01:00 ERROR: cURL error: Connection timed out after 10015 milliseconds
+
+2026-02-09T05:48:58+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"201"}}
+2026-02-09T05:48:58+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:48:59+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-09T05:48:59+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:49:00+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202"}}
+2026-02-09T05:49:00+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:49:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:49:01+01:00 TOKEN: eyJ0eXAi...YPDNfZ7M
+2026-02-09T05:49:05+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T05:49:32+01:00 ERROR: cURL error: Connection timed out after 10002 milliseconds
+
+2026-02-09T05:51:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:51:28+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:51:28+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T05:51:28+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T05:53:06+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T05:53:06+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:07+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211q"}}
+2026-02-09T05:53:07+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:08+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T05:53:08+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:10+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:53:10+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021153"}}
+2026-02-09T05:53:15+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:16+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:53:16+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:37+01:00 ERROR: cURL error: Connection timed out after 10005 milliseconds
+
+2026-02-09T05:53:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:53:37+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:38+01:00 ERROR: cURL error: Connection timed out after 10008 milliseconds
+
+2026-02-09T05:53:38+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:53:38+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:39+01:00 ERROR: cURL error: Connection timed out after 10012 milliseconds
+
+2026-02-09T05:53:46+01:00 ERROR: cURL error: Connection timed out after 10002 milliseconds
+
+2026-02-09T05:53:48+01:00 ERROR: cURL error: Connection timed out after 10004 milliseconds
+
+2026-02-09T05:53:53+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T05:53:53+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:53:56+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:53:56+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:54:08+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:54:09+01:00 ERROR: cURL error: Connection timed out after 10006 milliseconds
+
+2026-02-09T05:54:24+01:00 ERROR: cURL error: Connection timed out after 10016 milliseconds
+
+2026-02-09T05:54:27+01:00 ERROR: cURL error: Connection timed out after 10002 milliseconds
+
+2026-02-09T05:56:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T05:56:15+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:15+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:17+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:56:17+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:17+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:22+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-09T05:56:22+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:22+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:23+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T05:56:23+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:23+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T05:56:24+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T05:56:24+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T05:56:24+01:00 ERROR: cURL error: Could not resolve host: mis.foundationu.com
+
+2026-02-09T06:01:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-09T06:01:27+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T06:01:28+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T06:01:28+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T06:01:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T06:01:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T06:01:30+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T06:01:30+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T06:01:30+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T06:01:30+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T08:12:29+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-09T08:12:29+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:30+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T08:12:30+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:33+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021153"}}
+2026-02-09T08:12:33+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:34+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-09T08:12:36+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:36+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:12:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T08:12:37+01:00 TOKEN: eyJ0eXAi...f8b7PZoQ
+2026-02-09T08:12:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-09T08:13:55+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-09T08:13:55+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-09T08:13:55+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-09T08:13:56+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T08:13:56+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-09T08:13:56+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T08:13:56+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-09T08:17:48+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-09T08:17:48+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-09T08:17:48+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-09T08:17:48+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T03:06:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-10T03:06:11+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:12+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202115"}}
+2026-02-10T03:06:12+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:12+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:06:12+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:06:13+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:06:13+01:00 TOKEN: eyJ0eXAi...kmdXjshQ
+2026-02-10T03:06:13+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:34+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"203211537"}}
+2026-02-10T03:18:34+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:34+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2011537"}}
+2026-02-10T03:18:37+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:37+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:38+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"205211537"}}
+2026-02-10T03:18:38+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:38+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2011537"}}
+2026-02-10T03:18:39+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:39+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:18:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:18:39+01:00 TOKEN: eyJ0eXAi...myw6OxWw
+2026-02-10T03:18:40+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:19:35+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211"}}
+2026-02-10T03:19:35+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:19:35+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:19:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:19:36+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:19:36+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:19:36+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T03:25:43+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:25:43+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:25:43+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:25:43+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T03:34:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-10T03:34:31+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:34:32+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:34:32+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-10T03:34:32+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:34:32+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:34:34+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:34:34+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:34:34+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:34:34+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T03:38:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-10T03:38:27+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:38:28+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:38:29+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T03:38:29+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:38:29+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:38:29+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T03:47:41+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212033"}}
+2026-02-10T03:47:41+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:47:41+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20212033",
+        "last_name": "TILOS",
+        "first_name": "ALDRIAN CARL",
+        "middle_name": "NACES ",
+        "program": "BSBA Financial Mgnt.",
+        "year_level": "1",
+        "department": "CBA",
+        "department_name": "College of Business Administration"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:47:41+01:00 NORMALIZED_STUDENT: {"student_id":"20212033","last_name":"TILOS","first_name":"ALDRIAN CARL","middle_name":"NACES ","program":"BSBA Financial Mgnt.","year_level":"1","department":"CBA","department_name":"College of Business Administration","full_name":"ALDRIAN CARL NACES TILOS"}
+2026-02-10T03:47:46+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20212030"}}
+2026-02-10T03:47:46+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:47:46+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20212030",
+        "last_name": "SALATAN",
+        "first_name": "THRISTAN",
+        "middle_name": "TRUMATA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T03:47:46+01:00 NORMALIZED_STUDENT: {"student_id":"20212030","last_name":"SALATAN","first_name":"THRISTAN","middle_name":"TRUMATA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"THRISTAN TRUMATA SALATAN"}
+2026-02-10T03:48:36+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218"}}
+2026-02-10T03:48:36+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:48:37+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2180"}}
+2026-02-10T03:48:37+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:48:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T03:48:39+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:48:39+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T03:51:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T03:51:27+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T03:51:27+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T04:20:23+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T04:20:23+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T04:20:24+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T04:20:24+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T04:56:17+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T04:56:17+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T04:56:17+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T04:56:17+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T05:22:05+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T05:22:05+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T05:22:05+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T05:22:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T05:22:11+01:00 TOKEN: eyJ0eXAi...bnaGjoMg
+2026-02-10T05:22:11+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T05:23:14+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T05:23:14+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T05:23:14+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T05:25:12+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T05:25:12+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T05:25:12+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T05:25:12+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:22:35+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:22:35+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:22:35+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:22:35+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:24:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T06:24:11+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:24:11+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:37:27+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:37:27+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:37:27+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:37:27+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:38:44+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:38:44+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:38:44+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:38:44+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:43:12+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:43:12+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:43:13+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:43:13+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:51:15+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-10T06:51:15+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:51:16+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:51:17+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"202"}}
+2026-02-10T06:51:17+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:51:18+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:51:24+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:51:24+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:51:24+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:51:24+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:52:42+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-10T06:52:42+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:52:42+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:52:42+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"2021"}}
+2026-02-10T06:52:42+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:52:43+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:54:35+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:54:35+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:54:35+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:54:35+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:54:39+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20"}}
+2026-02-10T06:54:39+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:54:39+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T06:56:41+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:56:41+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:56:41+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:56:41+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:57:56+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T06:57:56+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:57:57+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T06:57:57+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T06:59:22+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"218102"}}
+2026-02-10T06:59:22+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T06:59:22+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-10T07:01:23+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:01:23+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:01:24+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:01:24+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:19:41+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:19:41+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:19:42+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:19:42+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:20:03+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:20:03+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:20:03+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:20:03+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:20:42+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:20:42+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:20:42+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:20:42+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:21:21+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:21:21+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:21:22+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:21:22+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:23:45+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:23:45+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:23:46+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T07:23:47+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:23:47+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:23:47+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T07:24:11+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:24:11+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
+2026-02-10T07:24:12+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-10T07:25:00+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:25:00+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:25:01+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:25:01+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:31:01+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:31:01+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:31:01+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:31:01+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:33:00+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:33:00+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:33:01+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:33:01+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:38:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:38:31+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:38:31+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:38:31+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:39:51+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:39:51+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:39:52+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:39:52+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-10T07:45:31+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-10T07:45:31+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-10T07:45:31+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-10T07:45:31+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}

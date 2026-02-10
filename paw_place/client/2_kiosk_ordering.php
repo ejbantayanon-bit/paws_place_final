@@ -1,12 +1,21 @@
 <?php
 session_start();
 
-// Allow access only if a staff unlocked kiosk (Admin or Cashier)
-if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin','Cashier'])) {
+// Allow access if staff unlocked kiosk OR customer using kiosk
+if (!isset($_SESSION['role'])) {
     header('Location: 1_login.php');
     exit;
 }
+
+// Get student/user name from session or localStorage (passed via JavaScript)
+$userName = $_SESSION['full_name'] ?? $_SESSION['userName'] ?? 'Customer';
+$userId = $_SESSION['user_id'] ?? $_SESSION['userId'] ?? null;
+$isKiosk = $_SESSION['role'] === 'KIOSK';
 ?>
+<script>
+    const CURRENT_USER_NAME = "<?php echo htmlspecialchars($userName !== 'Customer' ? $userName : ''); ?>";
+    const IS_GUEST = <?php echo ($userId ? 'false' : 'true'); ?>;
+</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,18 +33,45 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin','Cashier'
 
     <div id="alert-container" class="fixed top-4 right-4 z-50"></div>
     <div id="modal-container" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50 hidden"></div>
+    
+    <!-- Order History Modal -->
+    <div id="order-history-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-40 hidden p-4">
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-96 overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center p-4 border-b border-gray-200">
+                <h3 class="text-xl font-bold text-gray-800">Order History</h3>
+                <button onclick="closeOrderHistory()" class="text-gray-500 hover:text-gray-700">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="order-history-list" class="overflow-y-auto flex-1 p-4">
+                <p class="text-center text-gray-500">Loading orders...</p>
+            </div>
+        </div>
+    </div>
 
     <main class="kiosk-grid">
         <!-- LEFT COLUMN: Menu Selection -->
         <section class="bg-white p-6 flex flex-col h-full border-r border-gray-200 overflow-hidden">
             <header class="mb-4 flex justify-between items-center flex-none">
-                <div class="flex items-center gap-3">
-                    <div onclick="exitKiosk()" class="text-4xl text-maroon hover:cursor-pointer" title="Staff Exit">🐾</div>
+                <div class="flex items-center gap-4">
+                    <button onclick="exitKiosk()" class="flex items-center justify-center w-12 h-12 bg-[#800000] hover:bg-red-900 text-white rounded-full shadow-md transition-all transform hover:scale-110 active:scale-95" title="Back to Login">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </button>
                     <div>
-                        <h1 class="text-4xl font-black text-[#800000]">PAWS PLACE</h1>
-                        <p class="text-gray-500 mt-1 text-sm font-medium tracking-wide">TAP TO ORDER</p>
+                        <h1 class="text-3xl font-black text-[#800000]">PAWS PLACE</h1>
+                        <?php if ($isKiosk): ?>
+                            <p class="text-[#800000] mt-1 text-sm font-semibold">Welcome, <?php echo htmlspecialchars($userName); ?>! 🐾</p>
+                        <?php endif; ?>
                     </div>
                 </div>
+                <button onclick="openOrderHistory()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition" title="View your order history">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span>My Orders</span>
+                </button>
             </header>
             
             <h3 class="font-bold text-gray-700 mb-2 text-sm uppercase tracking-wider flex-none">Categories</h3>
@@ -53,9 +89,6 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin','Cashier'
             <!-- 1. Header (Fixed) -->
             <div class="flex-none flex justify-between items-center border-b border-gray-200 mb-2 pb-2">
                 <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Your Tray</h2>
-                <button onclick="confirmClearCart()" id="empty-tray-btn" class="hidden text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-3 py-1 rounded-full transition uppercase tracking-wide">
-                    Empty Tray
-                </button>
             </div>
             
             <!-- 2. Cart List (Fills Remaining Space) -->

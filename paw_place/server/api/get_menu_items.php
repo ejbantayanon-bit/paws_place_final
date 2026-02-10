@@ -16,13 +16,20 @@ $conn->set_charset('utf8mb4');
 
 // GET /api/get_menu_items.php?category_id=N or all if not specified
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $includeHidden = isset($_GET['include_hidden']) && $_GET['include_hidden'] == '1';
     $categoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
     
     if ($categoryId) {
-        $stmt = $conn->prepare("SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items WHERE category_id = ? AND is_available = 1 ORDER BY name ASC");
+        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items WHERE category_id = ?";
+        if (!$includeHidden) $sql .= " AND is_available = 1";
+        $sql .= " ORDER BY name ASC";
+        $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $categoryId);
     } else {
-        $stmt = $conn->prepare("SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items WHERE is_available = 1 ORDER BY category_id ASC, name ASC");
+        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items";
+        if (!$includeHidden) $sql .= " WHERE is_available = 1";
+        $sql .= " ORDER BY category_id ASC, name ASC";
+        $stmt = $conn->prepare($sql);
     }
     
     if (!$stmt) {
