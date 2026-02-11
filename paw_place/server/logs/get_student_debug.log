@@ -1665,3 +1665,20 @@ AVAILABLE_FIELDS: student
 AVAILABLE_FIELDS: student
 
 2026-02-11T06:53:01+01:00 NORMALIZED_STUDENT: {"student_id":"20190412","last_name":"CATIPAY","first_name":"HOGARTH CYFER","middle_name":"BUENAVENTURA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"HOGARTH CYFER BUENAVENTURA CATIPAY"}
+2026-02-11T07:09:02+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"student_id":"20190412"}}
+2026-02-11T07:09:02+01:00 TOKEN: eyJ0eXAi...t-oL9XSk
+2026-02-11T07:09:03+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20190412",
+        "last_name": "CATIPAY",
+        "first_name": "HOGARTH CYFER",
+        "middle_name": "BUENAVENTURA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-11T07:09:03+01:00 NORMALIZED_STUDENT: {"student_id":"20190412","last_name":"CATIPAY","first_name":"HOGARTH CYFER","middle_name":"BUENAVENTURA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"HOGARTH CYFER BUENAVENTURA CATIPAY"}
