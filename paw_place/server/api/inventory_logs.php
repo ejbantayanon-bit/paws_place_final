@@ -1,7 +1,7 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
 
-$DB_HOST = 'localhost';
+$DB_HOST = '172.16.50.93';
 $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';

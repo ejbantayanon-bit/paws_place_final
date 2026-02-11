@@ -4,7 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 // Simple validator that checks if a provided password matches any Admin/Cashier user
 // Does NOT create a session; used by kiosk exit to verify staff password client-side.
 
-$DB_HOST = 'localhost';
+$DB_HOST = '172.16.50.93';
 $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';
