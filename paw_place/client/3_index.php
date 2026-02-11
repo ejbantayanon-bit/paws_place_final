@@ -49,6 +49,9 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                     <button onclick="switchView('history')" id="nav-history" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
                         <span>📅</span> Sales History
                     </button>
+                    <a href="4_preparing_serving.php" target="_blank" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600 hover:text-maroon">
+                        <span>📺</span> Kitchen Display
+                    </a>
                 </nav>
             </div>
 

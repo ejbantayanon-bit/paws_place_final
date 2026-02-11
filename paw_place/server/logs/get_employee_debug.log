@@ -342,3 +342,39 @@
 2026-02-10T07:24:12+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
 2026-02-10T07:24:12+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
 
+2026-02-11T06:47:49+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:47:49+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-11T06:47:49+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-11T06:47:59+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:47:59+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
+2026-02-11T06:47:59+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-11T06:50:29+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"2010412"}}
+2026-02-11T06:50:29+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:50:29+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:50:37+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:50:37+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:50:37+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:50:51+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:50:51+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:50:51+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:51:00+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-11T06:51:00+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:51:00+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:51:07+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:51:07+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:51:08+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:51:16+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:51:16+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:51:16+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-11T06:51:29+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
+2026-02-11T06:51:29+01:00 TOKEN: eyJ0eXAi...H893jmNg
+2026-02-11T06:51:29+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
