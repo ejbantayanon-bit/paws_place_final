@@ -2,7 +2,8 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #f3f4f6;
+    background-color: #f8fafc;
+    color: #1e293b;
     overflow: hidden;
 }
 
@@ -14,24 +15,52 @@ body {
     color: #800000;
 }
 
-.border-maroon {
-    border-color: #800000;
-}
-
 .sidebar-link {
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border-left: 4px solid transparent;
 }
 
 .sidebar-link.active {
-    background-color: #f3f4f6;
+    background-color: #fff1f2;
     color: #800000;
     border-left-color: #800000;
     font-weight: 700;
 }
 
-.sidebar-link:hover {
-    background-color: #e5e7eb;
+.sidebar-link:hover:not(.active) {
+    background-color: #f1f5f9;
+    padding-left: 1.75rem;
+}
+
+.stat-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    border-color: rgba(128, 0, 0, 0.2);
+}
+
+canvas {
+    max-width: 100% !important;
+}
+
+.view-section {
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .custom-scroll {
@@ -40,44 +69,31 @@ body {
 
 .custom-scroll::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
 }
 
 .custom-scroll::-webkit-scrollbar-thumb {
-    background-color: #cbd5e1;
-    border-radius: 4px;
+    background-color: #e2e8f0;
+    border-radius: 10px;
 }
 
-.stat-card {
-    transition: transform 0.2s;
+/* Glassmorphism for iPad/Tablet */
+@media only screen and (min-width: 768px) {
+    .glass-panel {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
 }
 
-.stat-card:hover {
-    transform: translateY(-2px);
+/* Staff Modal Transitions */
+#staff-modal,
+#modal-overlay {
+    transition: all 0.3s ease;
 }
 
-.modal {
-    transition: opacity 0.2s ease-in-out;
-}
-
-.modal.hidden {
+#staff-modal.hidden,
+#modal-overlay.hidden {
     opacity: 0;
     pointer-events: none;
-}
-
-.modal.flex {
-    opacity: 1;
-    pointer-events: auto;
-}
-
-/* Responsive tweaks for admin */
-@media (max-width: 1024px) {
-    body { overflow: auto; }
-    .stat-card { padding: 0.75rem; }
-}
-
-@media (max-width: 640px) {
-    .sidebar-link { font-size: 13px; }
-    .custom-scroll { max-height: 50vh; }
-    .stat-card { font-size: 14px; }
 }

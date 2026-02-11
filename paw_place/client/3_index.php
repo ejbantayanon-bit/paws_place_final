@@ -22,7 +22,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
     
         
         <!-- SIDEBAR NAVIGATION -->
-        <aside id="main-sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20 transition-all duration-300">
+        <aside id="main-sidebar" class="fixed inset-y-0 left-0 w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-30 transition-all duration-300 transform -translate-x-full md:translate-x-0 md:static md:inset-auto">
             <div>
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
                     <div class="text-3xl text-maroon">🐾</div>
@@ -67,18 +67,24 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
         <div class="flex-1 flex flex-col h-full overflow-hidden bg-gray-50">
             
             <!-- GLOBAL TOP HEADER -->
-            <header class="bg-white border-b border-gray-200 h-20 flex items-center px-6 justify-between shadow-sm z-10">
-                <div class="flex items-center gap-4">
-                    <button onclick="toggleSidebar()" class="p-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-maroon transition focus:outline-none" title="Toggle Menu">
+            <header class="bg-white border-b border-gray-200 h-20 flex items-center px-4 sm:px-6 justify-between shadow-sm z-10">
+                <div class="flex items-center gap-3 sm:gap-4">
+                    <button onclick="toggleSidebar()" class="md:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600 hover:text-maroon transition focus:outline-none" title="Toggle Menu">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                     
-                    <div>
-                        <h2 class="text-xl font-black text-gray-800" id="page-title">Order Processing</h2>
-                        <p class="text-xs text-gray-500" id="page-subtitle">Manage incoming kiosk orders</p>
+                    <div class="truncate">
+                        <h2 class="text-lg sm:text-xl font-black text-gray-800 truncate" id="page-title">Order Processing</h2>
+                        <p class="text-[10px] sm:text-xs text-gray-500 truncate" id="page-subtitle">Manage incoming kiosk orders</p>
                     </div>
+                </div>
+
+                <div class="lg:hidden">
+                    <button onclick="toggleCart()" class="p-3 bg-maroon text-white rounded-full shadow-lg" id="cart-toggle-btn">
+                         🛒
+                    </button>
                 </div>
             </header>
 
@@ -86,27 +92,34 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
             <main class="flex-1 relative overflow-hidden">
                 
                 <!-- VIEW 1: POS / ORDER PROCESSING -->
-                <div id="view-pos" class="view-section h-full flex">
-                    <div class="flex-1 flex flex-col h-full">
-                        <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-end">
-                             <button onclick="fetchPendingOrders()" class="text-maroon font-bold text-sm hover:underline flex items-center gap-1">
-                                <span>⟳</span> Refresh Queue
+                <div id="view-pos" class="view-section h-full flex md:flex-row overflow-hidden">
+                    <div class="flex-1 flex flex-col h-full overflow-hidden">
+                        <div class="p-3 bg-gray-50 border-b border-gray-200 flex justify-end">
+                             <button onclick="fetchPendingOrders()" class="text-maroon font-bold text-xs hover:underline flex items-center gap-1">
+                                 <span>⟳</span> Refresh Queue
                             </button>
                         </div>
-                        <div id="pending-orders-container" class="p-6 custom-scroll flex-1">
-                            <div id="pending-orders-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                        <div id="pending-orders-container" class="p-3 md:p-4 custom-scroll flex-1">
+                            <div id="pending-orders-grid" class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                         </div>
                     </div>
 
-                    <div class="w-96 bg-white border-l border-gray-200 h-full flex flex-col shadow-xl">
-                        <div class="p-6 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
+                    <div id="pos-sidebar" class="md:relative md:translate-x-0 md:z-auto md:inset-auto md:w-80 lg:w-96 bg-white border-l border-gray-200 h-full flex flex-col shadow-xl transition-transform duration-300">
+                        <div class="p-4 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
                             <div>
                                 <h3 class="font-bold text-gray-800 text-lg">Selected Order</h3>
                                 <p class="text-xs text-gray-500 font-mono" id="order-source-label">No Selection</p>
                             </div>
-                            <button onclick="cancelOrder()" id="cancel-btn" disabled class="text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 px-3 py-1 rounded border border-red-100 disabled:opacity-30">
-                                CANCEL
-                            </button>
+                            <div class="flex gap-2">
+                                <button onclick="toggleCart()" class="lg:hidden p-2 text-gray-400 hover:text-gray-600">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                                <button onclick="cancelOrder()" id="cancel-btn" disabled class="text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 px-3 py-1 rounded border border-red-100 disabled:opacity-30">
+                                    CANCEL
+                                </button>
+                            </div>
                         </div>
                         
                         <div id="cart-list" class="flex-1 custom-scroll p-4 space-y-3">
@@ -147,8 +160,8 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                             <span>⟳</span> Refresh
                         </button>
                     </div>
-                    <div id="preparing-orders-container" class="p-6 custom-scroll flex-1">
-                        <div id="preparing-orders-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                    <div id="preparing-orders-container" class="p-4 sm:p-6 custom-scroll flex-1">
+                        <div id="preparing-orders-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                     </div>
                 </div>
 
@@ -159,8 +172,8 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                             <span>⟳</span> Refresh
                         </button>
                     </div>
-                    <div id="ready-orders-container" class="p-6 custom-scroll flex-1">
-                        <div id="ready-orders-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4"></div>
+                    <div id="ready-orders-container" class="p-4 sm:p-6 custom-scroll flex-1">
+                        <div id="ready-orders-grid" class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4"></div>
                     </div>
                 </div>
 
@@ -180,7 +193,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                             </div>
                         </div>
 
-                        <div id="inventory-menu-grid" class="grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6 overflow-y-auto pr-2 custom-scroll flex-1">
+                        <div id="inventory-menu-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-4 sm:gap-6 overflow-y-auto pr-2 custom-scroll flex-1">
                             <!-- Populated by JS -->
                         </div>
                     </div>
