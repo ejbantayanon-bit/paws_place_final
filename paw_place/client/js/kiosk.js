@@ -29,11 +29,7 @@ let cart = [];
 let activeCategory = 'Milktea';
 let selectedItemForModal = null;
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchMenuData();
-    // Start fast polling for "immediate" availability updates
-    setInterval(fetchMenuData, 5000);
-});
+document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
 
 function exitKiosk() {
     // Show confirmation modal to exit to main login
@@ -64,80 +60,62 @@ function exitKiosk() {
 }
 
 // --- Data Helpers ---
-let isInitialLoad = true;
-let categoriesCacheMap = {};
-let modifiersCacheMap = {};
-
 async function fetchMenuData() {
     try {
-        // Only load categories and modifiers on initial load to save bandwidth
-        if (isInitialLoad) {
-            const catRes = await fetch('../server/api/get_categories.php');
-            const catData = await catRes.json();
-            if (catData.success && Array.isArray(catData.categories)) {
-                catData.categories.forEach(c => { categoriesCacheMap[c.category_id] = c.name; });
-            }
-
-            const modRes = await fetch('../server/api/get_modifiers.php');
-            const modData = await modRes.json();
-            if (modData.success && Array.isArray(modData.modifiers)) {
-                modData.modifiers.forEach(m => {
-                    const catId = m.applicable_category_id ? Number(m.applicable_category_id) : null;
-                    if (catId) {
-                        modifiersCacheMap[catId] = modifiersCacheMap[catId] || [];
-                        modifiersCacheMap[catId].push(m.name);
-                    }
-                });
-            }
+        // Load categories first so we can map category_id -> name
+        const catRes = await fetch('../server/api/get_categories.php');
+        const catData = await catRes.json();
+        const categoriesMap = {};
+        if (catData.success && Array.isArray(catData.categories)) {
+            catData.categories.forEach(c => { categoriesMap[c.category_id] = c.name; });
         }
 
-        const response = await fetch('../server/api/get_menu_items.php?include_hidden=0');
+        // Load modifiers mapping (category -> modifiers)
+        const modRes = await fetch('../server/api/get_modifiers.php');
+        const modData = await modRes.json();
+        const modifiersMap = {};
+        if (modData.success && Array.isArray(modData.modifiers)) {
+            modData.modifiers.forEach(m => {
+                const catId = m.applicable_category_id ? Number(m.applicable_category_id) : null;
+                if (catId) {
+                    modifiersMap[catId] = modifiersMap[catId] || [];
+                    modifiersMap[catId].push(m.name);
+                }
+            });
+        }
+
+        const response = await fetch('../server/api/get_menu_items.php?include_hidden=1');
         const data = await response.json();
 
         if (data.success && data.items) {
-            const newMenu = data.items.map(item => ({
+            // Map database items to include icons and normalized category names
+            MENU = data.items.map(item => ({
+                // normalize types from API (strings -> numbers/booleans)
                 item_id: Number(item.item_id),
                 name: item.name,
                 category_id: Number(item.category_id),
-                category: ([1, 2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesCacheMap[item.category_id] || 'Uncategorized')),
+                // combine Hot/Cold Coffee into single 'Coffee' category
+                category: ([1, 2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
                 base_price: parseFloat(item.base_price) || 0,
                 is_available: (item.is_available === 1 || item.is_available === '1' || item.is_available === true),
                 image_url: item.image_url || null,
-                type: inferItemType(item, categoriesCacheMap[item.category_id]),
-                icon: getIconForCategoryName(categoriesCacheMap[item.category_id] || ''),
-                add_ons: modifiersCacheMap[Number(item.category_id)] || getAddOnsForCategory(item.category_id)
+                // infer hot/cold type when not provided
+                type: inferItemType(item, categoriesMap[item.category_id]),
+                icon: getIconForCategoryName(categoriesMap[item.category_id] || ''),
+                // prefer DB modifiers when available, fallback to static mapping
+                add_ons: modifiersMap[Number(item.category_id)] || getAddOnsForCategory(item.category_id)
             }));
 
-            // Check if availability changed for active modal
-            if (selectedItemForModal) {
-                const currentItemStatus = newMenu.find(i => i.item_id === selectedItemForModal.item_id);
-                if (currentItemStatus && !currentItemStatus.is_available) {
-                    closeModal(); // Close modal if item became unavailable while viewing
-                }
-            }
-
-            // Detect changes before re-rendering to avoid flickering
-            const menuChanged = JSON.stringify(MENU) !== JSON.stringify(newMenu);
-            if (menuChanged || isInitialLoad) {
-                MENU = newMenu;
-                if (isInitialLoad && MENU.length) activeCategory = MENU[0].category;
-
-                // Preserve scroll position of category filter
-                const filterScrollLeft = document.getElementById('category-filter')?.scrollLeft || 0;
-                renderMenu(MENU);
-                if (document.getElementById('category-filter')) {
-                    document.getElementById('category-filter').scrollLeft = filterScrollLeft;
-                }
-            }
-
-            isInitialLoad = false;
-        } else if (isInitialLoad) {
+            // Set default active category to first available
+            if (MENU.length) activeCategory = MENU[0].category;
+            renderMenu(MENU);
+        } else {
             console.error('Failed to load menu:', data.message);
             alert('Error loading menu. Please refresh.');
         }
     } catch (error) {
         console.error('Error fetching menu:', error);
-        if (isInitialLoad) alert('Unable to connect to server. Please check your connection.');
+        alert('Unable to connect to server. Please check your connection.');
     }
 }
 
@@ -197,9 +175,7 @@ function renderMenu(menu, filter = activeCategory) {
     menuContainer.innerHTML = '';
     categoryFilter.innerHTML = '';
 
-    // Only show available items in the menu
-    const availableMenu = menu.filter(item => item.is_available);
-    const categories = getCategories(availableMenu);
+    const categories = getCategories(menu);
 
     // Make category strip horizontally scrollable and visually spaced
     categoryFilter.style.display = 'flex';
@@ -226,8 +202,8 @@ function renderMenu(menu, filter = activeCategory) {
 
     // SPECIAL LOGIC FOR COFFEE and SPECIALTY (split by Hot/Cold types)
     if (filter === 'Coffee' || filter.toLowerCase().includes('specialty')) {
-        const hotItems = availableMenu.filter(item => item.category === filter && item.type === 'Hot Brew');
-        const coldItems = availableMenu.filter(item => item.category === filter && item.type === 'Cold Brew');
+        const hotItems = menu.filter(item => item.category === filter && item.type === 'Hot Brew');
+        const coldItems = menu.filter(item => item.category === filter && item.type === 'Cold Brew');
 
         if (hotItems.length > 0) {
             const hotHeader = document.createElement('h3');
@@ -262,7 +238,7 @@ function renderMenu(menu, filter = activeCategory) {
         grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
         menuContainer.appendChild(grid);
 
-        const filteredMenu = availableMenu.filter(item => item.category === filter);
+        const filteredMenu = menu.filter(item => item.category === filter);
         filteredMenu.forEach(item => {
             grid.appendChild(createItemCard(item));
         });
@@ -271,22 +247,21 @@ function renderMenu(menu, filter = activeCategory) {
 
 function createItemCard(item) {
     const itemCard = document.createElement('div');
-    // Drastic size reduction for mobile (min-h: 110px)
-    itemCard.className = `menu-item-card p-2 sm:p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer min-h-[110px] sm:h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-50 pointer-events-none' : ''}`;
+    itemCard.className = `menu-item-card p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-50 pointer-events-none' : ''}`;
     itemCard.onclick = item.is_available ? () => openItemModal(item) : null;
 
     const typeBadge = item.category === 'Coffee'
-        ? `<span class="absolute top-1 right-1 sm:top-2 sm:right-2 text-[7px] sm:text-[10px] font-bold px-1.5 sm:px-2 py-0.5 rounded-full ${item.type === 'Cold Brew' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}">${item.type}</span>`
+        ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.type === 'Cold Brew' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}">${item.type}</span>`
         : '';
 
     itemCard.innerHTML = `
         ${typeBadge}
-        <div class="text-3xl sm:text-5xl mb-0.5 sm:mb-2 group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
+        <div class="text-5xl mb-2 group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
         <div class="text-center w-full">
-            <p class="text-[10px] sm:text-sm font-bold text-gray-800 leading-tight truncate px-1">${item.name}</p>
-            <p class="text-sm sm:text-lg font-black text-[#800000]">₱${item.base_price.toFixed(2)}</p>
+            <p class="text-sm font-bold text-gray-800 truncate">${item.name}</p>
+            <p class="text-lg font-black text-[#800000]">₱${item.base_price.toFixed(2)}</p>
         </div>
-        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">SOLD OUT</div>' : ''}
+        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">UNAVAILABLE</div>' : ''}
     `;
     return itemCard;
 }
@@ -499,8 +474,7 @@ async function finalizeOrder() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 items: items,
-                order_source: 'Kiosk',
-                customer_name: CURRENT_USER_NAME
+                order_source: 'Kiosk'
             })
         });
 
@@ -581,10 +555,7 @@ async function openOrderHistory() {
                     <div class="border border-gray-200 rounded-lg p-4 mb-3">
                         <div class="flex justify-between items-start mb-2">
                             <div>
-                                <p class="font-bold text-gray-800 flex items-center gap-2 flex-wrap">
-                                    <span>Order #${order.pre_order_code}</span>
-                                    <span class="text-[10px] bg-red-50 text-[#800000] font-black border border-red-100 px-2 py-0.5 rounded-full uppercase tracking-tighter">${order.customer_name || 'Guest'}</span>
-                                </p>
+                                <p class="font-bold text-gray-800">Order #${order.pre_order_code}</p>
                                 <p class="text-xs text-gray-500">${dateStr}</p>
                             </div>
                             <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${order.status}</span>

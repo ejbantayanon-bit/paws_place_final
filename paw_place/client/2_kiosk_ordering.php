@@ -13,7 +13,7 @@ $userId = $_SESSION['user_id'] ?? $_SESSION['userId'] ?? null;
 $isKiosk = $_SESSION['role'] === 'KIOSK';
 ?>
 <script>
-    const CURRENT_USER_NAME = "<?php echo htmlspecialchars($userName); ?>";
+    const CURRENT_USER_NAME = "<?php echo htmlspecialchars($userName !== 'Customer' ? $userName : ''); ?>";
     const IS_GUEST = <?php echo ($userId ? 'false' : 'true'); ?>;
 </script>
 <!DOCTYPE html>
@@ -52,25 +52,25 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
     <main class="kiosk-grid">
         <!-- LEFT COLUMN: Menu Selection -->
         <section class="bg-white p-6 flex flex-col h-full border-r border-gray-200 overflow-hidden">
-            <header class="mb-3 sm:mb-4 flex justify-between items-center flex-none gap-2">
-                <div class="flex items-center gap-1.5 sm:gap-4 flex-1 min-w-0">
-                    <button onclick="exitKiosk()" class="flex-none flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 bg-[#800000] hover:bg-red-900 text-white rounded-full shadow-md transition-all transform hover:scale-110 active:scale-95" title="Back to Login">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <header class="mb-4 flex justify-between items-center flex-none">
+                <div class="flex items-center gap-4">
+                    <button onclick="exitKiosk()" class="flex items-center justify-center w-12 h-12 bg-[#800000] hover:bg-red-900 text-white rounded-full shadow-md transition-all transform hover:scale-110 active:scale-95" title="Back to Login">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                         </svg>
                     </button>
-                    <div class="min-w-0 flex-1">
-                        <h1 class="text-base xs:text-xl sm:text-3xl font-black text-[#800000] leading-none truncate">PAWS PLACE</h1>
+                    <div>
+                        <h1 class="text-3xl font-black text-[#800000]">PAWS PLACE</h1>
                         <?php if ($isKiosk): ?>
-                            <p class="text-[#800000] mt-0.5 text-[8px] xs:text-[10px] sm:text-sm font-semibold truncate uppercase tracking-tighter">Welcome, <?php echo htmlspecialchars($userName); ?>!</p>
+                            <p class="text-[#800000] mt-1 text-sm font-semibold">Welcome, <?php echo htmlspecialchars($userName); ?>! 🐾</p>
                         <?php endif; ?>
                     </div>
                 </div>
-                <button onclick="openOrderHistory()" class="flex-none flex items-center gap-1 px-2 py-1.5 sm:px-4 sm:py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-[10px] sm:text-sm font-semibold transition" title="View your order history">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 sm:w-5 sm:h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <button onclick="openOrderHistory()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition" title="View your order history">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span class="hidden xs:inline">Orders</span>
+                    <span>My Orders</span>
                 </button>
             </header>
             

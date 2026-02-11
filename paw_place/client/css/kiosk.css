@@ -1,27 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
 
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #fcfcfc;
-    height: 100vh;
-    /* Force full height */
-    overflow: hidden;
-    /* Prevent body scroll */
+body { 
+    font-family: 'Poppins', sans-serif; 
+    background-color: #fcfcfc; 
+    height: 100vh; /* Force full height */
+    overflow: hidden; /* Prevent body scroll */
 }
 
 /* FOUNDATION UNIVERSITY COLOR SCHEME */
-.text-maroon {
-    color: #800000;
-}
-
-.bg-maroon {
-    background-color: #800000;
-}
+.text-maroon { color: #800000; }
+.bg-maroon { background-color: #800000; }
 
 .kiosk-grid {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    /* Menu 2/3, Cart 1/3 */
+    grid-template-columns: 2fr 1fr; /* Menu 2/3, Cart 1/3 */
     height: 100%;
     width: 100%;
 }
@@ -32,10 +24,7 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
-.menu-scroll::-webkit-scrollbar {
-    display: none;
-}
+.menu-scroll::-webkit-scrollbar { display: none; }
 
 /* Category Card Style */
 .category-scroll {
@@ -49,10 +38,7 @@ body {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
-
-.category-scroll::-webkit-scrollbar {
-    display: none;
-}
+.category-scroll::-webkit-scrollbar { display: none; }
 
 .category-card {
     min-width: 90px;
@@ -67,14 +53,12 @@ body {
     cursor: pointer;
     background-color: white;
 }
-
 .category-card.active {
     border-color: #800000;
     background-color: #fff5f5;
     color: #800000;
     box-shadow: 0 4px 6px -1px rgba(128, 0, 0, 0.2);
 }
-
 .category-card:active {
     transform: scale(0.95);
 }
@@ -84,15 +68,12 @@ body {
     background-color: white;
     border: 1px solid #e5e7eb;
 }
-
 .menu-item-card:active {
     transform: scale(0.95);
     background-color: #f3f4f6;
 }
 
-.touch-target {
-    min-height: 60px;
-}
+.touch-target { min-height: 60px; }
 
 .addon-checkbox {
     width: 1.25rem;
@@ -104,28 +85,19 @@ body {
 #cart-list::-webkit-scrollbar {
     width: 6px;
 }
-
 #cart-list::-webkit-scrollbar-thumb {
     background-color: #cbd5e1;
     border-radius: 3px;
 }
 
 @media (max-width: 768px) {
-    body {
-        overflow: auto;
-        height: auto;
-    }
-
-    .kiosk-grid {
-        grid-template-columns: 1fr;
-        height: auto;
+    body { overflow: auto; height: auto; }
+    .kiosk-grid { 
+        grid-template-columns: 1fr; 
+        height: auto; 
         display: block;
     }
-
-    .menu-scroll {
-        max-height: 50vh;
-    }
-
+    .menu-scroll { max-height: 50vh; }
     section:last-child {
         height: auto;
         min-height: 400px;
@@ -134,84 +106,23 @@ body {
 
 /* Responsive adjustments for category cards and menu grid */
 @media (max-width: 1024px) {
-    .kiosk-grid {
-        grid-template-columns: 1.6fr 1fr;
-    }
-
-    .category-card {
-        min-width: 75px;
-        height: 75px;
-    }
-
-    .category-card .text-3xl {
-        font-size: 1.5rem;
-    }
+    .kiosk-grid { grid-template-columns: 1.6fr 1fr; }
+    .category-card { min-width: 80px; height: 80px; }
+    .category-card .text-3xl { font-size: 1.6rem; }
 }
 
 @media (max-width: 640px) {
-    .kiosk-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .category-card {
-        min-width: 68px;
-        height: 68px;
-    }
-
-    .category-card .text-3xl {
-        font-size: 1.4rem;
-    }
-
-    .category-card .text-xs {
-        font-size: 11px;
-    }
-
-    /* Menu grid: Stay in 2 columns for better space usage, only drop to 1 on extremely small screens */
-    .menu-scroll .grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        gap: 0.75rem !important;
-    }
+    .kiosk-grid { grid-template-columns: 1fr; }
+    .category-card { min-width: 68px; height: 68px; }
+    .category-card .text-3xl { font-size: 1.4rem; }
+    .category-card .text-xs { font-size: 11px; }
+    /* Make menu grid denser on small screens */
+    .menu-scroll .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
 }
 
-@media (max-width: 480px) {
-    section {
-        padding: 1rem !important;
-    }
-
-    .kiosk-grid h1 {
-        font-size: 1.5rem !important;
-    }
-}
-
-@media (max-width: 360px) {
-    .category-card {
-        min-width: 54px;
-        height: 54px;
-        padding: 4px;
-    }
-
-    .category-card .text-3xl {
-        font-size: 1rem;
-        margin-bottom: 0 !important;
-    }
-
-    .category-card .text-xs {
-        font-size: 9px;
-    }
-
-    .menu-scroll .grid {
-        grid-template-columns: repeat(1, minmax(0, 1fr)) !important;
-    }
-
-    .touch-target {
-        min-height: 50px;
-    }
-
-    .text-2xl {
-        font-size: 1.15rem !important;
-    }
-
-    .text-4xl {
-        font-size: 1.5rem !important;
-    }
+@media (max-width: 420px) {
+    .category-card { min-width: 60px; height: 60px; }
+    .category-card .text-3xl { font-size: 1.2rem; }
+    .menu-scroll .grid { grid-template-columns: repeat(1, minmax(0,1fr)); }
+    .touch-target { min-height: 50px; }
 }

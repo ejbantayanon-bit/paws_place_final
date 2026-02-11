@@ -20,7 +20,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
     <div id="alert-container" class="fixed top-4 right-4 z-50"></div>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 min-h-screen">
-        <div class="hidden lg:block lg:col-span-3 cafe-context p-0">
+        <div class="lg:col-span-3 cafe-context p-0">
             <div class="w-full h-full flex items-stretch">
                 <div class="w-full h-full image-placeholder overflow-hidden relative">
                     <img src="../image/Paws place.jpeg" alt="Cafe" class="object-cover w-full h-full">

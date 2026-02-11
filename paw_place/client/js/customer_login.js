@@ -15,17 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (kioskIdInput) {
         kioskIdInput.addEventListener('input', () => {
             verifiedUser = null;
-            const infoGroup = document.getElementById('id-info-group');
-            const loginBtn = document.getElementById('id-login-btn');
-            const verifyBtn = document.getElementById('verify-id-btn');
-
-            if (infoGroup) infoGroup.classList.add('hidden');
-            if (loginBtn) loginBtn.style.display = 'none';
-            if (verifyBtn) {
-                verifyBtn.style.display = 'block';
-                verifyBtn.disabled = false;
-                verifyBtn.textContent = 'CONFIRM';
-            }
+            document.getElementById('id-info-group').classList.add('hidden');
+            document.getElementById('id-login-btn').style.display = 'none';
+            document.getElementById('verify-id-btn').style.display = 'block';
         });
     }
 });
@@ -59,13 +51,6 @@ function resetModeSelection() {
 
     document.getElementById('id-info-group').classList.add('hidden');
     document.getElementById('id-login-btn').style.display = 'none';
-
-    const verifyBtn = document.getElementById('verify-id-btn');
-    if (verifyBtn) {
-        verifyBtn.style.display = 'block';
-        verifyBtn.disabled = false;
-        verifyBtn.textContent = 'CONFIRM';
-    }
 }
 
 async function handleKioskIdLookup() {
@@ -179,7 +164,7 @@ async function handleKioskIdLookup() {
         loginBtn.style.display = 'none';
         verifyBtn.style.display = 'block';
         verifyBtn.disabled = false;
-        verifyBtn.textContent = 'CONFIRM';
+        verifyBtn.textContent = 'VERIFY ID';
         alertUser('ID Number not found (Student or Employee)', 'error');
 
     } catch (error) {
@@ -189,7 +174,7 @@ async function handleKioskIdLookup() {
         loginBtn.style.display = 'none';
         verifyBtn.style.display = 'block';
         verifyBtn.disabled = false;
-        verifyBtn.textContent = 'CONFIRM';
+        verifyBtn.textContent = 'VERIFY ID';
         alertUser('Failed to verify ID', 'error');
     }
 }

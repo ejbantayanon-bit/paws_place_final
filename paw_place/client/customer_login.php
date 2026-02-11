@@ -20,7 +20,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
     <div id="alert-container" class="fixed top-4 right-4 z-50"></div>
 
     <div class="grid grid-cols-1 lg:grid-cols-4 min-h-screen">
-        <div class="hidden lg:block lg:col-span-3 cafe-context p-0">
+        <div class="lg:col-span-3 cafe-context p-0">
             <div class="w-full h-full flex items-stretch">
                 <div class="w-full h-full image-placeholder overflow-hidden relative">
                     <img src="../image/Paws place.jpeg" alt="Cafe" class="object-cover w-full h-full">
@@ -76,7 +76,7 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
                     
                     <div class="pt-4 space-y-3">
                         <button type="button" id="verify-id-btn" onclick="handleKioskIdLookup()" class="w-full py-4 bg-blue-600 text-white font-black tracking-widest text-sm rounded-lg shadow-lg hover:bg-blue-700 transition-all">
-                            CONFIRM
+                            VERIFY ID
                         </button>
                         
                         <button type="submit" id="id-login-btn" class="login-button w-full py-4 bg-green-600 text-white font-black tracking-widest text-sm rounded-lg shadow-lg hover:bg-green-700 transition-all" style="display: none;">

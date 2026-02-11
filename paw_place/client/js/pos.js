@@ -93,24 +93,10 @@ function formatCurrency(amount) {
     return `₱${parseFloat(amount).toFixed(2)}`;
 }
 
-function formatNameInitials(name) {
-    if (!name || name.toLowerCase() === 'guest') return name;
-    const parts = name.trim().split(/\s+/);
-    if (parts.length <= 1) return name;
-    const initials = parts.slice(0, -1).map(p => p.charAt(0).toUpperCase() + '.').join('');
-    return initials + ' ' + parts[parts.length - 1];
-}
-
 function toggleSidebar() {
     const sidebar = document.getElementById('main-sidebar');
-    sidebar.classList.toggle('-translate-x-full');
-}
-
-function toggleCart() {
-    const cart = document.getElementById('pos-sidebar');
-    if (cart) {
-        cart.classList.toggle('translate-x-full');
-    }
+    isSidebarHidden = !isSidebarHidden;
+    sidebar.classList.toggle('hidden');
 }
 
 function switchView(viewName) {
@@ -181,10 +167,9 @@ async function loadPreparingOrders() {
 
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
-                    <div class="flex-1">
-                        <h4 class="font-black text-base text-maroon leading-none truncate max-w-[200px] mb-1">${formatNameInitials(order.customer_name) || 'Guest'}</h4>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Order #${order.pre_order_code}</p>
-                        <p class="text-[10px] text-gray-400 font-medium mt-1">${new Date(order.time_placed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                    <div>
+                        <p class="font-bold text-lg text-gray-800">#${order.pre_order_code} ${order.customer_name ? `<span class='text-sm text-maroon'>(${order.customer_name})</span>` : ''}</p>
+                        <p class="text-xs text-gray-500">${new Date(order.time_placed).toLocaleString()}</p>
                     </div>
                     <span class="text-sm font-bold text-yellow-600 bg-yellow-50 px-2 py-1 rounded">PREPARING</span>
                 </div>
@@ -248,10 +233,9 @@ async function loadReadyOrders() {
 
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
-                    <div class="flex-1">
-                        <h4 class="font-black text-base text-maroon leading-none truncate max-w-[200px] mb-1">${formatNameInitials(order.customer_name) || 'Guest'}</h4>
-                        <p class="text-xs font-bold text-gray-500 uppercase tracking-widest">Order #${order.pre_order_code}</p>
-                        <p class="text-[10px] text-gray-400 font-medium mt-1">${new Date(order.time_placed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+                    <div>
+                        <p class="font-bold text-lg text-gray-800">#${order.pre_order_code} ${order.customer_name ? `<span class='text-sm text-maroon'>(${order.customer_name})</span>` : ''}</p>
+                        <p class="text-xs text-gray-500">${new Date(order.time_placed).toLocaleString()}</p>
                     </div>
                     <span class="text-sm font-bold text-green-600 bg-green-50 px-2 py-1 rounded">READY</span>
                 </div>
@@ -361,15 +345,15 @@ function renderPendingOrders() {
 
         const itemsText = order.order_items.length + ' item' + (order.order_items.length !== 1 ? 's' : '');
         card.innerHTML = `
-            <div class="flex justify-between items-start gap-2 mb-2 w-full overflow-hidden">
-                <div class="flex-1 min-w-0">
-                    <h4 class="font-black text-sm text-maroon leading-tight truncate mb-1">${formatNameInitials(order.customer_name) || 'Guest'}</h4>
-                    <p class="text-[10px] font-bold text-gray-500 uppercase tracking-widest truncate">#${order.pre_order_code} • ${new Date(order.time_placed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+            <div class="flex justify-between items-start mb-2">
+                <div>
+                    <p class="font-bold text-gray-800">#${order.pre_order_code} ${order.customer_name ? `<br><span class='text-sm text-maroon'>${order.customer_name}</span>` : ''}</p>
+                    <p class="text-xs text-gray-500">${new Date(order.time_placed).toLocaleString()}</p>
                 </div>
-                <span class="text-base sm:text-lg font-black text-maroon flex-none">${formatCurrency(order.total_amount)}</span>
+                <span class="text-lg font-bold text-maroon">${formatCurrency(order.total_amount)}</span>
             </div>
             <p class="text-xs text-gray-600">${itemsText}</p>
-            <div class="mt-2 text-[10px] font-black text-gray-400 uppercase tracking-tighter">
+            <div class="mt-2 text-xs font-bold text-gray-700 uppercase">
                 ${order.status}
             </div>
         `;
@@ -384,13 +368,7 @@ function selectOrder(orderId, order) {
     document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected'));
     event.currentTarget.classList.add('selected');
 
-    document.getElementById('order-source-label').innerHTML = `
-        <div class="mt-2 border-t border-gray-100 pt-3">
-            <div class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Customer</div>
-            <div class="text-maroon font-black text-lg leading-tight uppercase truncate">${order.customer_name || 'GUEST'}</div>
-            <div class="text-gray-500 font-bold text-base mt-1">Order #${order.pre_order_code}</div>
-        </div>
-    `;
+    document.getElementById('order-source-label').textContent = `Order #${order.pre_order_code}`;
     document.getElementById('cancel-btn').disabled = false;
     document.getElementById('pay-btn').disabled = false;
 
@@ -508,17 +486,15 @@ async function loadOrderTracker() {
 
         document.getElementById('tracker-preparing-list').innerHTML = preparing.map(o => `
             <div class="bg-yellow-50 p-3 rounded-lg border border-yellow-200">
-                <p class="font-black text-maroon text-lg truncate">${formatNameInitials(o.customer_name) || 'Guest'}</p>
-                <p class="text-xs font-bold text-gray-600 mb-1">Order #${o.pre_order_code}</p>
-                <p class="text-[10px] text-gray-500">${o.order_items.length} items</p>
+                <p class="font-bold text-gray-800">#${o.pre_order_code} ${o.customer_name ? `<span class='text-xs'>(${o.customer_name})</span>` : ''}</p>
+                <p class="text-sm text-gray-600">${o.order_items.length} items</p>
             </div>
         `).join('');
 
         document.getElementById('tracker-ready-list').innerHTML = ready.map(o => `
             <div class="bg-green-50 p-3 rounded-lg border border-green-200">
-                <p class="font-black text-maroon text-lg truncate">${formatNameInitials(o.customer_name) || 'Guest'}</p>
-                <p class="text-xs font-bold text-gray-600 mb-1">Order #${o.pre_order_code}</p>
-                <p class="text-[10px] text-gray-500">${o.order_items.length} items</p>
+                <p class="font-bold text-gray-800">#${o.pre_order_code} ${o.customer_name ? `<span class='text-xs'>(${o.customer_name})</span>` : ''}</p>
+                <p class="text-sm text-gray-600">${o.order_items.length} items</p>
             </div>
         `).join('');
     } catch (error) {
@@ -666,10 +642,7 @@ function renderHistoryPage() {
             const itemsList = order.order_items.map(i => `${i.name}×${i.quantity}`).join(', ');
             return `
                 <tr class="border-b hover:bg-gray-50">
-                    <td class="p-4">
-                        <div class="font-black">#${order.pre_order_code}</div>
-                        <div class="text-[10px] font-bold text-maroon uppercase">${formatNameInitials(order.customer_name) || 'Guest'}</div>
-                    </td>
+                    <td class="p-4">#${order.pre_order_code} ${order.customer_name ? `<br><span class='text-xs text-gray-500'>${order.customer_name}</span>` : ''}</td>
                     <td class="p-4">${new Date(order.time_placed).toLocaleString()}</td>
                     <td class="p-4 text-xs font-bold uppercase">${order.order_source}</td>
                     <td class="p-4 text-sm">${itemsList}</td>

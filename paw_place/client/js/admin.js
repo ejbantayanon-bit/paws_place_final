@@ -23,13 +23,6 @@ function formatDate() {
     document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', options);
 }
 
-function toggleSidebar() {
-    const sidebar = document.getElementById('main-sidebar');
-    if (sidebar) {
-        sidebar.classList.toggle('-translate-x-full');
-    }
-}
-
 function switchView(viewName) {
     currentView = viewName;
     document.querySelectorAll('.view-section').forEach(v => v.classList.add('hidden'));
@@ -42,8 +35,6 @@ function switchView(viewName) {
         dashboard: { title: 'Dashboard Overview', subtitle: 'Welcome back, Admin' },
         menu: { title: 'Menu Management', subtitle: 'Manage menu items and categories' },
         inventory: { title: 'Inventory Management', subtitle: 'Track and manage raw materials' },
-        staff: { title: 'Staff Management', subtitle: 'Manage employee accounts and roles' },
-        settings: { title: 'Shop Settings', subtitle: 'Configure store preferences and hours' },
         logs: { title: 'Activity Logs', subtitle: 'View inventory adjustment history' }
     };
 
@@ -53,8 +44,6 @@ function switchView(viewName) {
     if (viewName === 'dashboard') loadDashboard();
     if (viewName === 'menu') loadMenuItems();
     if (viewName === 'inventory') loadInventoryTable();
-    if (viewName === 'staff') loadStaffView();
-    if (viewName === 'settings') loadSettingsView();
     if (viewName === 'logs') loadActivityLogs();
 }
 
@@ -154,9 +143,6 @@ async function loadDashboard() {
         document.getElementById('stat-sales').textContent = formatCurrency(totalSales);
         document.getElementById('stat-orders').textContent = todayOrders.length;
         document.getElementById('stat-low-stock').textContent = lowStockCount;
-
-        // Render charts
-        initCharts(orders);
 
         // Render recent orders
         const tbody = document.getElementById('dashboard-orders');
@@ -264,255 +250,6 @@ async function loadActivityLogs() {
         console.error('Error loading logs:', error);
         showAlert('Failed to load logs', 'error');
     }
-}
-
-// --- STAFF MANAGEMENT ---
-async function loadStaffView() {
-    try {
-        const res = await fetch(`${API_BASE}/get_users.php`);
-        const data = await res.json();
-        if (data.success) {
-            const tbody = document.getElementById('staff-table');
-            tbody.innerHTML = data.users.map(u => `
-                <tr class="border-b hover:bg-white transition bg-gray-50">
-                    <td class="p-4 font-bold text-gray-800">${u.full_name}</td>
-                    <td class="p-4 text-gray-600">${u.username}</td>
-                    <td class="p-4"><span class="px-2 py-1 bg-gray-200 text-gray-700 rounded text-xs font-bold uppercase">${u.role}</span></td>
-                    <td class="p-4">
-                        <button onclick='editStaff(${JSON.stringify(u)})' class="text-maroon font-bold hover:underline">Edit</button>
-                    </td>
-                </tr>
-            `).join('');
-        }
-    } catch (e) {
-        console.error('Error loading staff', e);
-    }
-}
-
-function openAddStaffModal() {
-    document.getElementById('staff-id').value = '';
-    document.getElementById('staff-full-name').value = '';
-    document.getElementById('staff-username').value = '';
-    document.getElementById('staff-role').value = 'Cashier';
-    document.getElementById('staff-password').value = '';
-    document.getElementById('staff-modal-title').textContent = 'Add Staff Member';
-    document.getElementById('staff-modal').classList.remove('hidden');
-}
-
-function editStaff(user) {
-    document.getElementById('staff-id').value = user.user_id;
-    document.getElementById('staff-full-name').value = user.full_name;
-    document.getElementById('staff-username').value = user.username;
-    document.getElementById('staff-role').value = user.role;
-    document.getElementById('staff-password').value = ''; // Leave blank to keep existing
-    document.getElementById('staff-modal-title').textContent = 'Edit Staff Member';
-    document.getElementById('staff-modal').classList.remove('hidden');
-}
-
-function closeStaffModal() {
-    document.getElementById('staff-modal').classList.add('hidden');
-}
-
-async function saveStaff() {
-    const id = document.getElementById('staff-id').value;
-    const body = {
-        user_id: id || null,
-        full_name: document.getElementById('staff-full-name').value,
-        username: document.getElementById('staff-username').value,
-        role: document.getElementById('staff-role').value,
-        password: document.getElementById('staff-password').value
-    };
-
-    if (!body.full_name || !body.username) return showAlert('Name and Username are required', 'error');
-
-    try {
-        const res = await fetch(`${API_BASE}/save_staff.php`, {
-            method: 'POST',
-            body: JSON.stringify(body)
-        });
-        const data = await res.json();
-        if (data.success) {
-            showAlert('Staff member saved!', 'success');
-            closeStaffModal();
-            loadStaffView();
-        } else {
-            showAlert(data.message, 'error');
-        }
-    } catch (e) {
-        showAlert('Error connection to server', 'error');
-    }
-}
-
-// --- SHOP SETTINGS ---
-async function loadSettingsView() {
-    try {
-        const res = await fetch(`${API_BASE}/settings_handler.php?type=get`);
-        const data = await res.json();
-        if (data.success && data.settings) {
-            document.getElementById('setting-store-name').value = data.settings.store_name || 'PAWS PLACE';
-            document.getElementById('setting-welcome').value = data.settings.welcome_message || '';
-            document.getElementById('setting-open').value = data.settings.open_time || '08:00';
-            document.getElementById('setting-close').value = data.settings.close_time || '18:00';
-        }
-    } catch (e) {
-        console.error('Error loading settings', e);
-    }
-}
-
-async function saveGeneralSettings() {
-    const storeName = document.getElementById('setting-store-name').value;
-    const welcomeMajor = document.getElementById('setting-welcome').value;
-
-    try {
-        const res = await fetch(`${API_BASE}/settings_handler.php`, {
-            method: 'POST',
-            body: JSON.stringify({
-                type: 'save_general',
-                store_name: storeName,
-                welcome_message: welcomeMajor
-            })
-        });
-        const data = await res.json();
-        if (data.success) showAlert('General settings saved!', 'success');
-    } catch (e) { showAlert('Error saving settings', 'error'); }
-}
-
-async function saveStoreHours() {
-    const open = document.getElementById('setting-open').value;
-    const close = document.getElementById('setting-close').value;
-
-    try {
-        const res = await fetch(`${API_BASE}/settings_handler.php`, {
-            method: 'POST',
-            body: JSON.stringify({
-                type: 'save_hours',
-                open_time: open,
-                close_time: close
-            })
-        });
-        const data = await res.json();
-        if (data.success) showAlert('Store hours updated!', 'success');
-    } catch (e) { showAlert('Error saving hours', 'error'); }
-}
-
-// --- CHARTS & ANALYTICS ---
-let salesChart = null;
-let categoryChartObj = null;
-
-function initCharts(orders) {
-    if (!orders || orders.length === 0) return;
-
-    const canvas1 = document.getElementById('salesTrendsChart');
-    const canvas2 = document.getElementById('categoryChart');
-    if (!canvas1 || !canvas2) return;
-
-    // 1. Process Sales Trend (Last 7 Days)
-    const last7Days = [...Array(7)].map((_, i) => {
-        const d = new Date();
-        d.setDate(d.getDate() - i);
-        return d.toISOString().split('T')[0];
-    }).reverse();
-
-    const dailySales = last7Days.map(date => {
-        return orders
-            .filter(o => o.time_placed && o.time_placed.startsWith(date))
-            .reduce((sum, o) => sum + parseFloat(o.total_amount), 0);
-    });
-
-    if (salesChart) salesChart.destroy();
-    salesChart = new Chart(canvas1, {
-        type: 'line',
-        data: {
-            labels: last7Days.map(d => new Date(d).toLocaleDateString([], { month: 'short', day: 'numeric' })),
-            datasets: [{
-                label: 'Revenue',
-                data: dailySales,
-                borderColor: '#800000',
-                backgroundColor: 'rgba(128, 0, 0, 0.1)',
-                fill: true,
-                tension: 0.4,
-                pointRadius: 4,
-                pointBackgroundColor: '#800000'
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-                y: { beginAtZero: true, ticks: { callback: value => '₱' + value } },
-                x: { grid: { display: false } }
-            }
-        }
-    });
-
-    // 2. Process Category Performance
-    // Note: This requires order_items which is a sub-array in the orders response
-    const catSales = {};
-    orders.forEach(o => {
-        if (o.order_items) {
-            o.order_items.forEach(item => {
-                const cat = item.category_name || 'Other';
-                catSales[cat] = (catSales[cat] || 0) + 1;
-            });
-        }
-    });
-
-    if (categoryChartObj) categoryChartObj.destroy();
-    categoryChartObj = new Chart(canvas2, {
-        type: 'doughnut',
-        data: {
-            labels: Object.keys(catSales),
-            datasets: [{
-                data: Object.values(catSales),
-                backgroundColor: ['#800000', '#c53030', '#f56565', '#feb2b2', '#fed7d7', '#718096'],
-                borderWidth: 0
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: { position: 'bottom', labels: { boxWidth: 10, padding: 15, font: { size: 10 } } }
-            },
-            cutout: '70%'
-        }
-    });
-}
-
-function exportSalesReport() {
-    showAlert('Preparing CSV Export...', 'info');
-    fetch(`${API_BASE}/get_orders.php`)
-        .then(res => res.json())
-        .then(orders => {
-            if (!orders || orders.length === 0) return showAlert('No orders to export', 'error');
-
-            const headers = ['Order ID', 'Customer', 'Source', 'Total', 'Status', 'Date'];
-            const rows = orders.map(o => [
-                o.pre_order_code,
-                o.customer_name || 'Walk-in',
-                o.order_source,
-                o.total_amount,
-                o.status,
-                o.time_placed
-            ]);
-
-            const csvContent = [headers, ...rows]
-                .map(e => e.join(","))
-                .join("\n");
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            const url = URL.createObjectURL(blob);
-            link.setAttribute("href", url);
-            link.setAttribute("download", `sales_report_${new Date().toISOString().split('T')[0]}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-            showAlert('Sales report downloaded!', 'success');
-        })
-        .catch(e => showAlert('Failed to export data', 'error'));
 }
 
 // --- INITIALIZATION ---
