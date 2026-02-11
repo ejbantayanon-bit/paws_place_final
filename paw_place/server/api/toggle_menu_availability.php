@@ -9,7 +9,7 @@ if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin', 'Cashier
     exit;
 }
 
-$DB_HOST = '172.16.50.93';
+$DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';

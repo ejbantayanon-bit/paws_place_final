@@ -2,7 +2,7 @@
 // Run this script once to hash plaintext passwords in `users.password_hash`.
 // Usage: php migrate_hash_passwords.php OR visit in browser.
 
-$DB_HOST = '172.16.50.93';
+$DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';

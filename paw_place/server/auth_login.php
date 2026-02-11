@@ -4,7 +4,7 @@ header('Content-Type: application/json; charset=utf-8');
 session_start();
 
 // DB config - adjust as needed for your environment
-$DB_HOST = '172.16.50.93';
+$DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';

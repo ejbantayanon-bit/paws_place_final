@@ -94,23 +94,6 @@ function confirmLogout() {
     window.location.href = '../server/logout.php';
 }
 
-// --- SALES CALCULATION ---
-function calculateTotalSalesForDay(orders) {
-    const today = new Date();
-    const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-    
-    return orders.reduce((sum, order) => {
-        const orderDate = new Date(order.time_placed);
-        const orderDateOnly = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
-        
-        // Only include orders from today
-        if (orderDateOnly.getTime() === startOfDay.getTime()) {
-            return sum + parseFloat(order.total_amount);
-        }
-        return sum;
-    }, 0);
-}
-
 // --- DASHBOARD VIEW ---
 async function loadDashboard() {
     try {
@@ -121,27 +104,15 @@ async function loadDashboard() {
 
         if (!ordersRes.ok || !inventoryRes.ok) throw new Error('Failed to load dashboard');
 
-        const ordersData = await ordersRes.json();
+        const orders = await ordersRes.json();
         const inventory = await inventoryRes.json();
 
-        // Extract orders from response
-        const orders = ordersData.orders || ordersData;
-
         // Calculate stats
-        const totalSales = calculateTotalSalesForDay(orders);
+        const totalSales = orders.reduce((sum, o) => sum + o.total_amount, 0);
         const lowStockCount = inventory.filter(i => i.is_low_stock).length;
 
-        // Filter today's orders for count
-        const today = new Date();
-        const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-        const todayOrders = orders.filter(order => {
-            const orderDate = new Date(order.time_placed);
-            const orderDateOnly = new Date(orderDate.getFullYear(), orderDate.getMonth(), orderDate.getDate());
-            return orderDateOnly.getTime() === startOfDay.getTime();
-        });
-
         document.getElementById('stat-sales').textContent = formatCurrency(totalSales);
-        document.getElementById('stat-orders').textContent = todayOrders.length;
+        document.getElementById('stat-orders').textContent = orders.length;
         document.getElementById('stat-low-stock').textContent = lowStockCount;
 
         // Render recent orders
