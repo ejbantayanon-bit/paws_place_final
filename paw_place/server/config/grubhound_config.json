@@ -1,7 +1,12 @@
 {
     "owner": "grubhound",
+<<<<<<< HEAD
     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9LCJpYXQiOjE3NzA3OTc5OTEsImV4cCI6MTc3MDgwNTE5MX0.ko32GQuHJgehtbIAbcQf0U2pnO1ekl8w0yJ6y_KMm3o",
     "expires_at": "2026-02-11 18:19:51",
+=======
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6ImFjY2Vzc190b2tlbiJ9LCJpYXQiOjE3NzA3Nzk0MDEsImV4cCI6MTc3MDc4NjYwMX0.lbm7oXlZHcrkNs7jTrxsx_vOsGZUwfXc2lcH893jmNg",
+    "expires_at": "2026-02-11 13:10:01",
+>>>>>>> parent of 6655c56 (kitchen screen)
     "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6InJlZnJlc2hfdG9rZW4ifSwiaWF0IjoxNzY5NDc5MDc5fQ.W_QL_FPHAydS_V16Ya4jwO_Ef3BIWGBW7UYsEuBIR7g",
     "refresh_url": "https://mis.foundationu.com/api/token/refresh",
     "system": "grubhound",

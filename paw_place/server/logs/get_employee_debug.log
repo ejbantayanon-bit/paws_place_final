@@ -342,6 +342,7 @@
 2026-02-10T07:24:12+01:00 TOKEN: eyJ0eXAi...9K9wpJ_k
 2026-02-10T07:24:12+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
 
+<<<<<<< HEAD
 2026-02-11T06:47:49+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"employee_id":"20190412"}}
 2026-02-11T06:47:49+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
 2026-02-11T06:47:49+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
@@ -402,3 +403,5 @@
 2026-02-11T09:19:46+01:00 TOKEN: eyJ0eXAi...t-oL9XSk
 2026-02-11T09:19:46+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
 
+=======
+>>>>>>> parent of 6655c56 (kitchen screen)

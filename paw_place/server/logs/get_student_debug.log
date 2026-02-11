@@ -1578,6 +1578,7 @@ AVAILABLE_FIELDS: student
 AVAILABLE_FIELDS: student
 
 2026-02-10T07:45:31+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+<<<<<<< HEAD
 2026-02-11T06:47:48+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"student_id":"20190412"}}
 2026-02-11T06:47:48+01:00 TOKEN: eyJ0eXAi...xFlA7e1E
 2026-02-11T06:47:49+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
@@ -1808,3 +1809,5 @@ AVAILABLE_FIELDS: student
 AVAILABLE_FIELDS: student
 
 2026-02-11T09:20:17+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+=======
+>>>>>>> parent of 6655c56 (kitchen screen)
