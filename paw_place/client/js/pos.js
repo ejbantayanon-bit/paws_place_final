@@ -93,6 +93,23 @@ function formatCurrency(amount) {
     return `₱${parseFloat(amount).toFixed(2)}`;
 }
 
+/**
+ * Formats name for Card Display: Initials of all names except last, plus full Last Name.
+ * Example: "Dean Louie Ramirez Araula" -> "D. L. R. ARAULA"
+ */
+function formatCardName(name) {
+    if (!name || name.trim() === '' || name.toLowerCase() === 'customer' || name.toLowerCase() === 'guest') {
+        return 'WALK-IN';
+    }
+    const parts = name.trim().split(/\s+/);
+    if (parts.length === 1) return parts[0].toUpperCase();
+
+    const last = parts.pop().toUpperCase();
+    const initials = parts.map(p => p.charAt(0).toUpperCase() + '.').join(''); // "D.L.R." (no spaces based on screenshot compact look, or add space if preferred. Screenshot looks like D.L.R.)
+    // Actually screenshot has D.L.R. ARAULA. (With space between initials and last name).
+    return `${initials} ${last}`;
+}
+
 function toggleSidebar() {
     const sidebar = document.getElementById('main-sidebar');
     isSidebarHidden = !isSidebarHidden;
@@ -320,17 +337,20 @@ async function confirmCancelPreparing(orderId) {
 }
 
 // --- POS VIEW FUNCTIONS ---
-async function fetchPendingOrders() {
+async function fetchPendingOrders(isAuto = false) {
     try {
         const response = await fetch(`${API_BASE}/get_orders.php?status=PENDING%20PAYMENT`);
         if (!response.ok) throw new Error('Failed to fetch orders');
         const data = await response.json();
+
+        // Simple check: if data length changed or we want to force update
+        // For now, always update to ensure latest data/time is shown
         allOrders = data.orders || [];
         renderPendingOrders();
-        showAlert('Orders refreshed', 'success');
+        if (!isAuto) showAlert('Orders refreshed', 'success');
     } catch (error) {
         console.error('Error fetching orders:', error);
-        showAlert('Failed to load orders', 'error');
+        if (!isAuto) showAlert('Failed to load orders', 'error');
     }
 }
 
@@ -340,21 +360,39 @@ function renderPendingOrders() {
 
     allOrders.forEach(order => {
         const card = document.createElement('div');
-        card.className = 'pending-order-card bg-white rounded-lg p-4 border-2 border-gray-200';
+        // Apply styling: Default + Selection highlight if this is the currently selected order
+        let className = 'pending-order-card bg-white rounded-lg p-4 border-2 border-gray-200 cursor-pointer transition-all hover:shadow-md';
+        if (currentPendingOrderId === order.order_id) {
+            className += ' selected ring-2 ring-[#800000] bg-red-50';
+        }
+        card.className = className;
         card.onclick = () => selectOrder(order.order_id, order);
 
         const itemsText = order.order_items.length + ' item' + (order.order_items.length !== 1 ? 's' : '');
+        // Match screenshot layout: Name prominent red, Order ID + Time gray small, Items count, Status bold
+        const timeString = new Date(order.time_placed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
         card.innerHTML = `
-            <div class="flex justify-between items-start mb-2">
-                <div>
-                    <p class="font-bold text-gray-800">#${order.pre_order_code} ${order.customer_name ? `<br><span class='text-sm text-maroon'>${order.customer_name}</span>` : ''}</p>
-                    <p class="text-xs text-gray-500">${new Date(order.time_placed).toLocaleString()}</p>
+            <div class="mb-1">
+                <h3 class="font-black text-lg text-[#800000] leading-tight uppercase truncate">
+                    ${formatCardName(order.customer_name)}
+                </h3>
+                <div class="flex items-center text-xs font-bold text-gray-500 mt-1">
+                    <span>#${order.pre_order_code}</span>
+                    <span class="mx-1">•</span>
+                    <span>${timeString}</span>
                 </div>
-                <span class="text-lg font-bold text-maroon">${formatCurrency(order.total_amount)}</span>
             </div>
-            <p class="text-xs text-gray-600">${itemsText}</p>
-            <div class="mt-2 text-xs font-bold text-gray-700 uppercase">
-                ${order.status}
+            
+            <div class="mb-3">
+                 <p class="text-xs text-gray-500 font-medium">${itemsText}</p>
+            </div>
+
+            <div class="flex justify-between items-end">
+                <span class="text-[10px] font-black text-gray-700 uppercase tracking-wide">
+                    ${order.status}
+                </span>
+                <span class="text-lg font-black text-[#800000]">${formatCurrency(order.total_amount)}</span>
             </div>
         `;
         grid.appendChild(card);
@@ -365,10 +403,21 @@ function selectOrder(orderId, order) {
     currentPendingOrderId = orderId;
     currentCart = order.order_items || [];
 
-    document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected'));
-    event.currentTarget.classList.add('selected');
+    document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected', 'ring-2', 'ring-[#800000]', 'bg-red-50'));
+    event.currentTarget.classList.add('selected', 'ring-2', 'ring-[#800000]', 'bg-red-50');
 
-    document.getElementById('order-source-label').textContent = `Order #${order.pre_order_code}`;
+    // Update Selected Order Header
+    const customerBlock = document.getElementById('selected-order-details');
+    customerBlock.innerHTML = `
+        <h3 class="font-bold text-gray-800 text-lg">Selected Order</h3>
+        <div class="mt-4">
+            <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1">CUSTOMER</p>
+            <h2 class="text-xl font-black text-[#800000] uppercase leading-tight mb-1">
+                ${formatCardName(order.customer_name) || 'WALK-IN CUSTOMER'}
+            </h2>
+            <p class="text-xs text-gray-500 font-bold font-mono">Order #${order.pre_order_code}</p>
+        </div>
+    `;
     document.getElementById('cancel-btn').disabled = false;
     document.getElementById('pay-btn').disabled = false;
 
@@ -432,7 +481,13 @@ async function processOrder() {
         currentPendingOrderId = null;
         cashInput.value = '';
         document.getElementById('change-due').textContent = '₱0.00';
-        document.getElementById('order-source-label').textContent = 'No Selection';
+
+        // Reset Header
+        document.getElementById('selected-order-details').innerHTML = `
+            <h3 class="font-bold text-gray-800 text-lg">Selected Order</h3>
+            <p class="text-xs text-gray-500 font-mono" id="order-source-label">No Selection</p>
+        `;
+
         document.getElementById('cancel-btn').disabled = true;
         document.getElementById('pay-btn').disabled = true;
         document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected'));
@@ -462,8 +517,14 @@ function confirmCancelPending() {
         currentPendingOrderId = null;
         currentCart = [];
         renderCart();
-        document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById('order-source-label').textContent = 'No Selection';
+        document.querySelectorAll('.pending-order-card').forEach(c => c.classList.remove('selected', 'ring-2', 'ring-[#800000]', 'bg-red-50'));
+
+        // Reset Header
+        document.getElementById('selected-order-details').innerHTML = `
+            <h3 class="font-bold text-gray-800 text-lg">Selected Order</h3>
+            <p class="text-xs text-gray-500 font-mono" id="order-source-label">No Selection</p>
+        `;
+
         document.getElementById('cancel-btn').disabled = true;
         document.getElementById('pay-btn').disabled = true;
         showAlert('Order cancelled', 'success');
@@ -745,3 +806,6 @@ function resetFilter() {
 
 // --- INITIALIZATION ---
 fetchPendingOrders();
+// Auto-fetch pending orders every 3 seconds to show new Kiosk orders immediately
+setInterval(() => fetchPendingOrders(true), 3000);
+

@@ -1811,3 +1811,109 @@ AVAILABLE_FIELDS: student
 2026-02-11T09:20:17+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
 =======
 >>>>>>> parent of 6655c56 (kitchen screen)
+2026-02-11T11:31:53+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"student_id":"20220120"}}
+2026-02-11T11:31:53+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-11T11:31:54+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"student_id":"20220120"}}
+2026-02-11T11:31:54+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-11T11:31:59+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"student_id":"20220120"}}
+2026-02-11T11:31:59+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-11T11:32:46+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"student_id":"20220120"}}
+2026-02-11T11:32:46+01:00 TOKEN: eyJ0eXAi...VUuJtJqk
+2026-02-11T11:32:46+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20220120",
+        "last_name": "DAUG",
+        "first_name": "JHON HURTZ",
+        "middle_name": "PALUCA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-11T11:32:46+01:00 NORMALIZED_STUDENT: {"student_id":"20220120","last_name":"DAUG","first_name":"JHON HURTZ","middle_name":"PALUCA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"JHON HURTZ PALUCA DAUG"}
+2026-02-11T11:53:09+01:00 REQUEST: {"ip":"172.16.50.253","payload":{"student_id":"20190412"}}
+2026-02-11T11:53:09+01:00 TOKEN: eyJ0eXAi...VUuJtJqk
+2026-02-11T11:53:09+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20190412",
+        "last_name": "CATIPAY",
+        "first_name": "HOGARTH CYFER",
+        "middle_name": "BUENAVENTURA ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-11T11:53:09+01:00 NORMALIZED_STUDENT: {"student_id":"20190412","last_name":"CATIPAY","first_name":"HOGARTH CYFER","middle_name":"BUENAVENTURA ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"HOGARTH CYFER BUENAVENTURA CATIPAY"}
+2026-02-12T02:19:55+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-12T02:19:55+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-12T02:19:55+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-12T02:19:55+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-12T04:02:57+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-12T04:02:57+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-12T04:03:07+01:00 ERROR: cURL error: Connection timed out after 10012 milliseconds
+
+2026-02-12T04:03:22+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-12T04:03:22+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-12T04:03:22+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-12T04:03:22+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}
+2026-02-13T03:16:49+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-13T03:16:49+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-13T03:16:49+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-13T03:16:52+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-13T03:16:52+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-13T03:16:52+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-13T03:17:23+01:00 REQUEST: {"ip":"::1","payload":{"student_id":"20211537"}}
+2026-02-13T03:17:23+01:00 TOKEN: eyJ0eXAi...-wFeP4sQ
+2026-02-13T03:17:23+01:00 API_RESPONSE_RAW: {
+    "student": {
+        "student_id": "20211537",
+        "last_name": "BANTAYANON",
+        "first_name": "EJ",
+        "middle_name": "TRUNO ",
+        "program": "BSIT",
+        "year_level": "4",
+        "department": "CCS",
+        "department_name": "College of Computer Studies"
+    }
+}
+AVAILABLE_FIELDS: student
+
+2026-02-13T03:17:23+01:00 NORMALIZED_STUDENT: {"student_id":"20211537","last_name":"BANTAYANON","first_name":"EJ","middle_name":"TRUNO ","program":"BSIT","year_level":"4","department":"CCS","department_name":"College of Computer Studies","full_name":"EJ TRUNO BANTAYANON"}

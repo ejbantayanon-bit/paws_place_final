@@ -100,7 +100,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
 
                     <div class="w-96 bg-white border-l border-gray-200 h-full flex flex-col shadow-xl">
                         <div class="p-6 border-b border-gray-200 bg-gray-50 flex justify-between items-center">
-                            <div>
+                            <div id="selected-order-details">
                                 <h3 class="font-bold text-gray-800 text-lg">Selected Order</h3>
                                 <p class="text-xs text-gray-500 font-mono" id="order-source-label">No Selection</p>
                             </div>

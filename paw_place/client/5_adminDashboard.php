@@ -11,7 +11,7 @@ if ($current_user_role !== 'Admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paws Place Admin</title>
+    <title>GrubHound Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/admin.css">
 
@@ -26,7 +26,7 @@ if ($current_user_role !== 'Admin') {
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
                     <div class="text-3xl text-maroon">🐾</div>
                     <div>
-                        <h1 class="font-black text-xl text-gray-800">PAWS PLACE</h1>
+                        <h1 class="font-black text-xl text-gray-800">GRUBHOUND</h1>
                         <p class="text-xs text-gray-500 font-bold tracking-widest">ADMIN PANEL</p>
                     </div>
                 </div>

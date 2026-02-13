@@ -29,6 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $order_source = isset($input['order_source']) ? $input['order_source'] : 'Manual_POS';
     $customer_name = isset($input['customer_name']) ? trim($input['customer_name']) : null;
+
+    // Fallback: If no customer_name in request, try to get from session (set during Kiosk login)
+    if (empty($customer_name) && isset($_SESSION['full_name'])) {
+        $customer_name = trim($_SESSION['full_name']);
+    }
     
     // Get cashier_id from session - only if user is a staff member (not KIOSK)
     // KIOSK users have student IDs which don't exist in the users table

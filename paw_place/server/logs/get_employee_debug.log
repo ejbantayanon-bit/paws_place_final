@@ -405,3 +405,24 @@
 
 =======
 >>>>>>> parent of 6655c56 (kitchen screen)
+2026-02-11T11:31:53+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"employee_id":"20220120"}}
+2026-02-11T11:31:53+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-11T11:31:55+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"employee_id":"20220120"}}
+2026-02-11T11:31:55+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-11T11:31:59+01:00 REQUEST: {"ip":"172.16.151.253","payload":{"employee_id":"20220120"}}
+2026-02-11T11:31:59+01:00 ERROR: Failed to parse grubhound config JSON
+
+2026-02-12T04:03:07+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-12T04:03:07+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-12T04:03:10+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-13T03:16:49+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T03:16:49+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-13T03:16:49+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-13T03:16:52+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T03:16:52+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
+2026-02-13T03:16:52+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+

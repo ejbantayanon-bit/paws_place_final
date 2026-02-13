@@ -30,6 +30,8 @@ let activeCategory = 'Milktea';
 let selectedItemForModal = null;
 
 document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
+// Auto-poll menu every 2 seconds to sync availability changes immediately
+setInterval(() => fetchMenuData(true), 2000);
 
 function exitKiosk() {
     // Show confirmation modal to exit to main login
@@ -60,7 +62,7 @@ function exitKiosk() {
 }
 
 // --- Data Helpers ---
-async function fetchMenuData() {
+async function fetchMenuData(isAuto = false) {
     try {
         // Load categories first so we can map category_id -> name
         const catRes = await fetch('../server/api/get_categories.php');
@@ -89,33 +91,43 @@ async function fetchMenuData() {
 
         if (data.success && data.items) {
             // Map database items to include icons and normalized category names
-            MENU = data.items.map(item => ({
-                // normalize types from API (strings -> numbers/booleans)
+            const newMenu = data.items.map(item => ({
                 item_id: Number(item.item_id),
                 name: item.name,
                 category_id: Number(item.category_id),
-                // combine Hot/Cold Coffee into single 'Coffee' category
                 category: ([1, 2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
                 base_price: parseFloat(item.base_price) || 0,
                 is_available: (item.is_available === 1 || item.is_available === '1' || item.is_available === true),
                 image_url: item.image_url || null,
-                // infer hot/cold type when not provided
                 type: inferItemType(item, categoriesMap[item.category_id]),
                 icon: getIconForCategoryName(categoriesMap[item.category_id] || ''),
-                // prefer DB modifiers when available, fallback to static mapping
                 add_ons: modifiersMap[Number(item.category_id)] || getAddOnsForCategory(item.category_id)
             }));
 
-            // Set default active category to first available
+            // SMART CHECK: If auto-polling, only re-render if availability or price actually changed
+            if (isAuto && MENU.length > 0) {
+                const currentKey = MENU.map(i => `${i.item_id}:${i.is_available}:${i.base_price}`).join('|');
+                const newKey = newMenu.map(i => `${i.item_id}:${i.is_available}:${i.base_price}`).join('|');
+                if (currentKey === newKey) {
+                    return; // Nothing changed, skip render & preserve user's category
+                }
+                // Something changed — update MENU but DO NOT reset activeCategory
+                MENU = newMenu;
+                renderMenu(MENU); // uses current activeCategory automatically
+                return;
+            }
+
+            // INITIAL LOAD: set default active category
+            MENU = newMenu;
             if (MENU.length) activeCategory = MENU[0].category;
             renderMenu(MENU);
         } else {
             console.error('Failed to load menu:', data.message);
-            alert('Error loading menu. Please refresh.');
+            if (!isAuto) alert('Error loading menu. Please refresh.');
         }
     } catch (error) {
         console.error('Error fetching menu:', error);
-        alert('Unable to connect to server. Please check your connection.');
+        if (!isAuto) alert('Unable to connect to server. Please check your connection.');
     }
 }
 
