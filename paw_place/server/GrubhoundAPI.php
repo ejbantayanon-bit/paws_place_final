@@ -30,11 +30,18 @@ class GrubhoundAPI {
      * Check if access token is expired and refresh if needed
      */
     private function ensureValidToken() {
-        $expiresAt = strtotime($this->config['expires_at']);
+        // Default to a past time if missing
+        $expiresAt = isset($this->config['expires_at']) ? strtotime($this->config['expires_at']) : 0;
         $now = time();
 
-        if ($expiresAt <= $now) { // Token is expired or expiring
-            $this->refreshToken();
+        // Refresh if expired or will expire in the next 5 minutes (300 seconds)
+        if ($expiresAt <= ($now + 300)) { 
+            try {
+                $this->refreshToken();
+            } catch (Exception $e) {
+                // Log error but attempt to proceed (maybe token is still valid for a few seconds)
+                error_log("Grubhound Token Refresh Failed: " . $e->getMessage());
+            }
         }
     }
 
@@ -80,9 +87,23 @@ class GrubhoundAPI {
             if (!$newTokenData || !isset($newTokenData['access_token'])) {
                 throw new Exception('Invalid token refresh response: ' . $response);
             }
+            
             $this->config['access_token'] = $newTokenData['access_token'];
             $this->config['refresh_token'] = $newTokenData['refresh_token'] ?? $this->config['refresh_token'];
-            $this->config['expires_at'] = $newTokenData['expires_at'];
+            
+            // Handle expiration
+            if (isset($newTokenData['expires_at'])) {
+                // If API returns explicit date string
+                $this->config['expires_at'] = $newTokenData['expires_at'];
+            } elseif (isset($newTokenData['expires_in'])) {
+                // If API returns seconds duration (OAuth2 standard)
+                // Calculate future date: now + seconds
+                $this->config['expires_at'] = date('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
+            } else {
+                // Default fallback: 2 hours from now
+                $this->config['expires_at'] = date('Y-m-d H:i:s', time() + 7200);
+            }
+
             $this->saveConfig();
         } else {
             throw new Exception('Token refresh failed (HTTP ' . $httpCode . '): ' . $response);
@@ -102,6 +123,33 @@ class GrubhoundAPI {
     public function request($endpoint, $method = 'GET', $data = null) {
         $this->ensureValidToken();
 
+        $response = $this->executeRequest($endpoint, $method, $data);
+        
+        // If 401 Unauthorized, try refreshing token once and retry
+        if ($response['http_code'] === 401) {
+            try {
+                $this->refreshToken();
+                $response = $this->executeRequest($endpoint, $method, $data);
+            } catch (Exception $e) {
+                // If refresh fails or retry fails, throw the original error or new error
+                throw new Exception('Token expired and refresh failed: ' . $e->getMessage());
+            }
+        }
+
+        if ($response['http_code'] !== 200) {
+            $errorMsg = is_array($response['body']) && isset($response['body']['message']) 
+                ? $response['body']['message'] 
+                : 'Unknown error';
+            throw new Exception('API error (HTTP ' . $response['http_code'] . '): ' . $errorMsg);
+        }
+
+        return $response['body'];
+    }
+
+    /**
+     * Internal method to execute cURL request
+     */
+    private function executeRequest($endpoint, $method, $data) {
         $url = $this->baseUrl . $endpoint;
         $headers = [
             'Authorization: Bearer ' . $this->config['access_token'],
@@ -114,7 +162,7 @@ class GrubhoundAPI {
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
             CURLOPT_TIMEOUT => 10,
-            CURLOPT_SSL_VERIFYPEER => false, // For testing - allow self-signed certs
+            CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false
         ]);
 
@@ -123,24 +171,19 @@ class GrubhoundAPI {
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
         }
 
-        $response = curl_exec($ch);
+        $rawResponse = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $error = curl_error($ch);
+        $curlError = curl_error($ch);
         curl_close($ch);
 
-        if ($error) {
-            throw new Exception('cURL error: ' . $error);
+        if ($curlError) {
+             throw new Exception('cURL error: ' . $curlError);
         }
 
-        $decodedResponse = json_decode($response, true);
-        if ($httpCode !== 200) {
-            $errorMsg = is_array($decodedResponse) && isset($decodedResponse['message']) 
-                ? $decodedResponse['message'] 
-                : 'Unknown error';
-            throw new Exception('API error (HTTP ' . $httpCode . '): ' . $errorMsg . ' | Response: ' . $response);
-        }
-
-        return $decodedResponse;
+        return [
+            'http_code' => $httpCode,
+            'body' => json_decode($rawResponse, true) ?? $rawResponse
+        ];
     }
 
     /**

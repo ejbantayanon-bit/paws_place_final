@@ -53,6 +53,16 @@ if (strtoupper($role) === 'KIOSK') {
             $_SESSION['full_name'] = $row['full_name'];
             $found = true;
             $userRow = $row;
+
+            // Log Kiosk Login (Only for Admin/Cashier)
+            if (in_array($row['role'], ['Admin', 'Cashier'])) {
+                $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'Kiosk unlocked')";
+                $logStmt = $conn->prepare($logSql);
+                $logStmt->bind_param('is', $row['user_id'], $row['role']);
+                $logStmt->execute();
+                $logStmt->close();
+            }
+
             break;
         }
     }
@@ -93,6 +103,15 @@ if ($res->num_rows === 0) {
             $_SESSION['full_name'] = $emp['full_name'] ?? ($emp['name'] ?? $username);
 
             $redirect = ($_SESSION['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
+
+            // Log API Login (Only for Admin/Cashier)
+            if (in_array($_SESSION['role'], ['Admin', 'Cashier'])) {
+                $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in via Grubhound API')";
+                $logStmt = $conn->prepare($logSql);
+                $logStmt->bind_param('is', $_SESSION['user_id'], $_SESSION['role']);
+                $logStmt->execute();
+                $logStmt->close();
+            }
 
             echo json_encode(['success' => true, 'role' => $_SESSION['role'], 'full_name' => $_SESSION['full_name'], 'user_id' => $_SESSION['user_id'], 'redirect' => $redirect]);
             $stmt->close();
@@ -154,6 +173,15 @@ $_SESSION['user_id'] = (int)$row['user_id'];
 $_SESSION['username'] = $row['username'];
 $_SESSION['role'] = $row['role'];
 $_SESSION['full_name'] = $row['full_name'];
+
+// Log Activity (Only for Admin/Cashier)
+if (in_array($row['role'], ['Admin', 'Cashier'])) {
+    $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in')";
+    $logStmt = $conn->prepare($logSql);
+    $logStmt->bind_param('is', $row['user_id'], $row['role']);
+    $logStmt->execute();
+    $logStmt->close();
+}
 
 $redirect = ($row['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
 

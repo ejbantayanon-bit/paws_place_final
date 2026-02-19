@@ -90,7 +90,7 @@ function closeModal() {
 }
 
 function formatCurrency(amount) {
-    return `₱${parseFloat(amount).toFixed(2)}`;
+    return '₱' + parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 /**

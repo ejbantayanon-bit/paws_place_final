@@ -1,63 +1,61 @@
 <?php
 session_start();
-// Allow access for staff roles or direct access
+// Optional: Add authentication check if needed
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paws Place - Kitchen Display</title>
+    <title>Preparing & Serving - Paws Place</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/preparing_serving.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/preparing_serving.css?v=<?php echo time(); ?>">
 </head>
 <body>
-
-    <!-- Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <span class="brand-icon">🐾</span>
-            <h1 class="brand-title">KITCHEN DISPLAY</h1>
-        </div>
-        <div class="top-bar-right">
-            <span class="clock" id="live-clock"></span>
-            <a href="3_index.php" class="back-link">← Staff POS</a>
-        </div>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <!-- Split Screen Container -->
-        <div class="split-container">
-            <!-- Preparing Side -->
-            <div class="section preparing-section">
-                <div class="section-header preparing-header">
-                    <h2 class="section-title">🔥 PREPARING</h2>
-                    <div class="order-count" id="preparing-count">0</div>
-                </div>
-                <div class="orders-grid" id="preparing-orders">
-                    <!-- Orders will be dynamically loaded here -->
-                </div>
-            </div>
-
-            <!-- Divider -->
-            <div class="divider"></div>
-
-            <!-- Now Serving Side -->
-            <div class="section serving-section">
-                <div class="section-header serving-header">
-                    <h2 class="section-title">✅ NOW SERVING</h2>
-                    <div class="order-count" id="serving-count">0</div>
-                </div>
-                <div class="orders-grid" id="serving-orders">
-                    <!-- Orders will be dynamically loaded here -->
-                </div>
+    <!-- Top Header Bar -->
+    <header class="bg-white p-4 flex justify-between items-center shadow-sm border-b border-gray-200 z-10 relative">
+        <div class="flex items-center gap-4">
+            <!-- Icon/Logo Area Removed -->
+            <div>
+                <h1 class="text-3xl font-black text-[#800000] tracking-tight">PAWS PLACE</h1>
+                <p class="text-gray-500 text-sm font-semibold tracking-wide uppercase">Kitchen Display System</p>
             </div>
         </div>
-    </div>
+        
+        <div class="header-right flex items-center gap-6">
+            <div id="live-clock" class="text-2xl font-bold text-gray-700 font-mono tracking-widest bg-gray-100 px-4 py-2 rounded-lg">00:00:00 PM</div>
+        </div>
+    </header>
 
-    <script src="js/preparing_serving.js"></script>
+    <!-- Main Split Layout -->
+    <main class="split-container">
+        <!-- Preparing Side -->
+        <div class="section preparing-section">
+            <div class="section-header">
+                <div class="header-left">
+                    <h2 class="title">PREPARING</h2>
+                </div>
+                <div class="count-badge" id="preparing-count">0</div>
+            </div>
+            <div class="orders-grid" id="preparing-orders">
+                <!-- Content -->
+            </div>
+        </div>
+
+        <!-- Now Serving Side -->
+        <div class="section serving-section">
+            <div class="section-header">
+                <div class="header-left">
+                    <h2 class="title">NOW SERVING</h2>
+                </div>
+                <div class="count-badge" id="serving-count">0</div>
+            </div>
+            <div class="orders-grid" id="serving-orders">
+                <!-- Content -->
+            </div>
+        </div>
+    </main>
+
+    <script src="js/preparing_serving.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

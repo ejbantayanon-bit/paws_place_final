@@ -13,6 +13,7 @@ if ($current_user_role !== 'Admin') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrubHound Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/admin.css">
 
 </head>
@@ -38,8 +39,14 @@ if ($current_user_role !== 'Admin') {
                     <button onclick="switchView('menu')" id="nav-menu" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
                         <span>🍽️</span> Menu Management
                     </button>
-                    <button onclick="switchView('inventory')" id="nav-inventory" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📦</span> Inventory & Stock
+                    <button onclick="switchView('categories')" id="nav-categories" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
+                        <span>📂</span> Categories
+                    </button>
+                    <button onclick="switchView('history')" id="nav-history" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
+                         <span>📜</span> Sales History
+                    </button>
+                    <button onclick="switchView('employees')" id="nav-employees" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
+                        <span>👥</span> Employees
                     </button>
                     <button onclick="switchView('logs')" id="nav-logs" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
                         <span>📜</span> Activity Logs
@@ -74,7 +81,7 @@ if ($current_user_role !== 'Admin') {
             <main class="flex-1 relative overflow-hidden p-8">
 
                 <!-- VIEW 1: DASHBOARD OVERVIEW -->
-                <div id="view-dashboard" class="view-section h-full flex flex-col gap-8 custom-scroll">
+                <div id="view-dashboard" class="view-section h-full flex flex-col gap-8 overflow-y-auto custom-scroll pb-20">
                     <!-- Stats Row -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="stat-card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
@@ -85,14 +92,35 @@ if ($current_user_role !== 'Admin') {
                             <p class="text-xs font-bold text-gray-400 uppercase">Total Orders</p>
                             <p class="text-3xl font-black text-gray-800 mt-1" id="stat-orders">0</p>
                         </div>
-                        <div class="stat-card bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-                            <p class="text-xs font-bold text-gray-400 uppercase">Low Stock Alerts</p>
-                            <p class="text-3xl font-black text-red-600 mt-1" id="stat-low-stock">0</p>
+                    </div>
+
+                    <!-- Charts Row -->
+                    <div class="grid grid-cols-1 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 relative min-h-[400px]">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-gray-800">Sales Trend</h3>
+                                <div class="flex gap-2">
+                                    <select id="sales-range" onchange="loadAnalytics()" class="text-xs border-gray-300 rounded-md shadow-sm focus:border-maroon focus:ring focus:ring-maroon focus:ring-opacity-50 p-1">
+                                        <option value="7days">Last 7 Days</option>
+                                        <option value="30days">Last 30 Days</option>
+                                        <option value="1year">Last 12 Months</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="h-[300px]">
+                                <canvas id="salesChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200 min-h-[400px]">
+                            <h3 class="font-bold text-gray-800 mb-4">Top 5 Selling Items</h3>
+                            <div class="h-[300px]">
+                                <canvas id="topItemsChart"></canvas>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Recent Sales Table -->
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 w-full mb-6">
                         <div class="p-6 border-b border-gray-200">
                             <h3 class="font-bold text-lg text-gray-800">Recent Transactions</h3>
                         </div>
@@ -125,58 +153,148 @@ if ($current_user_role !== 'Admin') {
                     <div id="menu-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 custom-scroll flex-1"></div>
                 </div>
 
-                <!-- VIEW 3: INVENTORY MANAGEMENT -->
-                <div id="view-inventory" class="view-section h-full hidden flex flex-col gap-6">
+                <!-- VIEW 3: CATEGORY MANAGEMENT -->
+                <div id="view-categories" class="view-section h-full hidden flex flex-col gap-6">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xl text-gray-800">Raw Materials Stock</h3>
-                        <button onclick="openAdjustInventoryModal()" class="px-4 py-2 bg-maroon text-white rounded-lg font-bold text-sm hover:bg-red-900">
-                            ⚙️ Adjust Stock
+                        <h3 class="font-bold text-xl text-gray-800">Category Management</h3>
+                        <button onclick="openAddCategoryModal()" class="px-4 py-2 bg-maroon text-white rounded-lg font-bold text-sm hover:bg-red-900">
+                            + Add Category
                         </button>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 overflow-hidden flex flex-col">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
                         <div class="flex-1 overflow-y-auto">
                             <table class="w-full text-sm text-gray-700 border-collapse">
                                 <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-xs sticky top-0">
                                     <tr>
-                                        <th class="p-4 text-left border-b">Material</th>
-                                        <th class="p-4 text-left border-b">Stock</th>
-                                        <th class="p-4 text-left border-b">Unit</th>
-                                        <th class="p-4 text-left border-b">Status</th>
+                                        <th class="p-4 text-left border-b w-20">ID</th>
+                                        <th class="p-4 text-left border-b">Category Name</th>
+                                        <th class="p-4 text-center border-b w-32">Status</th>
+                                        <th class="p-4 text-center border-b w-40">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody id="inventory-table" class="bg-gray-50"></tbody>
+                                <tbody id="categories-body" class="bg-white divide-y divide-gray-100"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
 
-                <!-- VIEW 4: ACTIVITY LOGS -->
+                <!-- VIEW 4: SALES HISTORY -->
+                <div id="view-history" class="view-section h-full hidden flex flex-col gap-6">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xl text-gray-800">Sales History</h3>
+                    </div>
+
+                    <!-- Filter Bar (Staff POS Style) -->
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-200 flex flex-wrap gap-3">
+                        <div class="flex gap-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Date From:</label>
+                            <input type="date" id="history-date-from" class="p-2 border rounded text-sm">
+                        </div>
+                        <div class="flex gap-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Date To:</label>
+                            <input type="date" id="history-date-to" class="p-2 border rounded text-sm">
+                        </div>
+                        <div class="flex gap-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase flex items-center">Status:</label>
+                            <select id="history-status" class="p-2 border rounded text-sm">
+                                <option value="">All Status</option>
+                                <option value="SERVED">Served</option>
+                                <option value="PREPARING">Preparing</option>
+                                <option value="READY">Ready</option>
+                                <option value="CANCELLED">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="flex gap-2 flex-1">
+                            <input type="text" id="history-search" placeholder="Search Product..." class="p-2 border rounded text-sm flex-1">
+                            <button onclick="filterHistory()" class="px-3 py-1 bg-maroon text-white rounded font-bold text-sm">Filter</button>
+                            <button onclick="resetFilter()" class="px-3 py-1 bg-gray-400 text-white rounded font-bold text-sm hover:bg-gray-500">Reset</button>
+                            
+                            <!-- Download Button Integrated -->
+                             <button onclick="openExportModal()" class="px-3 py-1 bg-green-600 text-white rounded font-bold text-sm hover:bg-green-700 flex items-center gap-1 ml-auto">
+                                <span>📥</span> Download
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
+                        <div class="flex-1 overflow-y-auto">
+                            <table class="w-full text-sm text-gray-700 border-collapse">
+                                <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-xs sticky top-0">
+                                    <tr>
+                                        <th class="p-4 text-left border-b">Order ID</th>
+                                        <th class="p-4 text-left border-b">Date/Time</th>
+                                        <th class="p-4 text-left border-b">Type</th>
+                                        <th class="p-4 text-left border-b w-1/3">Items</th>
+                                        <th class="p-4 text-right border-b">Total</th>
+                                        <th class="p-4 text-center border-b">Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="history-table-body" class="bg-white divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Pagination Controls -->
+                        <div class="p-4 border-t border-gray-100 flex justify-center items-center gap-2 bg-gray-50">
+                            <button onclick="previousPage()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-bold text-maroon disabled:opacity-50" id="prev-btn">← Previous</button>
+                            <div id="pagination-numbers" class="flex gap-1"></div>
+                            <button onclick="nextPage()" class="px-3 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 font-bold text-maroon disabled:opacity-50" id="next-btn">Next →</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: EMPLOYEE MANAGEMENT -->
+                <div id="view-employees" class="view-section h-full hidden flex flex-col gap-6">
+                     <div class="flex justify-between items-center">
+                        <h3 class="font-bold text-xl text-gray-800">Employee Management</h3>
+                        <button onclick="openAddUserModal()" class="px-4 py-2 bg-maroon text-white rounded-lg font-bold text-sm hover:bg-red-900">
+                            + Add Employee
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
+                        <div class="flex-1 overflow-y-auto">
+                            <table class="w-full text-sm text-gray-700 border-collapse">
+                                <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-xs sticky top-0">
+                                    <tr>
+                                        <th class="p-4 text-left border-b">Full Name</th>
+                                        <th class="p-4 text-left border-b">Username</th>
+                                        <th class="p-4 text-center border-b">Role</th>
+                                        <th class="p-4 text-center border-b">Created At</th>
+                                        <th class="p-4 text-center border-b">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employees-body" class="bg-white divide-y divide-gray-100"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: ACTIVITY LOGS -->
                 <div id="view-logs" class="view-section h-full hidden flex flex-col gap-6">
                     <div class="flex justify-between items-center">
-                        <h3 class="font-bold text-xl text-gray-800">Inventory Logs</h3>
-                        <button onclick="loadActivityLogs()" class="px-2 py-1 text-sm text-maroon font-bold hover:underline">
-                            ⟳ Refresh
-                        </button>
+                        <h3 class="font-bold text-xl text-gray-800">System Activity Logs</h3>
                     </div>
 
-                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 overflow-hidden flex flex-col">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 flex-1 flex flex-col overflow-hidden">
                         <div class="flex-1 overflow-y-auto">
                             <table class="w-full text-sm text-gray-700 border-collapse">
                                 <thead class="bg-gray-100 text-gray-600 font-bold uppercase text-xs sticky top-0">
                                     <tr>
-                                        <th class="p-4 text-left border-b">Timestamp</th>
-                                        <th class="p-4 text-left border-b">Material</th>
-                                        <th class="p-4 text-left border-b">Change</th>
-                                        <th class="p-4 text-left border-b">New Stock</th>
-                                        <th class="p-4 text-left border-b">Reason</th>
+                                        <th class="p-4 text-left border-b">Request ID</th>
+                                        <th class="p-4 text-left border-b">User</th>
+                                        <th class="p-4 text-center border-b">Action Type</th>
+                                        <th class="p-4 text-left border-b">Description</th>
+                                        <th class="p-4 text-left border-b">Date</th>
                                     </tr>
                                 </thead>
-                                <tbody id="logs-table" class="bg-gray-50"></tbody>
+                                <tbody id="logs-body" class="bg-white divide-y divide-gray-100"></tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
+
 
             </main>
         </div>

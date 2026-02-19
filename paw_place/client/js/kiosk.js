@@ -61,6 +61,11 @@ function exitKiosk() {
     };
 }
 
+// --- CURRENCY FORMATTER ---
+function formatCurrency(amount) {
+    return '₱' + parseFloat(amount).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
 // --- Data Helpers ---
 async function fetchMenuData(isAuto = false) {
     try {
@@ -271,7 +276,7 @@ function createItemCard(item) {
         <div class="text-5xl mb-2 group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
         <div class="text-center w-full">
             <p class="text-sm font-bold text-gray-800 truncate">${item.name}</p>
-            <p class="text-lg font-black text-[#800000]">₱${item.base_price.toFixed(2)}</p>
+            <p class="text-lg font-black text-[#800000]">${formatCurrency(item.base_price)}</p>
         </div>
         ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">UNAVAILABLE</div>' : ''}
     `;
@@ -296,7 +301,7 @@ function openItemModal(item) {
                                 <input type="checkbox" value="${addon}" class="addon-checkbox form-checkbox h-5 w-5 text-maroon rounded border-gray-300 focus:ring-maroon">
                                 <span class="text-gray-800 text-sm font-semibold ml-3">${addon}</span>
                             </div>
-                            <span class="text-xs font-bold text-gray-500">+₱${ADDON_PRICES[addon].toFixed(2)}</span>
+                            <span class="text-xs font-bold text-gray-500">+${formatCurrency(ADDON_PRICES[addon])}</span>
                         </label>
                     `).join('')}
                 </div>
@@ -310,7 +315,7 @@ function openItemModal(item) {
         <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up flex flex-col items-center">
             <div class="text-6xl mb-2">${item.icon}</div>
             <h2 class="text-2xl font-black text-gray-800 mb-1">${item.name}</h2>
-            <p class="text-lg font-bold text-[#800000] mb-6">₱${item.base_price.toFixed(2)}</p>
+            <p class="text-lg font-bold text-[#800000] mb-6">${formatCurrency(item.base_price)}</p>
             
             ${addonsHTML}
 
@@ -402,7 +407,7 @@ function renderCart() {
                 <div class="flex-grow">
                     <p class="font-bold text-gray-800 text-sm">${item.name}</p>
                     ${addonsText}
-                    <p class="text-xs text-[#800000] font-bold mt-1">₱${item.final_price.toFixed(2)}</p>
+                    <p class="text-xs text-[#800000] font-bold mt-1">${formatCurrency(item.final_price)}</p>
                 </div>
                 <div class="flex items-center space-x-2">
                     <div class="flex items-center bg-gray-100 rounded-lg p-1 mr-2">
@@ -422,8 +427,8 @@ function renderCart() {
         btn.disabled = false;
     }
 
-    subtotalEl.textContent = `₱${total.toFixed(2)}`;
-    totalEl.textContent = `₱${total.toFixed(2)}`;
+    subtotalEl.textContent = formatCurrency(total);
+    totalEl.textContent = formatCurrency(total);
 }
 
 // --- Order Processing ---
@@ -441,7 +446,7 @@ function promptConfirmOrder() {
                 </div>
                 ${item.modifiers.length ? `<span class="text-xs text-gray-400 ml-8">+ ${item.modifiers.join(', ')}</span>` : ''}
             </div>
-            <span class="font-semibold text-gray-800">₱${(item.final_price * item.quantity).toFixed(2)}</span>
+            <span class="font-semibold text-gray-800">${formatCurrency(item.final_price * item.quantity)}</span>
         </li>
     `).join('');
 
@@ -456,7 +461,7 @@ function promptConfirmOrder() {
                 <ul class="mb-4 space-y-1">${cartItemsHTML}</ul>
                 <div class="flex justify-between items-center border-t border-gray-200 pt-4 mt-2">
                     <span class="text-gray-500 font-medium">Total Amount</span>
-                    <span class="font-black text-3xl text-[#800000]">₱${total.toFixed(2)}</span>
+                    <span class="font-black text-3xl text-[#800000]">${formatCurrency(total)}</span>
                 </div>
             </div>
             
@@ -517,7 +522,7 @@ function showOrderSuccess(code, total) {
             </div>
             <div class="text-center mb-6">
                 <span class="font-bold text-gray-600">Total Due: </span>
-                <span class="font-black text-xl text-[#800000]">₱${total.toFixed(2)}</span>
+                <span class="font-black text-xl text-[#800000]">${formatCurrency(total)}</span>
             </div>
             <button onclick="hideOrderConfirmation()" class="w-full py-4 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-900 transition shadow-lg">Start New Order</button>
         </div>
@@ -576,14 +581,14 @@ async function openOrderHistory() {
                 `;
 
                 order.items.forEach(item => {
-                    html += `<p class="text-sm text-gray-700"><span class="font-semibold">${item.quantity}x</span> ${item.name} - ₱${parseFloat(item.price_at_sale).toFixed(2)}</p>`;
+                    html += `<p class="text-sm text-gray-700"><span class="font-semibold">${item.quantity}x</span> ${item.name} - ${formatCurrency(item.price_at_sale)}</p>`;
                 });
 
                 html += `
                         </div>
                         <div class="flex justify-between items-center">
                             <p class="text-sm text-gray-600">Total:</p>
-                            <p class="font-bold text-lg text-[#800000]">₱${parseFloat(order.total_amount).toFixed(2)}</p>
+                            <p class="font-bold text-lg text-[#800000]">${formatCurrency(order.total_amount)}</p>
                         </div>
                     </div>
                 `;

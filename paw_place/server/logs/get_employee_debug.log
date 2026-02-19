@@ -426,3 +426,43 @@
 2026-02-13T03:16:52+01:00 TOKEN: eyJ0eXAi...PwYwdXxU
 2026-02-13T03:16:52+01:00 ERROR: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
 
+2026-02-13T07:09:42+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T07:09:42+01:00 TOKEN: eyJ0eXAi...9jmvq_B4
+2026-02-13T07:09:43+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-13T07:10:17+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T07:10:17+01:00 TOKEN: eyJ0eXAi...9jmvq_B4
+2026-02-13T07:10:17+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-13T07:10:26+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T07:10:26+01:00 TOKEN: eyJ0eXAi...9jmvq_B4
+2026-02-13T07:10:27+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-13T07:10:29+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-13T07:10:29+01:00 TOKEN: eyJ0eXAi...9jmvq_B4
+2026-02-13T07:10:30+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-16T06:05:35+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-16T06:05:35+01:00 TOKEN: eyJ0eXAi...1JBTmm5E
+2026-02-16T06:05:36+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-16T06:05:39+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-16T06:05:39+01:00 TOKEN: eyJ0eXAi...1JBTmm5E
+2026-02-16T06:05:40+01:00 ERROR: API error (HTTP 401): Unknown error | Response: {"error":"Expired token"}
+
+2026-02-16T08:46:18+01:00 REQUEST: {"ip":"172.16.59.30","payload":{"employee_id":"20211537"}}
+2026-02-16T08:46:18+01:00 TOKEN: eyJ0eXAi...XHlJkwdg
+2026-02-16T08:46:18+01:00 ERROR: Token expired and refresh failed: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-16T08:46:33+01:00 REQUEST: {"ip":"172.16.59.30","payload":{"employee_id":"20211537"}}
+2026-02-16T08:46:33+01:00 TOKEN: eyJ0eXAi...XHlJkwdg
+2026-02-16T08:46:33+01:00 ERROR: Token expired and refresh failed: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-18T06:17:18+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-18T06:17:18+01:00 TOKEN: eyJ0eXAi..._1-etqAY
+2026-02-18T06:17:19+01:00 ERROR: Token expired and refresh failed: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
+2026-02-19T03:10:26+01:00 REQUEST: {"ip":"::1","payload":{"employee_id":"20211537"}}
+2026-02-19T03:10:26+01:00 TOKEN: eyJ0eXAi...7eLMnBYk
+2026-02-19T03:10:27+01:00 ERROR: Token expired and refresh failed: Token refresh failed (HTTP 401): {"status":401,"error":401,"messages":{"error":"Unauthorized"}}
+
