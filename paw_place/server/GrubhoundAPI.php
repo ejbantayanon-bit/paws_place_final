@@ -1,6 +1,6 @@
 <?php
 /**
- * Grubhound API Client
+ * GrabHound API Client
  * Handles token management and API requests to Foundation University MIS
  */
 
@@ -18,7 +18,7 @@ class GrubhoundAPI {
      */
     private function loadConfig() {
         if (!file_exists($this->configPath)) {
-            throw new Exception('Grubhound config file not found: ' . $this->configPath);
+            throw new Exception('GrabHound config file not found: ' . $this->configPath);
         }
         $this->config = json_decode(file_get_contents($this->configPath), true);
         if (!$this->config) {
@@ -118,7 +118,7 @@ class GrubhoundAPI {
     }
 
     /**
-     * Make API request to Grubhound
+     * Make API request to GrabHound
      */
     public function request($endpoint, $method = 'GET', $data = null) {
         $this->ensureValidToken();

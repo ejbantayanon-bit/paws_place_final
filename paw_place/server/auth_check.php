@@ -2,7 +2,7 @@
 // Include to protect pages. Usage: include '../server/auth_check.php';
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../client/1_login.php');
+    header('Location: ../client/staff_login.php');
     exit;
 }
 // Provide convenient globals

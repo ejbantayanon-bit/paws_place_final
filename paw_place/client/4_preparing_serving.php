@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Preparing & Serving - Paws Place</title>
+    <title>Preparing & Serving - GrabHound</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/preparing_serving.css?v=<?php echo time(); ?>">
 </head>
@@ -17,7 +17,7 @@ session_start();
         <div class="flex items-center gap-4">
             <!-- Icon/Logo Area Removed -->
             <div>
-                <h1 class="text-3xl font-black text-[#800000] tracking-tight">PAWS PLACE</h1>
+                <h1 class="text-3xl font-black text-[#800000] tracking-tight">GRABHOUND</h1>
                 <p class="text-gray-500 text-sm font-semibold tracking-wide uppercase">Kitchen Display System</p>
             </div>
         </div>

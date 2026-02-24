@@ -1,5 +1,5 @@
 <?php
-// Simple authentication endpoint for Paws Place
+// Simple authentication endpoint for GrabHound
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 
@@ -106,7 +106,7 @@ if ($res->num_rows === 0) {
 
             // Log API Login (Only for Admin/Cashier)
             if (in_array($_SESSION['role'], ['Admin', 'Cashier'])) {
-                $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in via Grubhound API')";
+                $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in via GrabHound API')";
                 $logStmt = $conn->prepare($logSql);
                 $logStmt->bind_param('is', $_SESSION['user_id'], $_SESSION['role']);
                 $logStmt->execute();

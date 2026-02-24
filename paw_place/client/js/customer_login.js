@@ -1,279 +1,159 @@
-let selectedMode = '';
 let verifiedUser = null;
-let kioskLookupTimeout = null;
 
-// Initialize event listener
 document.addEventListener('DOMContentLoaded', () => {
-    const idLoginForm = document.getElementById('id-login-form');
-    if (idLoginForm) idLoginForm.addEventListener('submit', submitIdLogin);
+    const loginForm = document.getElementById('student-login-form');
+    if (loginForm) loginForm.addEventListener('submit', handleStudentLogin);
 
-    const guestForm = document.getElementById('guest-form');
-    if (guestForm) guestForm.addEventListener('submit', handleGuestSubmit);
-
-    // Kiosk ID input listener - reset verification if ID changes
-    const kioskIdInput = document.getElementById('kiosk-id-number');
-    if (kioskIdInput) {
-        kioskIdInput.addEventListener('input', () => {
+    // Reset verification if ID changes
+    const idInput = document.getElementById('student-id');
+    if (idInput) {
+        idInput.addEventListener('input', () => {
             verifiedUser = null;
             document.getElementById('id-info-group').classList.add('hidden');
-            document.getElementById('id-login-btn').style.display = 'none';
-            document.getElementById('verify-id-btn').style.display = 'block';
+            document.getElementById('start-ordering-btn').classList.add('hidden');
+            const loginBtn = document.getElementById('login-btn');
+            loginBtn.classList.remove('hidden');
+            loginBtn.disabled = false;
+            loginBtn.textContent = 'AUTHENTICATE';
         });
     }
 });
 
-function handleModeSelect(mode) {
-    selectedMode = mode;
-    verifiedUser = null;
-
-    document.getElementById('mode-selection').classList.add('hidden');
-
-    if (mode === 'ID_LOGIN') {
-        document.getElementById('id-login-container').classList.remove('hidden');
-        document.getElementById('guest-form-container').classList.add('hidden');
-        document.getElementById('kiosk-id-number').focus();
-    } else {
-        document.getElementById('id-login-container').classList.add('hidden');
-        document.getElementById('guest-form-container').classList.remove('hidden');
-        document.getElementById('guest-name').focus();
-    }
+function toggleHelpdeskBox() {
+    const box = document.getElementById('helpdesk-box');
+    if (box) box.classList.toggle('hidden');
 }
 
-function resetModeSelection() {
-    selectedMode = '';
-    verifiedUser = null;
-    document.getElementById('mode-selection').classList.remove('hidden');
-    document.getElementById('id-login-container').classList.add('hidden');
-    document.getElementById('guest-form-container').classList.add('hidden');
+async function handleStudentLogin(event) {
+    event.preventDefault();
 
-    document.getElementById('id-login-form').reset();
-    document.getElementById('guest-form').reset();
-
-    document.getElementById('id-info-group').classList.add('hidden');
-    document.getElementById('id-login-btn').style.display = 'none';
-}
-
-async function handleKioskIdLookup() {
-    const idNumber = document.getElementById('kiosk-id-number').value.trim();
+    const studentId = document.getElementById('student-id').value.trim();
+    const loginBtn = document.getElementById('login-btn');
     const infoGroup = document.getElementById('id-info-group');
     const nameDisplay = document.getElementById('id-name-display');
     const deptDisplay = document.getElementById('id-department-display');
     const typeBadge = document.getElementById('id-type-badge');
-    const loginBtn = document.getElementById('id-login-btn');
-    const verifyBtn = document.getElementById('verify-id-btn');
+    const startBtn = document.getElementById('start-ordering-btn');
 
-    if (!idNumber) {
-        alertUser('Please enter an ID number', 'error');
+    if (!studentId) {
+        alertUser('Please enter your ID Number', 'error');
         return;
     }
 
-    verifyBtn.disabled = true;
-    verifyBtn.textContent = 'Verifying...';
-
-    // Reset styling
-    infoGroup.className = 'hidden border-2 rounded-lg p-4 text-center';
-    nameDisplay.className = 'text-lg font-bold mb-2';
-    deptDisplay.className = 'font-semibold';
+    loginBtn.disabled = true;
+    loginBtn.textContent = 'VERIFYING...';
 
     try {
         // 1. Try Student Lookup First
         let response = await fetch('../server/api/get_student.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ student_id: idNumber })
+            body: JSON.stringify({ student_id: studentId })
         });
 
-        let data = await response.json();
+        let data = null;
+        try { data = await response.json(); } catch (e) { console.error('Student API parse error:', e); }
+        console.log('Student API response:', data);
 
-        if (data.success && data.student) {
-            // Student Found
-            const name = data.student.name || data.student.full_name || 'Unknown Student';
-            const dept = data.student.department || 'No Department';
+        if (data && data.success && data.student) {
+            const student = data.student;
+            const name = student.full_name || student.name || 'Student';
+            const dept = student.department || student.department_name || student.program || 'No Department';
 
-            verifiedUser = {
-                id: idNumber,
-                name: name,
-                department: dept,
-                role: 'STUDENT',
-                data: data.student
-            };
+            verifiedUser = { id: studentId, name, department: dept, role: 'STUDENT' };
 
-            // Apply Student Styling (Blue)
             infoGroup.className = 'bg-blue-50 border-2 border-blue-300 rounded-lg p-4 text-center';
-            nameDisplay.className = 'text-lg font-bold text-blue-700 mb-2';
+            nameDisplay.className = 'text-lg font-bold text-blue-700 mb-1';
             deptDisplay.className = 'text-blue-700 font-semibold';
             typeBadge.className = 'mt-2 text-xs font-bold uppercase tracking-widest px-2 py-1 rounded inline-block bg-blue-200 text-blue-800';
             typeBadge.textContent = 'STUDENT';
-
             nameDisplay.textContent = name;
             deptDisplay.textContent = dept;
-            infoGroup.classList.remove('hidden');
 
-            verifyBtn.style.display = 'none';
-            loginBtn.style.display = 'block';
-            loginBtn.focus();
-
+            loginBtn.classList.add('hidden');
+            startBtn.classList.remove('hidden');
             alertUser(`Student Verified: ${name}`, 'success');
             return;
         }
 
-        // 2. Try Employee Lookup Second (if student failed)
+        // 2. Try Employee Lookup Second
         response = await fetch('../server/api/get_employee.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ employee_id: idNumber })
+            body: JSON.stringify({ employee_id: studentId })
         });
 
-        data = await response.json();
+        data = null;
+        try { data = await response.json(); } catch (e) { console.error('Employee API parse error:', e); }
+        console.log('Employee API response:', data);
 
-        if (data.success && data.employee) {
-            // Employee Found
-            const name = data.employee.name || data.employee.full_name || 'Unknown Employee';
-            const dept = data.employee.department || 'No Department';
+        if (data && data.success && data.employee) {
+            const employee = data.employee;
+            const name = employee.full_name || employee.name || 'Employee';
+            const dept = employee.department || employee.department_name || 'No Department';
 
-            verifiedUser = {
-                id: idNumber,
-                name: name,
-                department: dept,
-                role: 'EMPLOYEE',
-                data: data.employee
-            };
+            verifiedUser = { id: studentId, name, department: dept, role: 'EMPLOYEE' };
 
-            // Apply Employee Styling (Orange)
             infoGroup.className = 'bg-orange-50 border-2 border-orange-300 rounded-lg p-4 text-center';
-            nameDisplay.className = 'text-lg font-bold text-orange-700 mb-2';
+            nameDisplay.className = 'text-lg font-bold text-orange-700 mb-1';
             deptDisplay.className = 'text-orange-700 font-semibold';
             typeBadge.className = 'mt-2 text-xs font-bold uppercase tracking-widest px-2 py-1 rounded inline-block bg-orange-200 text-orange-800';
             typeBadge.textContent = 'EMPLOYEE';
-
             nameDisplay.textContent = name;
             deptDisplay.textContent = dept;
-            infoGroup.classList.remove('hidden');
 
-            verifyBtn.style.display = 'none';
-            loginBtn.style.display = 'block';
-            loginBtn.focus();
-
+            loginBtn.classList.add('hidden');
+            startBtn.classList.remove('hidden');
             alertUser(`Employee Verified: ${name}`, 'success');
             return;
         }
 
-        // If we get here, neither was found
-        verifiedUser = null;
+        // Both failed
+        const errorMsg = (data && data.message) ? data.message : 'ID not found. Please check your ID Number.';
         infoGroup.classList.add('hidden');
-        loginBtn.style.display = 'none';
-        verifyBtn.style.display = 'block';
-        verifyBtn.disabled = false;
-        verifyBtn.textContent = 'VERIFY ID';
-        alertUser('ID Number not found (Student or Employee)', 'error');
-
+        startBtn.classList.add('hidden');
+        alertUser(errorMsg, 'error');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'AUTHENTICATE';
     } catch (error) {
-        console.error('Error looking up ID:', error);
-        verifiedUser = null;
-        infoGroup.classList.add('hidden');
-        loginBtn.style.display = 'none';
-        verifyBtn.style.display = 'block';
-        verifyBtn.disabled = false;
-        verifyBtn.textContent = 'VERIFY ID';
-        alertUser('Failed to verify ID', 'error');
+        console.error('Login error:', error);
+        alertUser('Failed to connect to server. Please try again.', 'error');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'AUTHENTICATE';
     }
 }
 
-function submitIdLogin(event) {
-    event.preventDefault();
-
+function proceedToKiosk() {
     if (!verifiedUser) {
         alertUser('Please verify your ID first', 'error');
         return;
     }
 
-    const loginBtn = document.getElementById('id-login-btn');
-    loginBtn.disabled = true;
-    loginBtn.textContent = 'Starting...';
+    const startBtn = document.getElementById('start-ordering-btn');
+    startBtn.disabled = true;
+    startBtn.textContent = 'LOADING...';
 
-    // Create hidden form to submit and set session
     const form = document.createElement('form');
     form.method = 'POST';
     form.action = '../server/api/set_kiosk_session.php';
 
-    const nameInput = document.createElement('input');
-    nameInput.type = 'hidden';
-    nameInput.name = 'full_name';
-    nameInput.value = verifiedUser.name;
+    const inputs = {
+        'full_name': verifiedUser.name,
+        'user_id': verifiedUser.id,
+        'department': verifiedUser.department
+    };
 
-    const idInput = document.createElement('input');
-    idInput.type = 'hidden';
-    idInput.name = 'user_id';
-    idInput.value = verifiedUser.id;
-
-    const deptInput = document.createElement('input');
-    deptInput.type = 'hidden';
-    deptInput.name = 'department';
-    deptInput.value = verifiedUser.department;
-
-    // If it's an employee, we might want to track that role if specific logic is needed later
-    // For now we treat both as generic KIOSK users in session, but we can pass the specific role if needed
-    if (verifiedUser.role === 'EMPLOYEE') {
-        const roleInput = document.createElement('input');
-        roleInput.type = 'hidden';
-        roleInput.name = 'user_specific_role';
-        roleInput.value = 'EMPLOYEE';
-        form.appendChild(roleInput);
+    for (const [key, value] of Object.entries(inputs)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
     }
 
-    form.appendChild(nameInput);
-    form.appendChild(idInput);
-    form.appendChild(deptInput);
     document.body.appendChild(form);
-
     alertUser(`Welcome, ${verifiedUser.name}!`, 'success');
-    setTimeout(() => {
-        form.submit();
-    }, 400);
-}
-
-function handleGuestSubmit(event) {
-    event.preventDefault();
-
-    const guestName = document.getElementById('guest-name').value.trim();
-    if (!guestName) {
-        alertUser('Please enter your name', 'error');
-        return;
-    }
-
-    const loginButton = document.getElementById('guest-login-btn');
-    loginButton.disabled = true;
-    loginButton.textContent = 'Starting...';
-
-    // Create hidden form to submit and set session
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '../server/api/set_kiosk_session.php';
-
-    const nameInput = document.createElement('input');
-    nameInput.type = 'hidden';
-    nameInput.name = 'full_name';
-    nameInput.value = guestName;
-
-    const idInput = document.createElement('input');
-    idInput.type = 'hidden';
-    idInput.name = 'user_id';
-    idInput.value = 'GUEST';
-
-    const deptInput = document.createElement('input');
-    deptInput.type = 'hidden';
-    deptInput.name = 'department';
-    deptInput.value = 'Guest';
-
-    form.appendChild(nameInput);
-    form.appendChild(idInput);
-    form.appendChild(deptInput);
-    document.body.appendChild(form);
-
-    alertUser(`Welcome, ${guestName}!`, 'success');
-    setTimeout(() => {
-        form.submit();
-    }, 400);
+    setTimeout(() => { form.submit(); }, 500);
 }
 
 function alertUser(message, type = 'info') {
@@ -286,3 +166,4 @@ function alertUser(message, type = 'info') {
     container.appendChild(alert);
     setTimeout(() => alert.remove(), 3000);
 }
+

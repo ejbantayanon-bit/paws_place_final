@@ -11,7 +11,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paws Place - Staff Login</title>
+    <title>GrabHound - Staff Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/login.css">
 </head>
@@ -27,7 +27,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
                     <div class="absolute inset-0 bg-gradient-to-b from-transparent via-black/20 to-black/40 pointer-events-none"></div>
                     <div class="absolute inset-0 flex flex-col items-center justify-center text-center px-8">
                         <h1 class="text-5xl font-black text-white mb-2 drop-shadow-lg tracking-wider">FOUNDATION UNIVERSITY</h1>
-                        <p class="text-2xl font-light text-white/90 tracking-wide">Paws Place Management System</p>
+                        <p class="text-2xl font-light text-white/90 tracking-wide">GrabHound Management System</p>
                     </div>
                 </div>
             </div>
@@ -73,7 +73,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
                 <button onclick="resetSelection()" class="w-full mt-6 py-2 text-xs font-bold text-gray-400 hover:text-maroon transition uppercase tracking-widest">← Return to Selection</button>
             </div>
             
-            <button onclick="window.location.href='1_login.php'" class="w-full mt-8 py-2 text-xs font-bold text-gray-400 hover:text-gray-600 transition uppercase tracking-widest">← Back to Main Menu</button>
+            <!-- Back to Main Menu removed -->
             
             <p class="text-center text-[10px] text-gray-300 mt-8 w-full max-w-xs uppercase tracking-widest">
                 Authorized Personnel Only

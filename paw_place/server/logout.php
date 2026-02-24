@@ -34,6 +34,11 @@ if (ini_get("session.use_cookies")) {
 }
 session_destroy();
 // Redirect back to login
-header('Location: ../client/1_login.php');
+// Redirect back to appropriate login page
+if (isset($role) && $role === 'KIOSK') {
+    header('Location: ../client/customer_login.php');
+} else {
+    header('Location: ../client/staff_login.php');
+}
 exit;
 ?>

@@ -7,7 +7,7 @@ $_SESSION['full_name'] = $_POST['full_name'] ?? 'Customer';
 $_SESSION['user_id'] = $_POST['user_id'] ?? null;
 $_SESSION['department'] = $_POST['department'] ?? null;
 
-// Redirect to kiosk ordering page
-header('Location: ../../client/2_kiosk_ordering.php');
+// Redirect to store selection page
+header('Location: ../../client/store_selection.php');
 exit;
 ?>

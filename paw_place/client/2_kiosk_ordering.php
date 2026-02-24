@@ -3,7 +3,7 @@ session_start();
 
 // Allow access if staff unlocked kiosk OR customer using kiosk
 if (!isset($_SESSION['role'])) {
-    header('Location: 1_login.php');
+    header('Location: customer_login.php');
     exit;
 }
 
@@ -25,7 +25,7 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     
-    <title>Paws Place Self-Service Kiosk</title>
+    <title>GrabHound Self-Service Kiosk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/kiosk.css">
 </head>
@@ -60,7 +60,7 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
                         </svg>
                     </button>
                     <div>
-                        <h1 class="text-3xl font-black text-[#800000]">PAWS PLACE</h1>
+                        <h1 class="text-3xl font-black text-[#800000]">GRABHOUND</h1>
                         <?php if ($isKiosk): ?>
                             <p class="text-[#800000] mt-1 text-sm font-semibold">Welcome, <?php echo htmlspecialchars($userName); ?>! 🐾</p>
                         <?php endif; ?>

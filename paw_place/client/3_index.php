@@ -2,7 +2,7 @@
 include __DIR__ . '/../server/auth_check.php';
 // Only Admin and Cashier allowed to access POS
 if (!in_array($current_user_role, ['Admin','Cashier'])) {
-    header('Location: ../client/1_login.php');
+    header('Location: staff_login.php');
     exit;
 }
 ?>
@@ -11,7 +11,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paws Place Staff POS</title>
+    <title>GrabHound Staff POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/pos.css">
 
@@ -27,7 +27,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
                     <div class="text-3xl text-maroon">🐾</div>
                     <div>
-                        <h1 class="font-black text-xl text-gray-800">PAWS PLACE</h1>
+                        <h1 class="font-black text-xl text-gray-800">GRABHOUND</h1>
                         <p class="text-xs text-gray-500 font-bold tracking-widest">STAFF TERMINAL</p>
                     </div>
                 </div>

@@ -611,7 +611,7 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`setting_key`, `setting_value`, `updated_at`) VALUES
 ('maintenance_mode', 'false', '2026-02-13 07:22:40'),
 ('service_charge', '0.00', '2026-02-13 07:22:40'),
-('store_name', 'GrubHound', '2026-02-13 07:22:40'),
+('store_name', 'GrabHound', '2026-02-13 07:22:40'),
 ('tax_rate', '0.00', '2026-02-13 07:22:40');
 
 -- --------------------------------------------------------
