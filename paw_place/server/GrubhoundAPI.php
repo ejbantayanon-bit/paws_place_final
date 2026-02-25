@@ -34,8 +34,8 @@ class GrubhoundAPI {
         $expiresAt = isset($this->config['expires_at']) ? strtotime($this->config['expires_at']) : 0;
         $now = time();
 
-        // Refresh if expired or will expire in the next 5 minutes (300 seconds)
-        if ($expiresAt <= ($now + 300)) { 
+        // Refresh if expired or will expire in the next 10 minutes (600 seconds)
+        if ($expiresAt <= ($now + 600)) { 
             try {
                 $this->refreshToken();
             } catch (Exception $e) {
@@ -49,24 +49,22 @@ class GrubhoundAPI {
      * Refresh the access token using refresh token
      */
     private function refreshToken() {
-        $refreshUrl = $this->config['refresh_url'];
+        $refreshUrl = $this->config['refresh_url'] ?? 'https://mis.foundationu.com/api/token/refresh';
         $refreshToken = $this->config['refresh_token'];
+        $logDir = __DIR__ . '/logs';
+        if (!is_dir($logDir)) mkdir($logDir, 0777, true);
+        $logFile = $logDir . '/api_errors.log';
 
         $ch = curl_init();
         
-        // Try sending refresh token in body (standard OAuth2 pattern)
-        $postData = json_encode([
-            'refresh_token' => $refreshToken,
-            'grant_type' => 'refresh_token'
-        ]);
-
+        // Postman shows refresh_token is passed in Authorization header, empty body
         curl_setopt_array($ch, [
             CURLOPT_URL => $refreshUrl,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => $postData,
+            CURLOPT_POSTFIELDS => '',
             CURLOPT_HTTPHEADER => [
-                'Content-Type: application/json',
+                'Authorization: Bearer ' . $refreshToken,
                 'Accept: application/json'
             ],
             CURLOPT_SSL_VERIFYPEER => false,
@@ -79,12 +77,16 @@ class GrubhoundAPI {
         curl_close($ch);
 
         if ($curlError) {
+            $msg = "[" . date('Y-m-d H:i:s') . "] cURL error during refresh: $curlError\n";
+            file_put_contents($logFile, $msg, FILE_APPEND);
             throw new Exception('cURL error during token refresh: ' . $curlError);
         }
 
         if ($httpCode === 200) {
             $newTokenData = json_decode($response, true);
             if (!$newTokenData || !isset($newTokenData['access_token'])) {
+                $msg = "[" . date('Y-m-d H:i:s') . "] Invalid refresh response: $response\n";
+                file_put_contents($logFile, $msg, FILE_APPEND);
                 throw new Exception('Invalid token refresh response: ' . $response);
             }
             
@@ -93,19 +95,17 @@ class GrubhoundAPI {
             
             // Handle expiration
             if (isset($newTokenData['expires_at'])) {
-                // If API returns explicit date string
                 $this->config['expires_at'] = $newTokenData['expires_at'];
             } elseif (isset($newTokenData['expires_in'])) {
-                // If API returns seconds duration (OAuth2 standard)
-                // Calculate future date: now + seconds
                 $this->config['expires_at'] = date('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
             } else {
-                // Default fallback: 2 hours from now
                 $this->config['expires_at'] = date('Y-m-d H:i:s', time() + 7200);
             }
 
             $this->saveConfig();
         } else {
+            $msg = "[" . date('Y-m-d H:i:s') . "] Token refresh failed (HTTP $httpCode): $response\n";
+            file_put_contents($logFile, $msg, FILE_APPEND);
             throw new Exception('Token refresh failed (HTTP ' . $httpCode . '): ' . $response);
         }
     }

@@ -17,7 +17,7 @@ try {
     // Map local category names to MIS API category names
     $categoryMap = [
         'Hot Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
-        'Cold Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
+        'Cold Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee', 'Drinks'],
         'Milk Tea' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
         'Specialty Drinks (Hot/Cold)' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
         'Fruity Soda' => ['Drinks'],
@@ -27,7 +27,9 @@ try {
         'Snacks' => ['Snacks', 'Bread', 'Candy', 'Food'],
     ];
 
+    // Use mapping if available, otherwise use the category name directly
     $targetCategories = isset($categoryMap[$category]) ? $categoryMap[$category] : [$category];
+    $targetCategories = array_map('trim', $targetCategories);
     $allItems = [];
 
     foreach ($targetCategories as $misCat) {
@@ -80,14 +82,39 @@ try {
     if (is_array($items)) {
         foreach ($items as &$item) {
             $id = $item['id'] ?? $item['item_id'] ?? null;
-            $apiPrice = isset($item['price']) ? (float)$item['price'] : (isset($item['item_price']) ? (float)$item['item_price'] : 0);
+            $apiPrice = 0;
+            if (isset($item['price']) && (float)$item['price'] > 0) $apiPrice = (float)$item['price'];
+            elseif (isset($item['item_price']) && (float)$item['item_price'] > 0) $apiPrice = (float)$item['item_price'];
+            elseif (isset($item['unit_price']) && (float)$item['unit_price'] > 0) $apiPrice = (float)$item['unit_price'];
             
-            // If API price is 0 or missing, check local mapping
-            if (($apiPrice <= 0) && $id && isset($localPrices[$id])) {
-                $item['price'] = $localPrices[$id];
-                $item['item_price'] = $localPrices[$id];
+            // If API price is 0 or missing, try to extract from name (e.g. "Bread @ 10.00")
+            if ($apiPrice <= 0) {
+                $name = $item['name'] ?? '';
+                $foundPrice = null;
+                
+                if (preg_match('/@\s*([\d,.]+)/', $name, $matches)) {
+                    $foundPrice = (float)str_replace(',', '', $matches[1]);
+                } elseif ($id && isset($localPrices[$id])) {
+                    $foundPrice = $localPrices[$id];
+                } else {
+                    // Check by name (case-insensitive)
+                    foreach ($localPrices as $key => $price) {
+                        if (strcasecmp($key, $name) === 0) {
+                            $foundPrice = $price;
+                            break;
+                        }
+                    }
+                }
+
+                if ($foundPrice !== null) {
+                    $item['price'] = $foundPrice;
+                    $item['item_price'] = $foundPrice;
+                } else {
+                    $item['price'] = 0;
+                    $item['item_price'] = 0;
+                }
             } else {
-                // Ensure consistent fields
+                // Use API price
                 $item['price'] = $apiPrice;
                 $item['item_price'] = $apiPrice;
             }

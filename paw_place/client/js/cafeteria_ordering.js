@@ -20,22 +20,28 @@ const CATEGORY_ICONS = {
     'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
     'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
     'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
+    'Drinks': '<i class="ph-duotone ph-drop"></i>',
+    'Snacks': '<i class="ph-duotone ph-cookie"></i>',
+    'Bread': '<i class="ph-duotone ph-bread"></i>',
+    'Food': '<i class="ph-duotone ph-hamburger"></i>',
+    'Candy': '<i class="ph-duotone ph-cookie"></i>',
+    'Fruit': '<i class="ph-duotone ph-apple-podcasts-logo"></i>',
+    'Vending': '<i class="ph-duotone ph-vibrate"></i>',
     'Default': '<i class="ph-duotone ph-fork-knife"></i>'
 };
 
 function getIconForCategoryName(name) {
     const n = (name || '').toLowerCase();
     if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
-    if (n.includes('milk tea') || n.includes('milktea')) return CATEGORY_ICONS['Milk Tea'];
-    if (n.includes('ice cream in cups')) return CATEGORY_ICONS['Ice Cream in Cups'];
-    if (n.includes('ice cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
-    if (n.includes('soda')) return CATEGORY_ICONS['Fruity Soda'];
-    if (n.includes('fruity')) return CATEGORY_ICONS['Fruity'];
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
-    if (n.includes('add')) return CATEGORY_ICONS['Add Ons'];
+    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'] || '<i class="ph-duotone ph-coffee"></i>';
+    if (n.includes('milk tea') || n.includes('milktea')) return CATEGORY_ICONS['Milk Tea'] || '<i class="ph-duotone ph-coffee"></i>';
+    if (n.includes('ice cream')) return CATEGORY_ICONS['Ice Cream'] || '<i class="ph-duotone ph-ice-cream"></i>';
+    if (n.includes('bread') || n.includes('pastry')) return CATEGORY_ICONS['Bread'] || '<i class="ph-duotone ph-bread"></i>';
+    if (n.includes('candy') || n.includes('sweet')) return CATEGORY_ICONS['Candy'] || '<i class="ph-duotone ph-cookie"></i>';
+    if (n.includes('fruit')) return CATEGORY_ICONS['Fruit'] || '<i class="ph-duotone ph-apple"></i>';
+    if (n.includes('snack')) return CATEGORY_ICONS['Snacks'] || '<i class="ph-duotone ph-cookie"></i>';
+    if (n.includes('food') || n.includes('meal')) return CATEGORY_ICONS['Food'] || '<i class="ph-duotone ph-fork-knife"></i>';
+    if (n.includes('drink')) return CATEGORY_ICONS['Drinks'] || '<i class="ph-duotone ph-drop"></i>';
     return CATEGORY_ICONS['Default'];
 }
 
@@ -56,7 +62,11 @@ async function loadCategories() {
     container.innerHTML = '<div class="loading-spinner"></div>';
 
     try {
-        const res = await fetch('../server/api/get_cafeteria_categories.php');
+        let url = '../server/api/get_cafeteria_categories.php';
+        if (LOCATION_ID) {
+            url += `?location_id=${encodeURIComponent(LOCATION_ID)}`;
+        }
+        const res = await fetch(url);
         const data = await res.json();
         console.log('Categories response:', data);
 
@@ -77,7 +87,11 @@ async function loadCategories() {
 
         renderCategories();
         // Select first category by default
-        selectCategory(categories[0]);
+        if (categories.length > 0) {
+            selectCategory(categories[0]);
+        } else {
+            container.innerHTML = '<p class="text-sm text-gray-500">No categories available</p>';
+        }
     } catch (err) {
         console.error('Error loading categories:', err);
         container.innerHTML = '<p class="text-sm text-red-500">Failed to connect to server</p>';

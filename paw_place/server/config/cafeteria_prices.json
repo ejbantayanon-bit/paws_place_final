@@ -1,5 +1,7 @@
 {
     "items": {
-        "example_item_id": 45.00
+        "Bread @ 10.00": 10,
+        "Bread @ 5.00": 5,
+        "Bread @ 7.00": 7
     }
 }

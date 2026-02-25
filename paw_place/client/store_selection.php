@@ -149,11 +149,11 @@ $initial = strtoupper(substr($firstName, 0, 1));
                 if (data.success && Array.isArray(data.items)) {
                     const locations = data.items;
                     
-                    // Map display names to API locations
+                    // Map display names to API locations using the exact names from data
                     const mapping = {
-                        'Pup Stop': locations.find(l => l.name.toLowerCase().includes('pupstop')),
-                        'Kennel Main': locations.find(l => l.name.toLowerCase().includes('main cafeteria')),
-                        'Kennel North': locations.find(l => l.name.toLowerCase().includes('north cafeteria') && !l.name.toLowerCase().includes('pupstop'))
+                        'Pup Stop': locations.find(l => l.id == "13" || l.name.toLowerCase().includes('pupstop')),
+                        'Kennel Main': locations.find(l => l.id == "1" || l.name.toLowerCase().includes('main cafeteria')),
+                        'Kennel North': locations.find(l => l.id == "2" || (l.name.toLowerCase().includes('north cafeteria') && !l.name.toLowerCase().includes('pupstop')))
                     };
 
                     // Update store cards
@@ -164,6 +164,13 @@ $initial = strtoupper(substr($firstName, 0, 1));
                             card.onclick = () => {
                                 window.location.href = `cafeteria_ordering.php?store=${encodeURIComponent(name)}&location_id=${encodeURIComponent(location.id)}`;
                             };
+                            card.classList.add('active'); // Ensure they are active
+                            card.style.opacity = "1";
+                            card.style.pointerEvents = "auto";
+                        } else if (name !== 'Paws Place') {
+                            // If location is missing for a cafeteria store, maybe show as coming soon
+                            // card.style.opacity = "0.5";
+                            // card.style.pointerEvents = "none";
                         }
                     });
                 }

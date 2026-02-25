@@ -14,7 +14,11 @@ try {
         $locations = $result['data'];
     }
     
-    echo json_encode(['success' => true, 'locations' => $locations]);
+    echo json_encode([
+        'success' => true, 
+        'locations' => $locations,
+        'items' => $locations // Fallback for store_selection.php
+    ]);
 } catch (Exception $e) {
     // Location API may not be active yet — return empty
     echo json_encode(['success' => true, 'locations' => [], 'note' => $e->getMessage()]);
