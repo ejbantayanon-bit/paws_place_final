@@ -11,31 +11,31 @@ let inventoryMenu = [];
 let activeInventoryCategory = 'Milktea';
 
 const CATEGORY_ICONS = {
-    'Coffee': '☕',
-    'Milktea': '🧋',
-    'Milk Tea': '🧋',
-    'Fruity Soda': '🥤',
-    'Fruity': '🥤',
-    'Specialty': '🌟',
-    'Add Ons': '➕',
-    'Ice Cream': '🍨',
-    'Ice Cream in Cups': '🍨',
-    'Ice Cream Bar': '🍦',
-    'Milk Drink': '🥛',
-    'Default': '🍽️'
+    'Coffee': '<i class="ph-duotone ph-coffee"></i>',
+    'Milktea': '<i class="ph-duotone ph-coffee"></i>',
+    'Milk Tea': '<i class="ph-duotone ph-coffee"></i>',
+    'Fruity Soda': '<svg viewBox="0 0 256 256" style="width:1em;height:1em;display:inline-block;vertical-align:middle;"><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="currentColor" opacity="0.2"/><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,104l16,112.5a16.2,16.2,0,0,0,16,13.8h48a16.2,16.2,0,0,0,16-13.8L184,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M144,72V56a8,8,0,0,1,8-8h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>',
+    'Fruity': '<i class="ph-duotone ph-orange-slice"></i>',
+    'Specialty': '<i class="ph-duotone ph-star"></i>',
+    'Add Ons': '<i class="ph-duotone ph-plus-circle"></i>',
+    'Ice Cream': '<i class="ph-duotone ph-ice-cream"></i>',
+    'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
+    'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
+    'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
+    'Default': '<i class="ph-duotone ph-fork-knife"></i>'
 };
 
 function getIconForCategoryName(name) {
     const n = (name || '').toLowerCase();
     if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'] || '☕';
-    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'] || '🧋';
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'] || '🥛';
-    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'] || '🥤';
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'] || '🌟';
-    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'] || '➕';
-    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'] || '🍦';
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'] || '🍨';
+    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
+    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'];
+    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
+    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'];
+    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
+    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'];
+    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
+    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
     return CATEGORY_ICONS['Default'];
 }
 

@@ -14,6 +14,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
     <title>GrabHound Staff POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/pos.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 
 </head>
 <body>
@@ -25,7 +26,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
         <aside id="main-sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20 transition-all duration-300">
             <div>
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
-                    <div class="text-3xl text-maroon">🐾</div>
+                    <div class="text-maroon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
                     <div>
                         <h1 class="font-black text-xl text-gray-800">GRABHOUND</h1>
                         <p class="text-xs text-gray-500 font-bold tracking-widest">STAFF TERMINAL</p>
@@ -34,20 +35,20 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                 
                 <nav class="mt-6 space-y-1">
                     <button onclick="switchView('pos')" id="nav-pos" class="sidebar-link active w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>💳</span> Order Processing
+                        <i class="ph-duotone ph-receipt" style="font-size:20px"></i> Order Processing
                     </button>
                     <button onclick="switchView('preparing')" id="nav-preparing" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>👨‍🍳</span> Preparing Orders
+                        <i class="ph-duotone ph-cooking-pot" style="font-size:20px"></i> Preparing Orders
                     </button>
                     <button onclick="switchView('ready')" id="nav-ready" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>✅</span> Ready Orders
+                        <i class="ph-duotone ph-check-circle" style="font-size:20px"></i> Ready Orders
                     </button>
 
                     <button onclick="switchView('inventory')" id="nav-inventory" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📦</span> Availability Control
+                        <i class="ph-duotone ph-package" style="font-size:20px"></i> Availability Control
                     </button>
                     <button onclick="switchView('history')" id="nav-history" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📅</span> Sales History
+                        <i class="ph-duotone ph-calendar-blank" style="font-size:20px"></i> Sales History
                     </button>
                 </nav>
             </div>
@@ -111,7 +112,7 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                         
                         <div id="cart-list" class="flex-1 custom-scroll p-4 space-y-3">
                             <div class="h-full flex flex-col items-center justify-center text-gray-300">
-                                <span class="text-4xl mb-2">👈</span>
+                                <span class="text-gray-300 mb-2"><i class="ph-duotone ph-arrow-left" style="font-size:40px"></i></span>
                                 <p class="text-sm text-center px-4">Select a pending order.</p>
                             </div>
                         </div>

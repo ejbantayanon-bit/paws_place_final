@@ -4,19 +4,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.getElementById('student-login-form');
     if (loginForm) loginForm.addEventListener('submit', handleStudentLogin);
 
-    // Reset verification if ID changes
+    // Reset verification if ID or password changes
     const idInput = document.getElementById('student-id');
-    if (idInput) {
-        idInput.addEventListener('input', () => {
-            verifiedUser = null;
-            document.getElementById('id-info-group').classList.add('hidden');
-            document.getElementById('start-ordering-btn').classList.add('hidden');
-            const loginBtn = document.getElementById('login-btn');
-            loginBtn.classList.remove('hidden');
-            loginBtn.disabled = false;
-            loginBtn.textContent = 'AUTHENTICATE';
-        });
-    }
+    const pwInput = document.getElementById('student-password');
+    const resetFn = () => {
+        verifiedUser = null;
+        document.getElementById('id-info-group').classList.add('hidden');
+        document.getElementById('start-ordering-btn').classList.add('hidden');
+        const loginBtn = document.getElementById('login-btn');
+        loginBtn.classList.remove('hidden');
+        loginBtn.disabled = false;
+        loginBtn.textContent = 'AUTHENTICATE';
+    };
+    if (idInput) idInput.addEventListener('input', resetFn);
+    if (pwInput) pwInput.addEventListener('input', resetFn);
 });
 
 function toggleHelpdeskBox() {
@@ -24,10 +25,26 @@ function toggleHelpdeskBox() {
     if (box) box.classList.toggle('hidden');
 }
 
+function togglePassword() {
+    const pw = document.getElementById('student-password');
+    const eyeOpen = document.getElementById('eye-open');
+    const eyeClosed = document.getElementById('eye-closed');
+    if (pw.type === 'password') {
+        pw.type = 'text';
+        eyeOpen.classList.add('hidden');
+        eyeClosed.classList.remove('hidden');
+    } else {
+        pw.type = 'password';
+        eyeOpen.classList.remove('hidden');
+        eyeClosed.classList.add('hidden');
+    }
+}
+
 async function handleStudentLogin(event) {
     event.preventDefault();
 
     const studentId = document.getElementById('student-id').value.trim();
+    const password = document.getElementById('student-password').value;
     const loginBtn = document.getElementById('login-btn');
     const infoGroup = document.getElementById('id-info-group');
     const nameDisplay = document.getElementById('id-name-display');
@@ -39,21 +56,25 @@ async function handleStudentLogin(event) {
         alertUser('Please enter your ID Number', 'error');
         return;
     }
+    if (!password) {
+        alertUser('Please enter your Password', 'error');
+        return;
+    }
 
     loginBtn.disabled = true;
     loginBtn.textContent = 'VERIFYING...';
 
     try {
-        // 1. Try Student Lookup First
-        let response = await fetch('../server/api/get_student.php', {
+        // 1. Try Student Login First
+        let response = await fetch('../server/api/student_login.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ student_id: studentId })
+            body: JSON.stringify({ student_id: studentId, password: password })
         });
 
         let data = null;
-        try { data = await response.json(); } catch (e) { console.error('Student API parse error:', e); }
-        console.log('Student API response:', data);
+        try { data = await response.json(); } catch (e) { console.error('Student login parse error:', e); }
+        console.log('Student login response:', data);
 
         if (data && data.success && data.student) {
             const student = data.student;
@@ -72,20 +93,21 @@ async function handleStudentLogin(event) {
 
             loginBtn.classList.add('hidden');
             startBtn.classList.remove('hidden');
+            infoGroup.classList.remove('hidden');
             alertUser(`Student Verified: ${name}`, 'success');
             return;
         }
 
-        // 2. Try Employee Lookup Second
-        response = await fetch('../server/api/get_employee.php', {
+        // 2. Try Employee Login Second
+        response = await fetch('../server/api/employee_login.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ employee_id: studentId })
+            body: JSON.stringify({ employee_id: studentId, password: password })
         });
 
         data = null;
-        try { data = await response.json(); } catch (e) { console.error('Employee API parse error:', e); }
-        console.log('Employee API response:', data);
+        try { data = await response.json(); } catch (e) { console.error('Employee login parse error:', e); }
+        console.log('Employee login response:', data);
 
         if (data && data.success && data.employee) {
             const employee = data.employee;
@@ -104,12 +126,13 @@ async function handleStudentLogin(event) {
 
             loginBtn.classList.add('hidden');
             startBtn.classList.remove('hidden');
+            infoGroup.classList.remove('hidden');
             alertUser(`Employee Verified: ${name}`, 'success');
             return;
         }
 
-        // Both failed
-        const errorMsg = (data && data.message) ? data.message : 'ID not found. Please check your ID Number.';
+        // Both failed — show error
+        const errorMsg = (data && data.message) ? data.message : 'Invalid ID or Password. Please try again.';
         infoGroup.classList.add('hidden');
         startBtn.classList.add('hidden');
         alertUser(errorMsg, 'error');
@@ -156,6 +179,21 @@ function proceedToKiosk() {
     setTimeout(() => { form.submit(); }, 500);
 }
 
+function proceedAsGuest() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '../server/api/set_kiosk_session.php';
+
+    const nameInput = document.createElement('input');
+    nameInput.type = 'hidden';
+    nameInput.name = 'full_name';
+    nameInput.value = 'Guest';
+
+    form.appendChild(nameInput);
+    document.body.appendChild(form);
+    form.submit();
+}
+
 function alertUser(message, type = 'info') {
     const container = document.getElementById('alert-container');
     if (!container) return;
@@ -166,4 +204,3 @@ function alertUser(message, type = 'info') {
     container.appendChild(alert);
     setTimeout(() => alert.remove(), 3000);
 }
-

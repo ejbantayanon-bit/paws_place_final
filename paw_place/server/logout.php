@@ -6,11 +6,12 @@ $DB_USER = 'root';
 $DB_PASS = '';
 $DB_NAME = 'paws_place_db';
 
+// Capture role before destroying session (needed for redirect)
+$role = isset($_SESSION['role']) ? $_SESSION['role'] : 'Unknown';
+
 if (isset($_SESSION['user_id'])) {
     $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
     if (!$conn->connect_errno) {
-        $role = isset($_SESSION['role']) ? $_SESSION['role'] : 'Unknown';
-        
         // Only log Admin or Cashier activity
         if (in_array($role, ['Admin', 'Cashier'])) {
             $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGOUT', 'User logged out')";

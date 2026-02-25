@@ -27,6 +27,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GrabHound - Dashboard</title>
     <link rel="stylesheet" href="css/store_selection.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 </head>
 <body>
 
@@ -36,7 +37,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
         <aside class="sidebar">
             <div class="sidebar-top">
                 <div class="brand">
-                    <div class="brand-icon">🐕</div>
+                    <div class="brand-icon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
                     <div>
                         <div class="brand-name">GrabHound</div>
                         <div class="brand-sub">Foundation University</div>
@@ -45,7 +46,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
 
                 <nav class="sidebar-nav">
                     <a href="#" class="nav-item active">
-                        <span class="nav-icon">🏠</span>
+                        <span class="nav-icon"><i class="ph-duotone ph-house" style="font-size:18px"></i></span>
                         <span>Dashboard</span>
                     </a>
                 </nav>
@@ -62,7 +63,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
                     </div>
                 </div>
                 <a href="../server/logout.php" class="logout-btn">
-                    <span>⏻</span> Log Out
+                    <i class="ph-duotone ph-sign-out" style="font-size:16px;vertical-align:middle"></i> Log Out
                 </a>
             </div>
         </aside>
@@ -81,44 +82,47 @@ $initial = strtoupper(substr($firstName, 0, 1));
                 </div>
             </div>
 
-            <!-- Store Section -->
+            <!-- Location Section -->
             <div class="section-header">
-                <h2 class="section-title">Stores</h2>
+                <h2 class="section-title">Locations</h2>
             </div>
 
             <div class="store-grid">
 
                 <!-- Paws Place (Active) -->
                 <div class="store-card active" onclick="window.location.href='2_kiosk_ordering.php'">
-                    <div class="card-status available">Available</div>
-                    <div class="card-icon">🐾</div>
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+                    </div>
                     <div class="card-name">Paws Place</div>
-                    <div class="card-desc">Coffee & Snacks</div>
                     <div class="card-action">Order Now →</div>
                 </div>
 
-                <!-- Pup Stop -->
-                <div class="store-card disabled" onclick="showComingSoon()">
-                    <div class="card-status soon">Coming Soon</div>
-                    <div class="card-icon">🍔</div>
+                <!-- Pup Stop (Cafeteria API) -->
+                <div class="store-card active" onclick="window.location.href='cafeteria_ordering.php?store=Pup+Stop'">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+                    </div>
                     <div class="card-name">Pup Stop</div>
-                    <div class="card-desc">Meals & Combos</div>
+                    <div class="card-action">Order Now →</div>
                 </div>
 
-                <!-- Kennel Main -->
-                <div class="store-card disabled" onclick="showComingSoon()">
-                    <div class="card-status soon">Coming Soon</div>
-                    <div class="card-icon">🥤</div>
+                <!-- Kennel Main (Cafeteria API) -->
+                <div class="store-card active" onclick="window.location.href='cafeteria_ordering.php?store=Kennel+Main'">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 12h.01"/><path d="M9 15h.01"/><path d="M9 18h.01"/></svg>
+                    </div>
                     <div class="card-name">Kennel Main</div>
-                    <div class="card-desc">Drinks & Smoothies</div>
+                    <div class="card-action">Order Now →</div>
                 </div>
 
-                <!-- Kennel North -->
-                <div class="store-card disabled" onclick="showComingSoon()">
-                    <div class="card-status soon">Coming Soon</div>
-                    <div class="card-icon">🍕</div>
+                <!-- Kennel North (Cafeteria API) -->
+                <div class="store-card active" onclick="window.location.href='cafeteria_ordering.php?store=Kennel+North'">
+                    <div class="card-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                    </div>
                     <div class="card-name">Kennel North</div>
-                    <div class="card-desc">Quick Bites</div>
+                    <div class="card-action">Order Now →</div>
                 </div>
 
             </div>
@@ -138,7 +142,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
 
         function showComingSoon() {
             const toast = document.getElementById('toast');
-            toast.textContent = '🚧 This store is coming soon!';
+            toast.textContent = 'This store is coming soon!';
             toast.classList.add('show');
             clearTimeout(window._toastTimer);
             window._toastTimer = setTimeout(() => {

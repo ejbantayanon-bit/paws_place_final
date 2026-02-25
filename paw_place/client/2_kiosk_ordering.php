@@ -3,7 +3,7 @@ session_start();
 
 // Allow access if staff unlocked kiosk OR customer using kiosk
 if (!isset($_SESSION['role'])) {
-    header('Location: customer_login.php');
+    header('Location: store_selection.php');
     exit;
 }
 
@@ -28,6 +28,7 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
     <title>GrabHound Self-Service Kiosk</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/kiosk.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 </head>
 <body>
 
@@ -62,11 +63,11 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
                     <div>
                         <h1 class="text-3xl font-black text-[#800000]">GRABHOUND</h1>
                         <?php if ($isKiosk): ?>
-                            <p class="text-[#800000] mt-1 text-sm font-semibold">Welcome, <?php echo htmlspecialchars($userName); ?>! 🐾</p>
+                            <p class="text-[#800000] mt-1 text-sm font-semibold">Welcome, <?php echo htmlspecialchars($userName); ?>!</p>
                         <?php endif; ?>
                     </div>
                 </div>
-                <button onclick="openOrderHistory()" class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm font-semibold transition" title="View your order history">
+                <button onclick="openOrderHistory()" class="flex items-center gap-2 px-4 py-2 bg-[#800000] hover:bg-red-900 text-white rounded-lg text-sm font-semibold transition" title="View your order history">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
@@ -88,13 +89,13 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
             
             <!-- 1. Header (Fixed) -->
             <div class="flex-none flex justify-between items-center border-b border-gray-200 mb-2 pb-2">
-                <h2 class="text-2xl font-bold text-gray-800 tracking-tight">Your Tray</h2>
+                <h2 class="text-2xl font-bold text-[#800000] tracking-tight">My Order</h2>
             </div>
             
             <!-- 2. Cart List (Fills Remaining Space) -->
             <div id="cart-list" class="flex-1 overflow-y-auto min-h-0 space-y-3 p-2">
                 <div class="flex flex-col items-center justify-center h-full text-gray-400">
-                    <span class="text-4xl mb-2">🛒</span>
+                    <span class="text-[#800000] opacity-30 mb-2"><i class="ph-duotone ph-shopping-cart" style="font-size:40px"></i></span>
                     <p class="text-sm">Your tray is empty</p>
                 </div>
             </div>
@@ -116,6 +117,6 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
         </section>
     </main>
 
-    <script src="js/kiosk.js"></script>
+    <script src="js/kiosk.js?v=<?php echo time(); ?>"></script>
 </body>
 </html>

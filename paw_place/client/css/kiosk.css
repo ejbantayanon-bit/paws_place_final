@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fcfcfc;
+    background-color: #f0f2f5;
     height: 100vh;
     /* Force full height */
     overflow: hidden;
@@ -58,6 +58,48 @@ body {
     display: none;
 }
 
+/* Sub-filter Bar (Hot/Cold) */
+.sub-filter-bar {
+    margin-top: 0.5rem;
+    align-self: flex-start;
+}
+
+/* Quantity Input Styling */
+.quantity-input {
+    appearance: none;
+    -moz-appearance: textfield;
+}
+
+.quantity-input::-webkit-outer-spin-button,
+.quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.sub-filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    outline: none;
+}
+
+.sub-filter-btn i {
+    font-size: 1.2rem;
+}
+
+/* Phosphor Icon Normalization */
+.ph-duotone {
+    vertical-align: middle;
+    line-height: 1;
+    display: inline-block;
+}
+
+.category-card i {
+    display: block;
+    margin-bottom: 4px;
+}
+
 .category-card {
     min-width: 90px;
     height: 90px;
@@ -84,9 +126,17 @@ body {
 }
 
 .menu-item-card {
-    transition: transform 0.1s, box-shadow 0.1s;
+    transition: transform 0.1s, box-shadow 0.1s, border-color 0.2s;
     background-color: white;
-    border: 1px solid #e5e7eb;
+    border: 2px solid #e5e7eb;
+}
+
+.menu-item-card.selected {
+    border-color: #800000;
+    box-shadow: 0 0 0 2px rgba(128, 0, 0, 0.1), 0 10px 15px -3px rgba(128, 0, 0, 0.2);
+    background-color: #fff5f5;
+    transform: scale(1.02);
+    z-index: 10;
 }
 
 .menu-item-card:active {

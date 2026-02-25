@@ -11,22 +11,23 @@ const ADDON_PRICES = {
 };
 
 const CATEGORY_ICONS = {
-    'Coffee': '☕',
-    'Milktea': '🧋',
-    'Milk Tea': '🧋',
-    'Fruity Soda': '🥤',
-    'Fruity': '🥤',
-    'Specialty': '🌟',
-    'Add Ons': '➕',
-    'Ice Cream': '🍨',
-    'Ice Cream in Cups': '🍨',
-    'Ice Cream Bar': '🍦',
-    'Milk Drink': '🥛',
-    'Default': '🍽️'
+    'Coffee': '<i class="ph-duotone ph-coffee"></i>',
+    'Milktea': '<i class="ph-duotone ph-coffee"></i>',
+    'Milk Tea': '<i class="ph-duotone ph-coffee"></i>',
+    'Fruity Soda': '<svg viewBox="0 0 256 256" style="width:1em;height:1em;display:inline-block;vertical-align:middle;"><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="currentColor" opacity="0.2"/><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,104l16,112.5a16.2,16.2,0,0,0,16,13.8h48a16.2,16.2,0,0,0,16-13.8L184,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M144,72V56a8,8,0,0,1,8-8h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>',
+    'Fruity': '<i class="ph-duotone ph-orange-slice"></i>',
+    'Specialty': '<i class="ph-duotone ph-star"></i>',
+    'Add Ons': '<i class="ph-duotone ph-plus-circle"></i>',
+    'Ice Cream': '<i class="ph-duotone ph-ice-cream"></i>',
+    'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
+    'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
+    'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
+    'Default': '<i class="ph-duotone ph-fork-knife"></i>'
 };
 
 let cart = [];
 let activeCategory = 'Milktea';
+let activeSubFilter = 'Hot Brew'; // Default for Coffee/Specialty
 let selectedItemForModal = null;
 
 document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
@@ -48,16 +49,9 @@ function exitKiosk() {
     `;
     modal.classList.remove('hidden');
 
-    // Exit directly to main login page
-    document.getElementById('exit-confirm-btn').onclick = async () => {
-        try {
-            // Clear session and redirect to main login
-            await fetch('../server/api/logout.php', { method: 'POST' });
-            window.location.href = 'customer_login.php';
-        } catch (e) {
-            console.error('Logout error', e);
-            window.location.href = 'customer_login.php';
-        }
+    // Go back to store selection (keep session active)
+    document.getElementById('exit-confirm-btn').onclick = () => {
+        window.location.href = 'store_selection.php';
     };
 }
 
@@ -124,7 +118,13 @@ async function fetchMenuData(isAuto = false) {
 
             // INITIAL LOAD: set default active category
             MENU = newMenu;
-            if (MENU.length) activeCategory = MENU[0].category;
+            if (MENU.length) {
+                activeCategory = MENU[0].category;
+                // Set default subfilter based on available items in first category
+                const hasHot = MENU.some(i => i.category === activeCategory && i.type === 'Hot Brew');
+                const hasCold = MENU.some(i => i.category === activeCategory && i.type === 'Cold Brew');
+                activeSubFilter = hasHot ? 'Hot Brew' : (hasCold ? 'Cold Brew' : null);
+            }
             renderMenu(MENU);
         } else {
             console.error('Failed to load menu:', data.message);
@@ -139,14 +139,14 @@ async function fetchMenuData(isAuto = false) {
 function getIconForCategoryName(name) {
     const n = (name || '').toLowerCase();
     if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'] || '☕';
-    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'] || '🧋';
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'] || '🥛';
-    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'] || '🥤';
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'] || '🌟';
-    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'] || '➕';
-    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'] || '🍦';
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'] || '🍨';
+    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
+    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'];
+    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
+    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'];
+    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
+    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'];
+    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
+    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
     return CATEGORY_ICONS['Default'];
 }
 
@@ -208,7 +208,15 @@ function renderMenu(menu, filter = activeCategory) {
         const card = document.createElement('div');
         card.className = `category-card flex-shrink-0 ${isActive ? 'active' : ''}`;
         card.style.flex = '0 0 auto';
-        card.onclick = () => renderMenu(MENU, cat);
+        card.onclick = () => {
+            activeCategory = cat;
+            const hasHot = menu.some(i => i.category === cat && i.type === 'Hot Brew');
+            const hasCold = menu.some(i => i.category === cat && i.type === 'Cold Brew');
+            if (hasHot) activeSubFilter = 'Hot Brew';
+            else if (hasCold) activeSubFilter = 'Cold Brew';
+            else activeSubFilter = null;
+            renderMenu(menu, cat);
+        };
 
         card.innerHTML = `
             <span class="text-3xl mb-1">${icon}</span>
@@ -217,40 +225,39 @@ function renderMenu(menu, filter = activeCategory) {
         categoryFilter.appendChild(card);
     });
 
-    // SPECIAL LOGIC FOR COFFEE and SPECIALTY (split by Hot/Cold types)
-    if (filter === 'Coffee' || filter.toLowerCase().includes('specialty')) {
-        const hotItems = menu.filter(item => item.category === filter && item.type === 'Hot Brew');
-        const coldItems = menu.filter(item => item.category === filter && item.type === 'Cold Brew');
+    // SPECIAL LOGIC FOR COFFEE and SPECIALTY (support for Hot/Cold switch)
+    const hasHotItems = menu.some(item => item.category === filter && item.type === 'Hot Brew');
+    const hasColdItems = menu.some(item => item.category === filter && item.type === 'Cold Brew');
 
-        if (hotItems.length > 0) {
-            const hotHeader = document.createElement('h3');
-            hotHeader.className = 'col-span-full text-xl font-black text-gray-800 mt-4 mb-2 pb-1 border-b border-gray-200 flex items-center gap-2';
-            hotHeader.innerHTML = '<span class="text-2xl">☕</span> Hot Brew';
-            menuContainer.appendChild(hotHeader);
+    if (hasHotItems && hasColdItems) {
+        // Render Hot/Cold Switcher
+        const switchBar = document.createElement('div');
+        switchBar.className = 'sub-filter-bar flex gap-2 mb-6 p-1 bg-gray-100 rounded-xl w-max self-center';
 
-            const hotGrid = document.createElement('div');
-            hotGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
-            menuContainer.appendChild(hotGrid);
+        const types = ['Hot Brew', 'Cold Brew'];
+        types.forEach(type => {
+            const btn = document.createElement('button');
+            const isActive = type === activeSubFilter;
+            btn.className = `sub-filter-btn px-8 py-2.5 rounded-lg font-black text-sm transition-all ${isActive ? 'bg-[#800000] text-white shadow-md' : 'text-gray-500 hover:bg-gray-200'}`;
+            btn.textContent = type === 'Hot Brew' ? 'HOT' : 'COLD';
+            btn.onclick = () => {
+                activeSubFilter = type;
+                renderMenu(menu, filter);
+            };
+            switchBar.appendChild(btn);
+        });
+        menuContainer.appendChild(switchBar);
 
-            hotItems.forEach(item => hotGrid.appendChild(createItemCard(item)));
-        }
+        // Filter items based on switch
+        const grid = document.createElement('div');
+        grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
+        menuContainer.appendChild(grid);
 
-        if (coldItems.length > 0) {
-            const coldHeader = document.createElement('h3');
-            coldHeader.className = 'col-span-full text-xl font-black text-gray-800 mt-8 mb-2 pb-1 border-b border-gray-200 flex items-center gap-2';
-            coldHeader.innerHTML = '<span class="text-2xl">🧊</span> Cold Brew';
-            menuContainer.appendChild(coldHeader);
-
-            const coldGrid = document.createElement('div');
-            coldGrid.className = 'col-span-full grid grid-cols-2 md:grid-cols-3 gap-4';
-            menuContainer.appendChild(coldGrid);
-
-            coldItems.forEach(item => coldGrid.appendChild(createItemCard(item)));
-        }
+        const itemsToRender = menu.filter(item => item.category === filter && item.type === activeSubFilter);
+        itemsToRender.forEach(item => grid.appendChild(createItemCard(item)));
 
     } else {
-        // STANDARD RENDERING
-        // Create a grid wrapper for standard categories
+        // STANDARD RENDERING or single-type category
         const grid = document.createElement('div');
         grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
         menuContainer.appendChild(grid);
@@ -264,6 +271,7 @@ function renderMenu(menu, filter = activeCategory) {
 
 function createItemCard(item) {
     const itemCard = document.createElement('div');
+    itemCard.id = `item-card-${item.item_id}`;
     itemCard.className = `menu-item-card p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-50 pointer-events-none' : ''}`;
     itemCard.onclick = item.is_available ? () => openItemModal(item) : null;
 
@@ -273,7 +281,7 @@ function createItemCard(item) {
 
     itemCard.innerHTML = `
         ${typeBadge}
-        <div class="text-5xl mb-2 group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
+        <div class="text-5xl mb-2 text-[#800000] group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
         <div class="text-center w-full">
             <p class="text-sm font-bold text-gray-800 truncate">${item.name}</p>
             <p class="text-lg font-black text-[#800000]">${formatCurrency(item.base_price)}</p>
@@ -286,6 +294,11 @@ function createItemCard(item) {
 // --- ITEM MODAL ---
 function openItemModal(item) {
     selectedItemForModal = item;
+
+    // Highlight the selected card
+    const card = document.getElementById(`item-card-${item.item_id}`);
+    if (card) card.classList.add('selected');
+
     const modal = document.getElementById('modal-container');
     const hasAddons = item.add_ons && item.add_ons.length > 0;
 
@@ -362,6 +375,8 @@ function confirmAddToCart() {
 
 function closeModal() {
     document.getElementById('modal-container').classList.add('hidden');
+    // Remove highlights from all cards
+    document.querySelectorAll('.menu-item-card.selected').forEach(el => el.classList.remove('selected'));
 }
 
 // --- Cart Actions ---
@@ -369,6 +384,23 @@ function updateCartItemQuantity(index, change) {
     cart[index].quantity += change;
     if (cart[index].quantity < 1) cart[index].quantity = 1;
     renderCart();
+}
+
+function handleQuantityInput(index, value) {
+    let newQty = parseInt(value);
+    if (isNaN(newQty) || newQty < 1) {
+        newQty = 1;
+    }
+    cart[index].quantity = newQty;
+    // We don't renderCart here to avoid losing focus/cursor position during typing
+    // But we need to update totals
+    updateTotalsOnly();
+}
+
+function updateTotalsOnly() {
+    const total = calculateCartTotal();
+    document.getElementById('cart-subtotal').textContent = formatCurrency(total);
+    document.getElementById('cart-total').textContent = formatCurrency(total);
 }
 
 function removeItem(index) {
@@ -392,7 +424,12 @@ function renderCart() {
 
     if (cart.length === 0) {
         if (emptyBtn) emptyBtn.classList.add('hidden');
-        cartContainer.innerHTML = '';
+        cartContainer.innerHTML = `
+            <div class="flex flex-col items-center justify-center h-full text-gray-400">
+                <span class="text-[#800000] opacity-30 mb-2"><i class="ph-duotone ph-shopping-cart" style="font-size:40px"></i></span>
+                <p class="text-sm">Your tray is empty</p>
+            </div>
+        `;
         btn.disabled = true;
     } else {
         if (emptyBtn) emptyBtn.classList.remove('hidden');
@@ -412,10 +449,10 @@ function renderCart() {
                 <div class="flex items-center space-x-2">
                     <div class="flex items-center bg-gray-100 rounded-lg p-1 mr-2">
                         <button onclick="updateCartItemQuantity(${index}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-600 font-bold hover:bg-gray-200 rounded">-</button>
-                        <span class="w-8 text-center font-bold text-sm">${item.quantity}</span>
+                        <input type="number" value="${item.quantity}" min="1" oninput="handleQuantityInput(${index}, this.value)" onblur="renderCart()" class="quantity-input w-10 text-center font-bold text-sm bg-transparent border-none focus:outline-none focus:ring-0">
                         <button onclick="updateCartItemQuantity(${index}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-600 font-bold hover:bg-gray-200 rounded">+</button>
                     </div>
-                    <button onclick="removeItem(${index})" class="w-8 h-8 flex items-center justify-center bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+                    <button onclick="removeItem(${index})" class="w-8 h-8 flex items-center justify-center bg-red-50 text-[#800000] rounded-lg hover:bg-red-100 transition">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>

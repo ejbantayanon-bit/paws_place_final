@@ -1,0 +1,349 @@
+/* ===== Cafeteria Ordering Layout ===== */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    background: #f0f2f5;
+}
+
+/* Two-column grid layout */
+.kiosk-grid {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* ===== Category Scroll ===== */
+.category-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+}
+
+.category-scroll::-webkit-scrollbar {
+    height: 4px;
+}
+
+.category-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+/* Phosphor Icon Normalization */
+.ph-duotone {
+    vertical-align: middle;
+    line-height: 1;
+    display: inline-block;
+}
+
+.category-btn {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 90px;
+    height: 90px;
+    padding: 8px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.category-icon {
+    font-size: 28px;
+    margin-bottom: 4px;
+    color: #4b5563;
+}
+
+.category-name {
+    font-weight: 700;
+    font-size: 0.7rem;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    line-height: 1.1;
+    display: block;
+}
+
+.category-btn:hover {
+    border-color: #800000;
+}
+
+.category-btn:hover .category-icon,
+.category-btn:hover .category-name {
+    color: #800000;
+}
+
+.category-btn.active {
+    background: #fff5f5;
+    border-color: #800000;
+    box-shadow: 0 4px 6px -1px rgba(128, 0, 0, 0.1);
+}
+
+.category-btn.active .category-icon,
+.category-btn.active .category-name {
+    color: #800000;
+}
+
+/* ===== Menu Items Grid ===== */
+.menu-scroll {
+    overflow-y: auto;
+    scrollbar-width: thin;
+}
+
+.menu-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.menu-scroll::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 4px;
+}
+
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
+    padding: 4px;
+}
+
+/* ===== Menu Card ===== */
+.menu-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.menu-card:hover {
+    border-color: #800000;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(128, 0, 0, 0.1);
+}
+
+.menu-card:active {
+    transform: scale(0.97);
+}
+
+.menu-card.unavailable {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.menu-card.unavailable:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: #e5e7eb;
+}
+
+.menu-card-image {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: #f3f4f6;
+}
+
+.menu-card-placeholder {
+    width: 100%;
+    height: 120px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #f3f4f6, #e5e7eb);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+}
+
+.menu-card-name {
+    font-weight: 800;
+    font-size: 0.9rem;
+    color: #1f2937;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.menu-card-price {
+    font-weight: 800;
+    font-size: 1.1rem;
+    color: #800000;
+}
+
+.menu-card-status {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-transform: uppercase;
+}
+
+.menu-card-status.available {
+    background: #d1fae5;
+    color: #065f46;
+}
+
+.menu-card-status.unavailable {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* ===== Cart Items ===== */
+.cart-item {
+    background: white;
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+.cart-item-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.cart-item-name {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: #1f2937;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.cart-item-price {
+    font-size: 0.8rem;
+    color: #800000;
+    font-weight: 600;
+}
+
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cart-qty-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    border: 2px solid #e5e7eb;
+    background: white;
+    color: #374151;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+}
+
+.cart-qty-btn:hover {
+    border-color: #800000;
+    color: #800000;
+}
+
+.cart-qty-btn.remove {
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.cart-qty-btn.remove:hover {
+    background: #ef4444;
+    color: white;
+}
+
+.cart-qty {
+    font-weight: 800;
+    font-size: 1rem;
+    min-width: 24px;
+    text-align: center;
+}
+
+/* ===== Loading / Empty States ===== */
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 20px;
+    color: #6b7280;
+}
+
+.loading-spinner::before {
+    content: '';
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top-color: #800000;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-bottom: 12px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #9ca3af;
+    text-align: center;
+    padding: 20px;
+}
+
+.empty-state .icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+}
+
+/* ===== Touch Target ===== */
+.touch-target {
+    min-height: 48px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .kiosk-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr 1fr;
+    }
+}

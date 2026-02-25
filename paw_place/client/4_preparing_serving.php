@@ -10,6 +10,7 @@ session_start();
     <title>Preparing & Serving - GrabHound</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/preparing_serving.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 </head>
 <body>
     <!-- Top Header Bar -->

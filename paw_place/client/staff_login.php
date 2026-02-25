@@ -14,6 +14,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
     <title>GrabHound - Staff Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 </head>
 <body>
 
@@ -34,7 +35,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
         </div>
         <div id="right-panel" class="lg:col-span-1 p-8 flex flex-col justify-center items-center bg-white shadow-2xl z-10">
             <header class="text-center mb-10 w-full max-w-xs">
-                <div class="text-7xl mb-4 text-maroon">👔</div>
+                <div class="text-maroon mb-4"><i class="ph-duotone ph-shield-check" style="font-size:64px"></i></div>
                 <h2 class="text-3xl font-black text-gray-800 tracking-tight">STAFF ACCESS</h2>
                 <div class="h-1 w-16 bg-maroon mx-auto mt-4 rounded-full bg-[#800000]"></div>
             </header>

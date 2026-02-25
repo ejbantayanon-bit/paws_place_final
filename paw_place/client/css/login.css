@@ -6,7 +6,7 @@
 
 body {
     font-family: 'Poppins', sans-serif;
-    background-color: #fcfcfc;
+    background-color: #f0f2f5;
 }
 
 /* FOUNDATION UNIVERSITY COLOR SCHEME */
@@ -61,11 +61,9 @@ body {
     display: none;
 }
 
-/* Utility class */
-
-/* Modernized Left Panel - Light Wood/Cafe Tone */
+/* Modernized Left Panel */
 .cafe-context {
-    background-color: #f5f5f5;
+    background-color: #f0f2f5;
 }
 
 .image-placeholder {

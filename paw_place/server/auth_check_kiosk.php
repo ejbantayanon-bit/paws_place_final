@@ -2,7 +2,7 @@
 // Include to protect kiosk pages. Usage: include '../server/auth_check_kiosk.php';
 session_start();
 if (!isset($_SESSION['user_id'])) {
-    header('Location: ../client/customer_login.php');
+    header('Location: ../client/store_selection.php');
     exit;
 }
 // Provide convenient globals

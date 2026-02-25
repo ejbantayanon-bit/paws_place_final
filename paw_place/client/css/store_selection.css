@@ -340,7 +340,14 @@ body {
 }
 
 .card-icon {
-    font-size: 40px;
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fef2f2;
+    border-radius: 16px;
+    color: #800000;
     margin-bottom: 4px;
 }
 

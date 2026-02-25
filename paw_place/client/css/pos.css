@@ -100,8 +100,16 @@ body {
     .pending-order-card {
         font-size: 14px;
     }
+}
 
-    .custom-scroll {
-        max-height: 50vh;
-    }
+/* Phosphor Icon Normalization */
+.ph-duotone {
+    vertical-align: middle;
+    line-height: 1;
+    display: inline-block;
+}
+
+.category-card i {
+    display: block;
+    margin-bottom: 4px;
 }

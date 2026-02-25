@@ -55,7 +55,7 @@ function updateSection(orders, containerId, countId, type) {
 
     // Handle empty state
     if (orders.length === 0) {
-        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon">☕</div></div>`;
+        container.innerHTML = `<div class="empty-state"><div class="empty-state-icon"><i class="ph-duotone ph-coffee" style="font-size:48px"></i></div></div>`;
         return;
     }
 

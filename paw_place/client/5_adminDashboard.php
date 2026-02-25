@@ -15,6 +15,7 @@ if ($current_user_role !== 'Admin') {
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
 
 </head>
 <body>
@@ -25,7 +26,7 @@ if ($current_user_role !== 'Admin') {
         <aside class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20">
             <div>
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
-                    <div class="text-3xl text-maroon">🐾</div>
+                    <div class="text-maroon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
                     <div>
                         <h1 class="font-black text-xl text-gray-800">GRABHOUND</h1>
                         <p class="text-xs text-gray-500 font-bold tracking-widest">ADMIN PANEL</p>
@@ -34,22 +35,22 @@ if ($current_user_role !== 'Admin') {
 
                 <nav class="mt-6 space-y-1">
                     <button onclick="switchView('dashboard')" id="nav-dashboard" class="sidebar-link active w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📊</span> Dashboard
+                        <i class="ph-duotone ph-chart-bar" style="font-size:20px"></i> Dashboard
                     </button>
                     <button onclick="switchView('menu')" id="nav-menu" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>🍽️</span> Menu Management
+                        <i class="ph-duotone ph-fork-knife" style="font-size:20px"></i> Menu Management
                     </button>
                     <button onclick="switchView('categories')" id="nav-categories" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📂</span> Categories
+                        <i class="ph-duotone ph-folder-open" style="font-size:20px"></i> Categories
                     </button>
                     <button onclick="switchView('history')" id="nav-history" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                         <span>📜</span> Sales History
+                         <i class="ph-duotone ph-calendar-blank" style="font-size:20px"></i> Sales History
                     </button>
                     <button onclick="switchView('employees')" id="nav-employees" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>👥</span> Employees
+                        <i class="ph-duotone ph-users-three" style="font-size:20px"></i> Employees
                     </button>
                     <button onclick="switchView('logs')" id="nav-logs" class="sidebar-link w-full text-left px-6 py-4 flex items-center gap-3 text-gray-600">
-                        <span>📜</span> Activity Logs
+                        <i class="ph-duotone ph-pulse" style="font-size:20px"></i> Activity Logs
                     </button>
                 </nav>
             </div>
@@ -212,7 +213,7 @@ if ($current_user_role !== 'Admin') {
                             
                             <!-- Download Button Integrated -->
                              <button onclick="openExportModal()" class="px-3 py-1 bg-green-600 text-white rounded font-bold text-sm hover:bg-green-700 flex items-center gap-1 ml-auto">
-                                <span>📥</span> Download
+                                <i class="ph-duotone ph-download-simple" style="font-size:14px;vertical-align:middle"></i> Download
                             </button>
                         </div>
                     </div>

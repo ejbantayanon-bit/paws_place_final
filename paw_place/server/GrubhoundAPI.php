@@ -194,6 +194,16 @@ class GrubhoundAPI {
     }
 
     /**
+     * Authenticate student with ID and password
+     */
+    public function studentLogin($studentId, $password) {
+        return $this->request('/student-login', 'POST', [
+            'student_id' => $studentId,
+            'password' => $password
+        ]);
+    }
+
+    /**
      * Search students
      */
     public function searchStudents($search) {
@@ -205,6 +215,16 @@ class GrubhoundAPI {
      */
     public function getEmployee($employeeId) {
         return $this->request('/employee/' . $employeeId);
+    }
+
+    /**
+     * Authenticate employee with ID and password
+     */
+    public function employeeLogin($employeeId, $password) {
+        return $this->request('/employee-login', 'POST', [
+            'employee_id' => $employeeId,
+            'password' => $password
+        ]);
     }
 
     /**
@@ -233,6 +253,43 @@ class GrubhoundAPI {
      */
     public function getDepartment($department) {
         return $this->request('/department/' . urlencode($department));
+    }
+
+    // ===== CAFETERIA API =====
+
+    /**
+     * Get list of cafeteria locations
+     */
+    public function getCafeteriaLocations() {
+        return $this->request('/cafeteria/location');
+    }
+
+    /**
+     * Get list of item categories
+     */
+    public function getCafeteriaCategories() {
+        return $this->request('/cafeteria/category');
+    }
+
+    /**
+     * Get single item information
+     */
+    public function getCafeteriaItem($itemId) {
+        return $this->request('/cafeteria/item/' . urlencode($itemId));
+    }
+
+    /**
+     * Get items by category
+     */
+    public function getCafeteriaItemsByCategory($category) {
+        return $this->request('/cafeteria/item-category?category=' . urlencode($category));
+    }
+
+    /**
+     * Get items by category per location
+     */
+    public function getCafeteriaItemsByCategoryLocation($locationId, $category) {
+        return $this->request('/cafeteria/item-category/' . urlencode($locationId) . '?category=' . urlencode($category));
     }
 }
 ?>
