@@ -1,0 +1,188 @@
+--- MIS CATEGORIES ---
+Array
+(
+    [status] => 200
+    [items] => Array
+        (
+            [0] => Array
+                (
+                    [category] =>  Optimum Cash Incentives 
+                )
+
+            [1] => Array
+                (
+                    [category] => Bread
+                )
+
+            [2] => Array
+                (
+                    [category] => Candy
+                )
+
+            [3] => Array
+                (
+                    [category] => Catering
+                )
+
+            [4] => Array
+                (
+                    [category] => Coffee And Milktea 2-paws Place
+                )
+
+            [5] => Array
+                (
+                    [category] => Consignment 
+                )
+
+            [6] => Array
+                (
+                    [category] => Drinks
+                )
+
+            [7] => Array
+                (
+                    [category] => Food
+                )
+
+            [8] => Array
+                (
+                    [category] => Fruits
+                )
+
+            [9] => Array
+                (
+                    [category] => Ice Cream
+                )
+
+            [10] => Array
+                (
+                    [category] => Milktea And Ice Coffee
+                )
+
+            [11] => Array
+                (
+                    [category] => Room Rental
+                )
+
+            [12] => Array
+                (
+                    [category] => School
+                )
+
+            [13] => Array
+                (
+                    [category] => School Supply
+                )
+
+            [14] => Array
+                (
+                    [category] => School Uniform
+                )
+
+            [15] => Array
+                (
+                    [category] => Snacks
+                )
+
+            [16] => Array
+                (
+                    [category] => Spray
+                )
+
+            [17] => Array
+                (
+                    [category] => Supply
+                )
+
+            [18] => Array
+                (
+                    [category] => Vending Machine
+                )
+
+        )
+
+)
+
+
+--- MIS ITEMS (First few) ---
+
+--- MIS LOCATIONS ---
+Array
+(
+    [status] => 200
+    [locations] => Array
+        (
+            [0] => Array
+                (
+                    [id] => 1
+                    [name] => Main Cafeteria
+                    [account_type] => CAF
+                )
+
+            [1] => Array
+                (
+                    [id] => 2
+                    [name] => North Cafeteria
+                    [account_type] => CAF
+                )
+
+            [2] => Array
+                (
+                    [id] => 3
+                    [name] => BookStore
+                    [account_type] => BSTORE
+                )
+
+            [3] => Array
+                (
+                    [id] => 4
+                    [name] => The Queue - Coffee Shop
+                    [account_type] => QUE
+                )
+
+            [4] => Array
+                (
+                    [id] => 5
+                    [name] => Hydrophonics
+                    [account_type] => HYD
+                )
+
+            [5] => Array
+                (
+                    [id] => 6
+                    [name] => HE Lab
+                    [account_type] => HEL
+                )
+
+            [6] => Array
+                (
+                    [id] => 7
+                    [name] => Amlan Farm
+                    [account_type] => AML
+                )
+
+            [7] => Array
+                (
+                    [id] => 8
+                    [name] => Azagra Farm
+                    [account_type] => AZA
+                )
+
+            [8] => Array
+                (
+                    [id] => 9
+                    [name] => Palangoyan Farm
+                    [account_type] => PAL
+                )
+
+            [9] => Array
+                (
+                    [id] => 13
+                    [name] => North Cafeteria - Pupstop
+                    [account_type] => CAF
+                )
+
+        )
+
+)
+

@@ -17,24 +17,31 @@ $excludedCategories = [
 ];
 
 try {
-    $api = new GrubhoundAPI();
-    $result = $api->getCafeteriaCategories();
-    
-    // API returns {status: 200, items: [...]}
-    $categories = $result;
-    if (is_array($result) && isset($result['items'])) {
-        $categories = $result['items'];
-    } elseif (is_array($result) && isset($result['data'])) {
-        $categories = $result['data'];
-    }
+    $DB_HOST = 'localhost';
+    $DB_USER = 'root';
+    $DB_PASS = '';
+    $DB_NAME = 'paws_place_db';
 
-    // Filter out non-food categories
-    if (is_array($categories)) {
-        $categories = array_values(array_filter($categories, function($cat) use ($excludedCategories) {
-            $name = is_string($cat) ? trim($cat) : trim($cat['category'] ?? $cat['name'] ?? '');
-            return !in_array($name, $excludedCategories);
-        }));
+    $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+    if ($conn->connect_errno) {
+        throw new Exception('Database connection failed');
     }
+    $conn->set_charset('utf8mb4');
+
+    $sql = "SELECT category_id, name FROM categories WHERE is_active = 1 ORDER BY sort_order ASC, name ASC";
+    $result = $conn->query($sql);
+    $categories = [];
+    
+    if ($result) {
+        while ($row = $result->fetch_assoc()) {
+            $categories[] = [
+                'id' => $row['category_id'],
+                'category' => $row['name'],
+                'name' => $row['name']
+            ];
+        }
+    }
+    $conn->close();
     
     echo json_encode(['success' => true, 'categories' => $categories]);
 } catch (Exception $e) {

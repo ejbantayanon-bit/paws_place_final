@@ -179,20 +179,6 @@ function proceedToKiosk() {
     setTimeout(() => { form.submit(); }, 500);
 }
 
-function proceedAsGuest() {
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = '../server/api/set_kiosk_session.php';
-
-    const nameInput = document.createElement('input');
-    nameInput.type = 'hidden';
-    nameInput.name = 'full_name';
-    nameInput.value = 'Guest';
-
-    form.appendChild(nameInput);
-    document.body.appendChild(form);
-    form.submit();
-}
 
 function alertUser(message, type = 'info') {
     const container = document.getElementById('alert-container');

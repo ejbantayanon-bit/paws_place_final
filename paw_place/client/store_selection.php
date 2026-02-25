@@ -140,6 +140,42 @@ $initial = strtoupper(substr($firstName, 0, 1));
             dateEl.textContent = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         }
 
+        async function initCafeteriaLocations() {
+            try {
+                const res = await fetch('../server/api/get_cafeteria_locations.php');
+                const data = await res.json();
+                console.log('Cafeteria locations:', data);
+
+                if (data.success && Array.isArray(data.items)) {
+                    const locations = data.items;
+                    
+                    // Map display names to API locations
+                    const mapping = {
+                        'Pup Stop': locations.find(l => l.name.toLowerCase().includes('pupstop')),
+                        'Kennel Main': locations.find(l => l.name.toLowerCase().includes('main cafeteria')),
+                        'Kennel North': locations.find(l => l.name.toLowerCase().includes('north cafeteria') && !l.name.toLowerCase().includes('pupstop'))
+                    };
+
+                    // Update store cards
+                    document.querySelectorAll('.store-card').forEach(card => {
+                        const name = card.querySelector('.card-name').textContent.trim();
+                        const location = mapping[name];
+                        if (location) {
+                            card.onclick = () => {
+                                window.location.href = `cafeteria_ordering.php?store=${encodeURIComponent(name)}&location_id=${encodeURIComponent(location.id)}`;
+                            };
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('Error fetching locations:', err);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initCafeteriaLocations();
+        });
+
         function showComingSoon() {
             const toast = document.getElementById('toast');
             toast.textContent = 'This store is coming soon!';

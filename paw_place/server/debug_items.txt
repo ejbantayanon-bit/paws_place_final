@@ -1,0 +1,21 @@
+--- ITEMS FOR Milktea And Ice Coffee AT LOCATION 13 ---
+Array
+(
+    [status] => 200
+    [items] => Array
+        (
+        )
+
+)
+
+
+--- ITEMS FOR Coffee And Milktea 2-paws Place AT LOCATION 13 ---
+Array
+(
+    [status] => 200
+    [items] => Array
+        (
+        )
+
+)
+

@@ -101,17 +101,6 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
                     </p>
                 </div>
 
-                <!-- Guest Login Divider -->
-                <div class="flex items-center gap-3 mt-6 mb-4">
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                    <span class="text-xs text-gray-400 font-semibold uppercase tracking-widest">or</span>
-                    <div class="flex-1 h-px bg-gray-200"></div>
-                </div>
-
-                <button type="button" onclick="proceedAsGuest()"
-                    class="w-full py-4 bg-gray-100 text-gray-600 font-bold tracking-widest text-sm rounded-lg border-2 border-gray-200 hover:bg-gray-200 hover:border-gray-300 transition-all uppercase">
-                    CONTINUE AS GUEST
-                </button>
             </div>
             
             <p class="text-center text-[10px] text-gray-300 mt-12 w-full max-w-sm uppercase tracking-widest">

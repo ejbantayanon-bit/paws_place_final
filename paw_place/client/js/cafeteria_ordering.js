@@ -98,16 +98,18 @@ function renderCategories() {
             <span class="category-name">${name}</span>
         `;
         btn.onclick = () => selectCategory(cat);
+        btn.dataset.category = name;
         container.appendChild(btn);
     });
 }
 
 function selectCategory(cat) {
-    currentCategory = typeof cat === 'string' ? cat : (cat.category || cat.name || cat.category_name || '');
+    const name = typeof cat === 'string' ? cat : (cat.category || cat.name || cat.category_name || '');
+    currentCategory = name;
 
     // Update active state
     document.querySelectorAll('.category-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.textContent === currentCategory);
+        btn.classList.toggle('active', btn.dataset.category === currentCategory);
     });
 
     loadItems(currentCategory);
