@@ -1,6 +1,23 @@
 // --- API BASE URL ---
 const API_BASE = '../server/api';
 
+// Helper to set monthly date defaults (1st of month to Today)
+function setDefaultDateRange(fromId, toId) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+
+    document.getElementById(fromId).value = `${year}-${month}-01`;
+    document.getElementById(toId).value = `${year}-${month}-${day}`;
+}
+
+// Helper to clean item names (remove @ price and (Hot))
+function cleanName(name) {
+    if (!name) return "";
+    return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
+}
+
 function exportSalesHistory() {
     // Get current filter values directly from the Sales History view
     const dateFrom = document.getElementById('history-date-from').value;
@@ -74,7 +91,10 @@ function switchView(viewName) {
     if (viewName === 'dashboard') loadDashboard();
     if (viewName === 'menu') loadMenuItems();
     if (viewName === 'categories') loadCategories();
-    if (viewName === 'history') loadSalesHistory();
+    if (viewName === 'history') {
+        setDefaultDateRange('history-date-from', 'history-date-to');
+        loadSalesHistory();
+    }
     if (viewName === 'inventory') loadInventory();
     if (viewName === 'employees') loadUsers();
     if (viewName === 'logs') loadLogs();
@@ -153,9 +173,10 @@ async function loadDashboard() {
             <tr class="border-b hover:bg-white transition">
                 <td class="p-4 font-bold text-maroon">#${order.pre_order_code}</td>
                 <td class="p-4">${order.order_items.length} items</td>
+                <td class="p-4 text-xs font-medium text-gray-600">${order.cashier_name || '<span class="italic text-gray-400">Self-Service</span>'}</td>
                 <td class="p-4 font-bold">${formatCurrency(order.total_amount)}</td>
                 <td class="p-4"><span class="text-xs font-bold px-2 py-1 rounded bg-blue-100 text-blue-800">${order.status}</span></td>
-                <td class="p-4 text-gray-500">${new Date(order.created_at || order.time_placed).toLocaleTimeString()}</td>
+                <td class="p-4 text-gray-500">${new Date(order.time_placed).toLocaleTimeString()}</td>
             </tr>
         `).join('');
     } catch (error) {
@@ -505,7 +526,7 @@ function renderHistoryPage() {
         // I will assume for now I will update PHP next.
 
         const itemsList = order.order_items
-            ? order.order_items.map(i => `${i.name}×${i.quantity}`).join(', ')
+            ? order.order_items.map(i => `${cleanName(i.name)}×${i.quantity}`).join(', ')
             : `${order.item_count} items`;
 
         return `
@@ -517,6 +538,7 @@ function renderHistoryPage() {
                 <td class="p-4 text-gray-600 text-xs">${new Date(order.time_placed).toLocaleString()}</td>
                  <td class="p-4 text-gray-800 text-xs font-bold uppercase">${order.order_source || 'POS'}</td>
                 <td class="p-4 text-gray-600 text-sm">${itemsList}</td>
+                <td class="p-4 text-gray-600 text-xs font-medium">${order.cashier_name || '<span class="italic text-gray-400">Self-Service</span>'}</td>
                 <td class="p-4 text-right text-gray-800 font-bold">${formatCurrency(order.total_amount)}</td>
                 <td class="p-4 text-center">
                     <span class="px-2 py-1 rounded text-xs font-bold ${getStatusColor(order.status)}">

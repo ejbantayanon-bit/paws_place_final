@@ -80,9 +80,9 @@ fputcsv($output, ['Order ID', 'Date/Time', 'Type', 'Customer Name', 'Items List'
 
 while ($row = $result->fetch_assoc()) {
     // Get detailed items
-    $itemSql = "SELECT mi.name, oi.quantity 
+    $itemSql = "SELECT COALESCE(mi.name, oi.external_item_name) AS name, oi.quantity 
                 FROM order_items oi 
-                JOIN menu_items mi ON oi.menu_item_id = mi.item_id 
+                LEFT JOIN menu_items mi ON oi.menu_item_id = mi.item_id 
                 WHERE oi.order_id = ?";
     
     $itemStmt = $conn->prepare($itemSql);

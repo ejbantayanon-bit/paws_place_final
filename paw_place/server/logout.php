@@ -14,11 +14,18 @@ if (isset($_SESSION['user_id'])) {
     if (!$conn->connect_errno) {
         // Only log Admin or Cashier activity
         if (in_array($role, ['Admin', 'Cashier'])) {
-            $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGOUT', 'User logged out')";
-            $stmt = $conn->prepare($logSql);
-            $stmt->bind_param('is', $_SESSION['user_id'], $role);
-            $stmt->execute();
-            $stmt->close();
+            // Because users logging in via MIS API will have an ID not in our DB,
+            // we must suppress the foreign key constraint error or verify they exist.
+            // Using IGNORE or TRY/CATCH is the simplest non-blocking fix.
+            try {
+                $logSql = "INSERT IGNORE INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGOUT', 'User logged out')";
+                $stmt = $conn->prepare($logSql);
+                $stmt->bind_param('is', $_SESSION['user_id'], $role);
+                $stmt->execute();
+                $stmt->close();
+            } catch (Exception $e) {
+                // Ignore FK constraint issues for external MIS users
+            }
         }
         $conn->close();
     }

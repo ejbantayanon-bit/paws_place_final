@@ -65,73 +65,44 @@ async function handleStudentLogin(event) {
     loginBtn.textContent = 'VERIFYING...';
 
     try {
-        // 1. Try Student Login First
-        let response = await fetch('../server/api/student_login.php', {
+        // Unified Login - Checks both Student and Employee in one server-side request
+        const response = await fetch('../server/api/unified_customer_login.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ student_id: studentId, password: password })
+            body: JSON.stringify({ id: studentId, password: password })
         });
 
-        let data = null;
-        try { data = await response.json(); } catch (e) { console.error('Student login parse error:', e); }
-        console.log('Student login response:', data);
+        const data = await response.json();
+        console.log('Unified login response:', data);
 
-        if (data && data.success && data.student) {
-            const student = data.student;
-            const name = student.full_name || student.name || 'Student';
-            const dept = student.department || student.department_name || student.program || 'No Department';
+        if (data && data.success && data.user) {
+            const user = data.user;
+            const name = user.full_name || user.name || 'User';
+            const dept = user.department || user.department_name || user.program || 'No Department';
+            const type = data.type || 'USER';
 
-            verifiedUser = { id: studentId, name, department: dept, role: 'STUDENT' };
+            verifiedUser = { id: studentId, name, department: dept, role: type };
 
-            infoGroup.className = 'bg-blue-50 border-2 border-blue-300 rounded-lg p-4 text-center';
-            nameDisplay.className = 'text-lg font-bold text-blue-700 mb-1';
-            deptDisplay.className = 'text-blue-700 font-semibold';
-            typeBadge.className = 'mt-2 text-xs font-bold uppercase tracking-widest px-2 py-1 rounded inline-block bg-blue-200 text-blue-800';
-            typeBadge.textContent = 'STUDENT';
+            const isStudent = type === 'STUDENT';
+            const themeClass = isStudent ? 'blue' : 'orange';
+
+            infoGroup.className = `bg-${themeClass}-50 border-2 border-${themeClass}-300 rounded-lg p-4 text-center`;
+            nameDisplay.className = `text-lg font-bold text-${themeClass}-700 mb-1`;
+            deptDisplay.className = `text-${themeClass}-700 font-semibold`;
+            typeBadge.className = `mt-2 text-xs font-bold uppercase tracking-widest px-2 py-1 rounded inline-block bg-${themeClass}-200 text-${themeClass}-800`;
+
+            typeBadge.textContent = type;
             nameDisplay.textContent = name;
             deptDisplay.textContent = dept;
 
             loginBtn.classList.add('hidden');
             startBtn.classList.remove('hidden');
             infoGroup.classList.remove('hidden');
-            alertUser(`Student Verified: ${name}`, 'success');
+            alertUser(`${type} Verified: ${name}`, 'success');
             return;
         }
 
-        // 2. Try Employee Login Second
-        response = await fetch('../server/api/employee_login.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ employee_id: studentId, password: password })
-        });
-
-        data = null;
-        try { data = await response.json(); } catch (e) { console.error('Employee login parse error:', e); }
-        console.log('Employee login response:', data);
-
-        if (data && data.success && data.employee) {
-            const employee = data.employee;
-            const name = employee.full_name || employee.name || 'Employee';
-            const dept = employee.department || employee.department_name || 'No Department';
-
-            verifiedUser = { id: studentId, name, department: dept, role: 'EMPLOYEE' };
-
-            infoGroup.className = 'bg-orange-50 border-2 border-orange-300 rounded-lg p-4 text-center';
-            nameDisplay.className = 'text-lg font-bold text-orange-700 mb-1';
-            deptDisplay.className = 'text-orange-700 font-semibold';
-            typeBadge.className = 'mt-2 text-xs font-bold uppercase tracking-widest px-2 py-1 rounded inline-block bg-orange-200 text-orange-800';
-            typeBadge.textContent = 'EMPLOYEE';
-            nameDisplay.textContent = name;
-            deptDisplay.textContent = dept;
-
-            loginBtn.classList.add('hidden');
-            startBtn.classList.remove('hidden');
-            infoGroup.classList.remove('hidden');
-            alertUser(`Employee Verified: ${name}`, 'success');
-            return;
-        }
-
-        // Both failed — show error
+        // Failed — show error
         const errorMsg = (data && data.message) ? data.message : 'Invalid ID or Password. Please try again.';
         infoGroup.classList.add('hidden');
         startBtn.classList.add('hidden');
@@ -145,6 +116,8 @@ async function handleStudentLogin(event) {
         loginBtn.textContent = 'AUTHENTICATE';
     }
 }
+
+
 
 function proceedToKiosk() {
     if (!verifiedUser) {

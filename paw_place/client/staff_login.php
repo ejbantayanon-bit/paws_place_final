@@ -10,11 +10,23 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>GrabHound - Staff Login</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <script>
+        // Force disable zoom on iOS
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+    </script>
 </head>
 <body>
 
@@ -40,27 +52,10 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
                 <div class="h-1 w-16 bg-maroon mx-auto mt-4 rounded-full bg-[#800000]"></div>
             </header>
 
-            <div id="role-selection" class="space-y-4 w-full max-w-xs">
-                <button onclick="handleRoleSelect('CASHIER')" class="role-button color-maroon hover:bg-red-900 w-full rounded-lg border-transparent">
-                    <span class="text-lg font-bold tracking-wide">CASHIER / POS</span>
-                    <span class="text-xs text-red-100 font-medium uppercase tracking-widest mt-1">Point of Sale</span>
-                </button>
-                
-                <button onclick="handleRoleSelect('ADMIN')" class="role-button color-gray-dark hover:bg-gray-700 w-full rounded-lg border-transparent">
-                    <span class="text-lg font-bold tracking-wide">ADMIN DASHBOARD</span>
-                    <span class="text-xs text-gray-300 font-medium uppercase tracking-widest mt-1">Management</span>
-                </button>
-            </div>
-
-            <div id="login-form-container" class="mt-8 w-full max-w-xs hidden">
-                <div class="text-center mb-6">
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Login Role</p>
-                    <p class="text-xl font-bold text-maroon" id="selected-role"></p>
-                </div>
-                
+            <div id="login-form-container" class="mt-8 w-full max-w-xs">
                 <form id="login-form" class="space-y-5">
                     <div>
-                        <input type="text" id="username" name="username" placeholder="Username" class="input-field w-full placeholder-gray-400 text-gray-800" required>
+                        <input type="text" id="username" name="username" placeholder="Username" class="input-field w-full placeholder-gray-400 text-gray-800" required autofocus>
                     </div>
                     <div>
                         <input type="password" id="password" name="password" placeholder="Password" class="input-field w-full placeholder-gray-400 text-gray-800" required>
@@ -71,7 +66,6 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
                         </button>
                     </div>
                 </form>
-                <button onclick="resetSelection()" class="w-full mt-6 py-2 text-xs font-bold text-gray-400 hover:text-maroon transition uppercase tracking-widest">← Return to Selection</button>
             </div>
             
             <!-- Back to Main Menu removed -->

@@ -24,6 +24,11 @@ class GrubhoundAPI {
         if (!$this->config) {
             throw new Exception('Failed to parse grubhound config JSON');
         }
+        
+        // Use base_url from config if available
+        if (isset($this->config['base_url'])) {
+            $this->baseUrl = rtrim($this->config['base_url'], '/');
+        }
     }
 
     /**
@@ -54,59 +59,82 @@ class GrubhoundAPI {
         $logDir = __DIR__ . '/logs';
         if (!is_dir($logDir)) mkdir($logDir, 0777, true);
         $logFile = $logDir . '/api_errors.log';
+        $lockFile = $logDir . '/refresh.lock';
 
-        $ch = curl_init();
-        
-        // Postman shows refresh_token is passed in Authorization header, empty body
-        curl_setopt_array($ch, [
-            CURLOPT_URL => $refreshUrl,
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_POST => true,
-            CURLOPT_POSTFIELDS => '',
-            CURLOPT_HTTPHEADER => [
-                'Authorization: Bearer ' . $refreshToken,
-                'Accept: application/json'
-            ],
-            CURLOPT_SSL_VERIFYPEER => false,
-            CURLOPT_SSL_VERIFYHOST => false
-        ]);
-
-        $response = curl_exec($ch);
-        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-        $curlError = curl_error($ch);
-        curl_close($ch);
-
-        if ($curlError) {
-            $msg = "[" . date('Y-m-d H:i:s') . "] cURL error during refresh: $curlError\n";
-            file_put_contents($logFile, $msg, FILE_APPEND);
-            throw new Exception('cURL error during token refresh: ' . $curlError);
+        // Use a lock file to prevent concurrent refreshes
+        $fp = fopen($lockFile, 'w');
+        if (!$fp || !flock($fp, LOCK_EX)) {
+            if ($fp) fclose($fp);
+            throw new Exception('Could not acquire refresh lock');
         }
 
-        if ($httpCode === 200) {
-            $newTokenData = json_decode($response, true);
-            if (!$newTokenData || !isset($newTokenData['access_token'])) {
-                $msg = "[" . date('Y-m-d H:i:s') . "] Invalid refresh response: $response\n";
-                file_put_contents($logFile, $msg, FILE_APPEND);
-                throw new Exception('Invalid token refresh response: ' . $response);
-            }
-            
-            $this->config['access_token'] = $newTokenData['access_token'];
-            $this->config['refresh_token'] = $newTokenData['refresh_token'] ?? $this->config['refresh_token'];
-            
-            // Handle expiration
-            if (isset($newTokenData['expires_at'])) {
-                $this->config['expires_at'] = $newTokenData['expires_at'];
-            } elseif (isset($newTokenData['expires_in'])) {
-                $this->config['expires_at'] = date('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
-            } else {
-                $this->config['expires_at'] = date('Y-m-d H:i:s', time() + 7200);
+        try {
+            // Re-load config inside the lock to check if someone else already refreshed it
+            $currentConfig = json_decode(file_get_contents($this->configPath), true);
+            $expiresAt = isset($currentConfig['expires_at']) ? strtotime($currentConfig['expires_at']) : 0;
+            if ($expiresAt > (time() + 300)) { 
+                // Token was refreshed by another process while we were waiting for the lock
+                $this->config = $currentConfig;
+                return;
             }
 
-            $this->saveConfig();
-        } else {
-            $msg = "[" . date('Y-m-d H:i:s') . "] Token refresh failed (HTTP $httpCode): $response\n";
-            file_put_contents($logFile, $msg, FILE_APPEND);
-            throw new Exception('Token refresh failed (HTTP ' . $httpCode . '): ' . $response);
+            $ch = curl_init();
+            
+            // Postman shows refresh_token is passed in Authorization header, empty body
+            curl_setopt_array($ch, [
+                CURLOPT_URL => $refreshUrl,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_POST => true,
+                CURLOPT_POSTFIELDS => '',
+                CURLOPT_HTTPHEADER => [
+                    'Authorization: Bearer ' . $refreshToken,
+                    'Accept: application/json'
+                ],
+                CURLOPT_SSL_VERIFYPEER => false,
+                CURLOPT_SSL_VERIFYHOST => false
+            ]);
+
+            $response = curl_exec($ch);
+            $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $curlError = curl_error($ch);
+            curl_close($ch);
+
+            if ($curlError) {
+                $msg = "[" . date('Y-m-d H:i:s') . "] cURL error during refresh: $curlError\n";
+                file_put_contents($logFile, $msg, FILE_APPEND);
+                throw new Exception('cURL error during token refresh: ' . $curlError);
+            }
+
+            if ($httpCode === 200) {
+                $newTokenData = json_decode($response, true);
+                if (!$newTokenData || !isset($newTokenData['access_token'])) {
+                    $msg = "[" . date('Y-m-d H:i:s') . "] Invalid refresh response: $response\n";
+                    file_put_contents($logFile, $msg, FILE_APPEND);
+                    throw new Exception('Invalid token refresh response: ' . $response);
+                }
+                
+                $this->config['access_token'] = $newTokenData['access_token'];
+                $this->config['refresh_token'] = $newTokenData['refresh_token'] ?? $this->config['refresh_token'];
+                
+                // Handle expiration
+                if (isset($newTokenData['expires_at'])) {
+                    $this->config['expires_at'] = $newTokenData['expires_at'];
+                } elseif (isset($newTokenData['expires_in'])) {
+                    $this->config['expires_at'] = date('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
+                } else {
+                    $this->config['expires_at'] = date('Y-m-d H:i:s', time() + 7200);
+                }
+
+                $this->saveConfig();
+            } else {
+                $msg = "[" . date('Y-m-d H:i:s') . "] Token refresh failed (HTTP $httpCode): $response\n";
+                file_put_contents($logFile, $msg, FILE_APPEND);
+                throw new Exception('Token refresh failed (HTTP ' . $httpCode . '): ' . $response);
+            }
+        } finally {
+            // Release the lock
+            flock($fp, LOCK_UN);
+            fclose($fp);
         }
     }
 

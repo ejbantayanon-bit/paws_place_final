@@ -14,17 +14,19 @@ if (!$category) {
 try {
     $api = new GrubhoundAPI();
 
-    // Map local category names to MIS API category names
+    // Map friendly category names (from get_cafeteria_categories.php) to MIS API category names
     $categoryMap = [
-        'Hot Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
-        'Cold Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee', 'Drinks'],
+        'Coffee' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
         'Milk Tea' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
-        'Specialty Drinks (Hot/Cold)' => ['Coffee And Milktea 2-paws Place', 'Milktea And Ice Coffee'],
-        'Fruity Soda' => ['Drinks'],
-        'Milk Drink (350ml)' => ['Drinks'],
-        'Ice Cream in Cups (100g)' => ['Ice Cream'],
-        'Ice Cream Bar (95g)' => ['Ice Cream'],
-        'Snacks' => ['Snacks', 'Bread', 'Candy', 'Food'],
+        'Drinks' => ['Drinks'], 
+        'Fruits' => ['Fruits'],
+        'Ice Cream' => ['Ice Cream', 'Ice Cream in Cups'],
+        'Snacks' => ['Snacks', 'Candy'],
+        'Food' => ['Food'],
+        'Bread' => ['Bread'],
+        'Consignment' => ['Consignment'],
+        'Candy' => ['Candy'],
+        'Supply' => ['Supply'],
     ];
 
     // Use mapping if available, otherwise use the category name directly

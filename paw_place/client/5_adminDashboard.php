@@ -10,13 +10,24 @@ if ($current_user_role !== 'Admin') {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>GrabHound Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <script>
+        // Force disable zoom on iOS
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
 
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+    </script>
 </head>
 <body>
 
@@ -131,6 +142,7 @@ if ($current_user_role !== 'Admin') {
                                     <tr>
                                         <th class="p-4 text-left border-b">Order ID</th>
                                         <th class="p-4 text-left border-b">Items</th>
+                                        <th class="p-4 text-left border-b">Cashier</th>
                                         <th class="p-4 text-left border-b">Total</th>
                                         <th class="p-4 text-left border-b">Status</th>
                                         <th class="p-4 text-left border-b">Time</th>
@@ -226,7 +238,8 @@ if ($current_user_role !== 'Admin') {
                                         <th class="p-4 text-left border-b">Order ID</th>
                                         <th class="p-4 text-left border-b">Date/Time</th>
                                         <th class="p-4 text-left border-b">Type</th>
-                                        <th class="p-4 text-left border-b w-1/3">Items</th>
+                                        <th class="p-4 text-left border-b w-1/4">Items</th>
+                                        <th class="p-4 text-left border-b">Cashier</th>
                                         <th class="p-4 text-right border-b">Total</th>
                                         <th class="p-4 text-center border-b">Status</th>
                                     </tr>

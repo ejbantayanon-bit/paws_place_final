@@ -82,12 +82,12 @@ try {
     // We need to join order_items with menu_items
     // status check on orders table is important to only count valid sales
     $topItemsQuery = "
-        SELECT mi.name, SUM(oi.quantity) as total_sold
+        SELECT COALESCE(mi.name, oi.external_item_name) as item_display_name, SUM(oi.quantity) as total_sold
         FROM order_items oi
         JOIN orders o ON oi.order_id = o.order_id
-        JOIN menu_items mi ON oi.menu_item_id = mi.item_id
+        LEFT JOIN menu_items mi ON oi.menu_item_id = mi.item_id
         WHERE o.status IN ('PREPARING', 'READY', 'SERVED')
-        GROUP BY oi.menu_item_id
+        GROUP BY item_display_name
         ORDER BY total_sold DESC
         LIMIT 5
     ";
@@ -95,7 +95,7 @@ try {
     $topItems = [];
     while ($row = $result->fetch_assoc()) {
         $topItems[] = [
-            'name' => $row['name'],
+            'name' => $row['item_display_name'],
             'count' => intval($row['total_sold'])
         ];
     }
@@ -104,13 +104,13 @@ try {
     // Assuming categories table exists or we group by category_id directly if no table
     // Based on previous file reads, 'categories' table exists.
     $categorySalesQuery = "
-        SELECT c.name as category_name, SUM(oi.price_at_sale * oi.quantity) as total_sales
+        SELECT COALESCE(c.name, 'Cafeteria Store') as category_display_name, SUM(oi.price_at_sale * oi.quantity) as total_sales
         FROM order_items oi
         JOIN orders o ON oi.order_id = o.order_id
-        JOIN menu_items mi ON oi.menu_item_id = mi.item_id
-        JOIN categories c ON mi.category_id = c.category_id
+        LEFT JOIN menu_items mi ON oi.menu_item_id = mi.item_id
+        LEFT JOIN categories c ON mi.category_id = c.category_id
         WHERE o.status IN ('PREPARING', 'READY', 'SERVED')
-        GROUP BY c.category_id
+        GROUP BY category_display_name
         ORDER BY total_sales DESC
     ";
     

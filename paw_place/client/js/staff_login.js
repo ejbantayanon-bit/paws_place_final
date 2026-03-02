@@ -1,35 +1,14 @@
-let selectedRole = '';
-
-// Initialize event listener
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
     if (form) form.addEventListener('submit', handleLoginSubmit);
 
+    // Focus on username
+    const usernameInput = document.getElementById('username');
+    if (usernameInput) usernameInput.focus();
+
     // Refresh external API token on load
     refreshGrubhoundToken();
 });
-
-function handleRoleSelect(role) {
-    selectedRole = role;
-
-    // UI Updates
-    document.getElementById('selected-role').textContent = role.replace('_', ' ');
-    document.getElementById('role-selection').classList.add('hidden');
-    document.getElementById('login-form-container').classList.remove('hidden');
-
-    const usernameInput = document.getElementById('username');
-    const loginBtn = document.getElementById('login-btn');
-
-    loginBtn.textContent = role === 'ADMIN' ? 'ADMIN LOGIN' : 'CASHIER LOGIN';
-    usernameInput.focus();
-}
-
-function resetSelection() {
-    selectedRole = '';
-    document.getElementById('login-form-container').classList.add('hidden');
-    document.getElementById('role-selection').classList.remove('hidden');
-    document.getElementById('login-form').reset();
-}
 
 function handleLoginSubmit(event) {
     event.preventDefault();
@@ -43,7 +22,6 @@ function handleLoginSubmit(event) {
 
     // Build form data
     const fd = new FormData();
-    fd.append('role', selectedRole);
     fd.append('username', username);
     fd.append('password', password);
 
@@ -61,14 +39,14 @@ function handleLoginSubmit(event) {
             } else {
                 alertUser(data.message || 'Invalid credentials', 'error');
                 loginButton.disabled = false;
-                loginButton.textContent = selectedRole === 'ADMIN' ? 'ADMIN LOGIN' : 'CASHIER LOGIN';
+                loginButton.textContent = 'AUTHENTICATE';
             }
         })
         .catch(err => {
             console.error(err);
             alertUser('Network or server error', 'error');
             loginButton.disabled = false;
-            loginButton.textContent = selectedRole === 'ADMIN' ? 'ADMIN LOGIN' : 'CASHIER LOGIN';
+            loginButton.textContent = 'AUTHENTICATE';
         });
 }
 
@@ -92,8 +70,6 @@ function alertUser(message, type = 'info') {
     setTimeout(() => alert.remove(), 3000);
 }
 
-
-// --- GRUBHOUND INTEGRATION ---
 function refreshGrubhoundToken() {
     console.log('Refreshing Grubhound Token...');
     fetch('../server/refresh_grubhound_token.php')
@@ -101,7 +77,6 @@ function refreshGrubhoundToken() {
         .then(data => {
             if (data.success) {
                 console.log('Grubhound Token Refreshed:', data.message);
-                // Optional property: show a small toast if critical
             } else {
                 console.warn('Grubhound Token Refresh Failed:', data.error);
             }

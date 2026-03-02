@@ -10,12 +10,23 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>GrabHound Staff POS</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/pos.css">
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+    <script>
+        // Force disable zoom on iOS
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
 
+        document.addEventListener('gesturestart', function(event) {
+            event.preventDefault();
+        });
+    </script>
 </head>
 <body>
 
@@ -26,9 +37,15 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
         <aside id="main-sidebar" class="w-64 bg-white border-r border-gray-200 flex flex-col justify-between shadow-lg z-20 transition-all duration-300">
             <div>
                 <div class="p-6 border-b border-gray-100 flex items-center gap-3 h-20">
-                    <div class="text-maroon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
+                    <?php if ($current_assigned_store === 'Paws Place' || $current_assigned_store === 'All'): ?>
+                        <div class="text-maroon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
+                    <?php else: ?>
+                        <div class="text-maroon"><i class="ph-duotone ph-storefront" style="font-size:28px"></i></div>
+                    <?php endif; ?>
                     <div>
-                        <h1 class="font-black text-xl text-gray-800">GRABHOUND</h1>
+                        <h1 class="font-black text-xl text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis" style="max-width: 160px;" title="<?= htmlspecialchars($current_assigned_store) ?>">
+                            <?= $current_assigned_store === 'All' ? 'GRABHOUND' : strtoupper(htmlspecialchars($current_assigned_store)) ?>
+                        </h1>
                         <p class="text-xs text-gray-500 font-bold tracking-widest">STAFF TERMINAL</p>
                     </div>
                 </div>
@@ -54,9 +71,10 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
             </div>
 
             <div class="p-4 border-t border-gray-100">
-                <div class="bg-gray-50 p-3 rounded-lg mb-3">
-                    <p class="text-xs text-gray-500 uppercase font-bold">Logged in as</p>
-                    <p class="font-bold text-gray-800 truncate" id="staff-name"><?= htmlspecialchars($current_user_name) ?></p>
+                <div class="bg-gray-50 p-3 rounded-lg mb-3 border border-gray-100 shadow-sm">
+                    <p class="text-[10px] text-gray-500 uppercase font-bold tracking-wider mb-1">Logged in as</p>
+                    <p class="font-extrabold text-gray-800 text-sm truncate uppercase" id="staff-name"><?= htmlspecialchars($current_user_name) ?></p>
+                    <p class="text-xs text-maroon font-black mt-1 bg-red-50 inline-block px-2 py-0.5 rounded-md border border-red-100"><?= htmlspecialchars($current_assigned_store) ?> POS</p>
                 </div>
                 <button onclick="logout()" class="w-full py-2 bg-red-100 text-red-700 font-bold rounded-lg hover:bg-red-200 transition text-sm">
                     Logout
@@ -89,8 +107,21 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                 <!-- VIEW 1: POS / ORDER PROCESSING -->
                 <div id="view-pos" class="view-section h-full flex">
                     <div class="flex-1 flex flex-col h-full">
-                        <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-end">
-                             <button onclick="fetchPendingOrders()" class="text-maroon font-bold text-sm hover:underline flex items-center gap-1">
+                        <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
+                            <div class="flex items-center gap-3">
+                                <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest px-1">Layout:</span>
+                                <div class="flex bg-white p-1 rounded-xl shadow-sm border border-gray-200">
+                                    <button onclick="setPosViewMode('grid')" id="pos-view-grid-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all font-black text-[10px] uppercase tracking-tighter bg-maroon text-white shadow-sm">
+                                        <i class="ph-bold ph-squares-four text-base"></i>
+                                        <span>Grid</span>
+                                    </button>
+                                    <button onclick="setPosViewMode('list')" id="pos-view-list-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all font-black text-[10px] uppercase tracking-tighter text-gray-400 hover:text-gray-600">
+                                        <i class="ph-bold ph-list text-base"></i>
+                                        <span>List</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <button onclick="fetchPendingOrders()" class="text-maroon font-bold text-sm hover:underline flex items-center gap-1">
                                 <span>⟳</span> Refresh Queue
                             </button>
                         </div>
@@ -175,7 +206,19 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                             <h3 class="font-black text-2xl text-gray-800 mb-2">Menu Availability</h3>
                             <p class="text-sm text-gray-500 mb-4">Click any item to toggle its availability in the kiosk.</p>
                             
-                            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Select Category</h4>
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-xs font-bold text-gray-400 uppercase tracking-widest">Select Category</h4>
+                                <div class="flex bg-gray-100 p-1 rounded-xl shadow-inner border border-gray-200">
+                                    <button onclick="setViewMode('grid')" id="view-grid-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all font-black text-[10px] uppercase tracking-tighter bg-white shadow-sm text-maroon">
+                                        <i class="ph-bold ph-squares-four text-base"></i>
+                                        <span>Grid</span>
+                                    </button>
+                                    <button onclick="setViewMode('list')" id="view-list-btn" class="flex items-center gap-1 px-3 py-1.5 rounded-lg transition-all font-black text-[10px] uppercase tracking-tighter text-gray-400 hover:text-gray-600">
+                                        <i class="ph-bold ph-list text-base"></i>
+                                        <span>List</span>
+                                    </button>
+                                </div>
+                            </div>
                             <div id="inventory-categories" class="flex gap-2 overflow-x-auto pb-2 custom-scroll no-scrollbar">
                                 <!-- Populated by JS -->
                             </div>
@@ -225,7 +268,8 @@ if (!in_array($current_user_role, ['Admin','Cashier'])) {
                                             <th class="p-4 border-b">Order ID</th>
                                             <th class="p-4 border-b">Date/Time</th>
                                             <th class="p-4 border-b">Type</th>
-                                            <th class="p-4 border-b">Items</th>
+                                            <th class="p-4 border-b w-1/3">Items</th>
+                                            <th class="p-4 border-b">Cashier</th>
                                             <th class="p-4 border-b">Total</th>
                                             <th class="p-4 border-b">Status</th>
                                         </tr>

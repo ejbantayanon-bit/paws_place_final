@@ -42,6 +42,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $userRole = isset($_SESSION['role']) ? $_SESSION['role'] : null;
     if ($userRole !== 'KIOSK' && isset($_SESSION['user_id']) && is_numeric($_SESSION['user_id']) && (int)$_SESSION['user_id'] > 0) {
         $cashier_id = (int)$_SESSION['user_id'];
+        
+        // Verify cashier_id exists in local users table to prevent FK constraint error
+        $check_stmt = $conn->prepare("SELECT user_id FROM users WHERE user_id = ?");
+        $check_stmt->bind_param('i', $cashier_id);
+        $check_stmt->execute();
+        if ($check_stmt->get_result()->num_rows === 0) {
+            $cashier_id = null;
+        }
+        $check_stmt->close();
     } else if ($userRole === 'KIOSK' && isset($_SESSION['user_id'])) {
         $student_id = (string)$_SESSION['user_id'];
     }
@@ -83,7 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->close();
         
         // If this is a GUEST order, track it in the session
-        if ($student_id === 'GUEST') {
+        if ($student_id && strpos($student_id, 'GUEST') === 0) {
             if (!isset($_SESSION['guest_order_ids'])) {
                 $_SESSION['guest_order_ids'] = [];
             }
@@ -96,15 +105,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $quantity = $item['quantity'];
             $price_at_sale = $item['price_at_sale'];
             $modifiers_json = isset($item['modifiers']) ? json_encode($item['modifiers']) : null;
+            $external_item_name = isset($item['external_item_name']) ? $item['external_item_name'] : null;
             
+            // Determine if we should save a local menu_item_id
+            // If it's a cafeteria store, we might want to set menu_item_id to NULL if it's external
+            $is_external = ($order_source !== 'Paws Place' && $order_source !== 'Manual_POS' && $order_source !== 'Kiosk');
+            $db_menu_item_id = $is_external ? null : $menu_item_id;
+
             // Insert order item
-            $stmt = $conn->prepare("INSERT INTO order_items (order_id, menu_item_id, quantity, price_at_sale, modifiers) VALUES (?, ?, ?, ?, ?)");
-            $stmt->bind_param('iiiis', $order_id, $menu_item_id, $quantity, $price_at_sale, $modifiers_json);
+            $stmt = $conn->prepare("INSERT INTO order_items (order_id, menu_item_id, external_item_name, quantity, price_at_sale, modifiers) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param('iisids', $order_id, $db_menu_item_id, $external_item_name, $quantity, $price_at_sale, $modifiers_json);
             if (!$stmt->execute()) {
                 throw new Exception($stmt->error);
             }
             $stmt->close();
             
+            // Skip recipe/inventory for external (cafeteria) items
+            if ($is_external) {
+                continue;
+            }
+
             // Get recipe for this menu item and consume inventory
             $recipe_stmt = $conn->prepare("SELECT raw_id, quantity_consumed FROM recipes WHERE menu_item_id = ?");
             $recipe_stmt->bind_param('i', $menu_item_id);

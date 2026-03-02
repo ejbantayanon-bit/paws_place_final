@@ -25,25 +25,90 @@ const CATEGORY_ICONS = {
     'Default': '<i class="ph-duotone ph-fork-knife"></i>'
 };
 
+let categories = [];
+let currentCategory = null;
 let cart = [];
-let activeCategory = 'Milktea';
+let initialStoreValue = "";
 let activeSubFilter = 'Hot Brew'; // Default for Coffee/Specialty
-let selectedItemForModal = null;
+let selectedItemForModal = null; // This was missing an assignment in the instruction, assuming null.
+let viewMode = 'grid'; // Default view mode
 
-document.addEventListener('DOMContentLoaded', () => { fetchMenuData(); });
+function setViewMode(mode) {
+    viewMode = mode;
+    // Update button styles
+    const gridBtn = document.getElementById('view-grid-btn');
+    const listBtn = document.getElementById('view-list-btn');
+
+    if (mode === 'grid') {
+        gridBtn.classList.add('bg-white', 'shadow-sm', 'text-[#800000]');
+        gridBtn.classList.remove('text-gray-400');
+        listBtn.classList.remove('bg-white', 'shadow-sm', 'text-[#800000]');
+        listBtn.classList.add('text-gray-400');
+    } else {
+        listBtn.classList.add('bg-white', 'shadow-sm', 'text-[#800000]');
+        listBtn.classList.remove('text-gray-400');
+        gridBtn.classList.remove('bg-white', 'shadow-sm', 'text-[#800000]');
+        gridBtn.classList.add('text-gray-400');
+    }
+
+    renderMenu(MENU); // Re-render with new mode and current data
+}
+
+// Helper to clean item names (remove @ price and (Hot))
+function cleanName(name) {
+    if (!name) return "";
+    return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
+}
+// ===== INITIALIZATION =====
+document.addEventListener('DOMContentLoaded', () => {
+    const switcher = document.getElementById('store-switcher');
+    if (switcher) initialStoreValue = switcher.value;
+
+    // Custom dropdown toggler logic
+    const dropdownBtn = document.getElementById('store-dropdown-btn');
+    const dropdownMenu = document.getElementById('store-dropdown-menu');
+
+    if (dropdownBtn && dropdownMenu) {
+        dropdownBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('opacity-0');
+            dropdownMenu.classList.toggle('invisible');
+            dropdownMenu.classList.toggle('scale-95');
+        });
+
+        // Close when clicking completely outside
+        document.addEventListener('click', (e) => {
+            if (!dropdownBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
+                dropdownMenu.classList.add('opacity-0', 'invisible', 'scale-95');
+            }
+        });
+    }
+
+    // Load config and init
+    fetchMenuData();
+});
 // Auto-poll menu every 2 seconds to sync availability changes immediately
 setInterval(() => fetchMenuData(true), 2000);
 
 function exitKiosk() {
-    // Show confirmation modal to exit to main login
+    // If cart is empty, bypass confirmation and go back to dashboard
+    if (cart.length === 0) {
+        window.location.href = 'store_selection.php';
+        return;
+    }
+
+    // Show confirmation modal to exit to main dashboard
     const modal = document.getElementById('modal-container');
     modal.innerHTML = `
-        <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up">
-            <h3 class="text-lg font-bold mb-2">Exit Ordering?</h3>
-            <p class="text-sm text-gray-500 mb-4">You will be returned to the login screen.</p>
-            <div class="flex gap-3">
-                <button onclick="closeModal()" class="flex-1 py-2 bg-gray-200 rounded-md font-semibold">Continue Ordering</button>
-                <button id="exit-confirm-btn" class="flex-1 py-2 bg-[#800000] text-white rounded-md font-semibold">Exit</button>
+        <div class="bg-white p-8 rounded-3xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up border-t-8 border-[#800000]">
+            <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                <i class="ph-duotone ph-house text-[#800000] text-4xl"></i>
+            </div>
+            <h3 class="text-2xl font-black text-gray-800 mb-2">Return to Dashboard?</h3>
+            <p class="text-gray-500 mb-8 leading-relaxed">Your current tray items will be cleared if you leave this page.</p>
+            <div class="flex flex-col gap-3">
+                <button id="exit-confirm-btn" class="w-full py-4 bg-[#800000] text-white rounded-xl font-bold shadow-lg shadow-red-100 hover:bg-red-900 transition-all active:scale-95">Yes, Return to Dashboard</button>
+                <button onclick="closeModal()" class="w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">Keep Ordering</button>
             </div>
         </div>
     `;
@@ -53,6 +118,10 @@ function exitKiosk() {
     document.getElementById('exit-confirm-btn').onclick = () => {
         window.location.href = 'store_selection.php';
     };
+}
+
+function closeModal() {
+    document.getElementById('modal-container').classList.add('hidden');
 }
 
 // --- CURRENCY FORMATTER ---
@@ -198,7 +267,7 @@ function renderMenu(menu, filter = activeCategory) {
     categoryFilter.style.display = 'flex';
     categoryFilter.style.overflowX = 'auto';
     categoryFilter.style.gap = '12px';
-    categoryFilter.style.padding = '8px 0';
+    categoryFilter.style.padding = '12px 0'; // Sync with cafeteria
     categoryFilter.style.whiteSpace = 'nowrap';
 
     categories.forEach(cat => {
@@ -250,7 +319,7 @@ function renderMenu(menu, filter = activeCategory) {
 
         // Filter items based on switch
         const grid = document.createElement('div');
-        grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
+        grid.className = viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full' : 'menu-item-list-view';
         menuContainer.appendChild(grid);
 
         const itemsToRender = menu.filter(item => item.category === filter && item.type === activeSubFilter);
@@ -259,7 +328,7 @@ function renderMenu(menu, filter = activeCategory) {
     } else {
         // STANDARD RENDERING or single-type category
         const grid = document.createElement('div');
-        grid.className = 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full';
+        grid.className = viewMode === 'grid' ? 'grid grid-cols-2 md:grid-cols-3 gap-4 w-full' : 'menu-item-list-view';
         menuContainer.appendChild(grid);
 
         const filteredMenu = menu.filter(item => item.category === filter);
@@ -272,21 +341,24 @@ function renderMenu(menu, filter = activeCategory) {
 function createItemCard(item) {
     const itemCard = document.createElement('div');
     itemCard.id = `item-card-${item.item_id}`;
-    itemCard.className = `menu-item-card p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-50 pointer-events-none' : ''}`;
+    itemCard.className = `menu-item-card p-4 rounded-xl shadow-sm flex flex-col items-center justify-between cursor-pointer h-40 relative overflow-hidden group ${!item.is_available ? 'opacity-60' : ''}`;
     itemCard.onclick = item.is_available ? () => openItemModal(item) : null;
 
     const typeBadge = item.category === 'Coffee'
-        ? `<span class="absolute top-2 right-2 text-[10px] font-bold px-2 py-0.5 rounded-full ${item.type === 'Cold Brew' ? 'bg-blue-100 text-blue-700' : 'bg-red-100 text-red-700'}">${item.type}</span>`
+        ? `<span class="absolute top-2 left-2 text-[9px] font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 uppercase tracking-tighter z-10">${item.type}</span>`
         : '';
 
     itemCard.innerHTML = `
         ${typeBadge}
+        ${item.is_available
+            ? '<span class="status-badge available">Available</span>'
+            : '<span class="status-badge unavailable">Sold Out</span>'}
         <div class="text-5xl mb-2 text-[#800000] group-hover:scale-110 transition-transform duration-200">${item.icon}</div>
         <div class="text-center w-full">
-            <p class="text-sm font-bold text-gray-800 truncate">${item.name}</p>
+            <p class="text-sm font-bold text-gray-800 line-clamp-2 leading-tight h-10 flex items-center justify-center">${cleanName(item.name)}</p>
             <p class="text-lg font-black text-[#800000]">${formatCurrency(item.base_price)}</p>
         </div>
-        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-100 bg-opacity-80 flex items-center justify-center text-red-600 font-bold transform rotate-[-15deg] border-2 border-red-600 rounded">UNAVAILABLE</div>' : ''}
+        ${!item.is_available ? '<div class="absolute inset-0 bg-gray-50 bg-opacity-40 flex items-center justify-center"></div>' : ''}
     `;
     return itemCard;
 }
@@ -321,20 +393,41 @@ function openItemModal(item) {
             </div>
         `;
     } else {
-        addonsHTML = `<div class="bg-gray-50 p-4 rounded-lg mb-4 w-full"><p class="text-sm text-gray-400 italic text-center">No add-ons available for this item.</p></div>`;
+        addonsHTML = '';
+    }
+
+    // Variant detection: split by "," or " And " ONLY if a comma exists (handles "Kopiko Black, Blanca And Brown" vs "Fit and Right")
+    const hasComma = item.name.includes(',');
+    const variants = hasComma ? item.name.split(/[,]|(?:\s+And\s+)/i).map(v => v.trim()).filter(v => v) : null;
+    let variantsHTML = '';
+    if (variants) {
+        variantsHTML = `
+            <div class="text-left bg-gray-50 p-4 rounded-lg mb-4 w-full">
+                <p class="text-xs font-bold text-gray-500 uppercase mb-3 tracking-wider">Select Item</p>
+                <div class="space-y-2">
+                    ${variants.map((v, idx) => `
+                        <label class="flex items-center cursor-pointer bg-white p-3 rounded-xl border border-gray-200 hover:border-[#800000] transition group">
+                            <input type="radio" name="item-variant" value="${v}" ${idx === 0 ? 'checked' : ''} class="w-5 h-5 accent-[#800000] cursor-pointer">
+                            <span class="text-gray-800 text-sm font-bold ml-3 group-hover:text-[#800000]">${v}</span>
+                        </label>
+                    `).join('')}
+                </div>
+            </div>
+        `;
     }
 
     modal.innerHTML = `
-        <div class="bg-white p-6 rounded-2xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up flex flex-col items-center">
-            <div class="text-6xl mb-2">${item.icon}</div>
-            <h2 class="text-2xl font-black text-gray-800 mb-1">${item.name}</h2>
-            <p class="text-lg font-bold text-[#800000] mb-6">${formatCurrency(item.base_price)}</p>
+        <div class="bg-white p-8 rounded-[2rem] w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up flex flex-col items-center">
+            <div class="text-7xl mb-4 p-4 bg-gray-50 rounded-full text-[#800000]">${item.icon || '<i class="ph-duotone ph-fork-knife"></i>'}</div>
+            <h2 class="text-3xl font-black text-gray-800 mb-1 tracking-tight">${variants ? 'Choose Variant' : cleanName(item.name)}</h2>
+            <p class="text-2xl font-black text-[#800000] mb-6">${formatCurrency(item.base_price)}</p>
             
+            ${variantsHTML}
             ${addonsHTML}
 
-            <div class="flex gap-3 w-full">
-                <button onclick="closeModal()" class="flex-1 py-3 bg-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-300">Cancel</button>
-                <button onclick="confirmAddToCart()" class="flex-1 py-3 bg-[#800000] text-white font-bold rounded-xl hover:bg-red-900 shadow-lg">Add to Tray</button>
+            <div class="flex gap-4 w-full mt-4">
+                <button onclick="closeModal()" class="flex-1 py-4 bg-[#e5e7eb] text-gray-700 font-black rounded-xl hover:bg-gray-300 transition-all active:scale-95">Cancel</button>
+                <button onclick="confirmAddToCart()" class="flex-1 py-4 bg-[#800000] text-white font-black rounded-xl hover:bg-red-900 shadow-xl transition-all active:scale-95">Add to Tray</button>
             </div>
         </div>
     `;
@@ -351,14 +444,18 @@ function confirmAddToCart() {
         addonsCost += ADDON_PRICES[cb.value];
     });
 
+    const selectedVariant = document.querySelector('input[name="item-variant"]:checked')?.value;
+
     const newItem = {
         ...selectedItemForModal,
+        name: selectedVariant || selectedItemForModal.name,
         modifiers: selectedAddons,
         final_price: selectedItemForModal.base_price + addonsCost
     };
 
     const existingItem = cart.find(i =>
         i.item_id === newItem.item_id &&
+        i.name === newItem.name &&
         JSON.stringify(i.modifiers.sort()) === JSON.stringify(newItem.modifiers.sort())
     );
 
@@ -414,6 +511,7 @@ function calculateCartTotal() {
 
 function renderCart() {
     const cartContainer = document.getElementById('cart-list');
+    const countEl = document.getElementById('cart-count');
     const subtotalEl = document.getElementById('cart-subtotal');
     const totalEl = document.getElementById('cart-total');
     const btn = document.getElementById('place-order-btn');
@@ -421,8 +519,10 @@ function renderCart() {
 
     cartContainer.innerHTML = '';
     const total = calculateCartTotal();
+    const itemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
 
     if (cart.length === 0) {
+        if (countEl) countEl.classList.add('hidden');
         if (emptyBtn) emptyBtn.classList.add('hidden');
         cartContainer.innerHTML = `
             <div class="flex flex-col items-center justify-center h-full text-gray-400">
@@ -432,6 +532,10 @@ function renderCart() {
         `;
         btn.disabled = true;
     } else {
+        if (countEl) {
+            countEl.textContent = itemCount;
+            countEl.classList.remove('hidden');
+        }
         if (emptyBtn) emptyBtn.classList.remove('hidden');
         cart.forEach((item, index) => {
             const addonsText = item.modifiers && item.modifiers.length > 0
@@ -439,20 +543,20 @@ function renderCart() {
                 : '';
 
             const itemEl = document.createElement('div');
-            itemEl.className = 'flex items-center justify-between bg-white p-3 rounded-lg shadow-sm border border-gray-100';
+            itemEl.className = 'cart-item';
             itemEl.innerHTML = `
-                <div class="flex-grow">
-                    <p class="font-bold text-gray-800 text-sm">${item.name}</p>
+                <div class="cart-item-info">
+                    <p class="cart-item-name">${cleanName(item.name)}</p>
                     ${addonsText}
-                    <p class="text-xs text-[#800000] font-bold mt-1">${formatCurrency(item.final_price)}</p>
+                    <p class="cart-item-price">${formatCurrency(item.final_price)}</p>
                 </div>
-                <div class="flex items-center space-x-2">
-                    <div class="flex items-center bg-gray-100 rounded-lg p-1 mr-2">
-                        <button onclick="updateCartItemQuantity(${index}, -1)" class="w-8 h-8 flex items-center justify-center text-gray-600 font-bold hover:bg-gray-200 rounded">-</button>
-                        <input type="number" value="${item.quantity}" min="1" oninput="handleQuantityInput(${index}, this.value)" onblur="renderCart()" class="quantity-input w-10 text-center font-bold text-sm bg-transparent border-none focus:outline-none focus:ring-0">
-                        <button onclick="updateCartItemQuantity(${index}, 1)" class="w-8 h-8 flex items-center justify-center text-gray-600 font-bold hover:bg-gray-200 rounded">+</button>
+                <div class="cart-item-controls">
+                    <div class="flex items-center bg-gray-50 rounded-lg p-1 mr-2 border border-gray-100">
+                        <button onclick="updateCartItemQuantity(${index}, -1)" class="cart-qty-btn">-</button>
+                        <input type="number" value="${item.quantity}" min="1" oninput="handleQuantityInput(${index}, this.value)" onblur="renderCart()" class="quantity-input w-8 text-center font-black text-sm bg-transparent border-none focus:outline-none focus:ring-0">
+                        <button onclick="updateCartItemQuantity(${index}, 1)" class="cart-qty-btn">+</button>
                     </div>
-                    <button onclick="removeItem(${index})" class="w-8 h-8 flex items-center justify-center bg-red-50 text-[#800000] rounded-lg hover:bg-red-100 transition">
+                    <button onclick="removeItem(${index})" class="cart-qty-btn remove">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                         </svg>
@@ -528,7 +632,7 @@ async function finalizeOrder() {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 items: items,
-                order_source: 'Kiosk'
+                order_source: 'Paws Place'
             })
         });
 
@@ -549,19 +653,33 @@ async function finalizeOrder() {
 function showOrderSuccess(code, total) {
     const modal = document.getElementById('modal-container');
     modal.innerHTML = `
-        <div class="bg-white p-8 rounded-2xl w-11/12 max-w-md shadow-2xl text-center relative overflow-hidden">
-            <div class="absolute top-0 left-0 w-full h-2 bg-[#800000]"></div>
-            <h2 class="text-3xl font-black text-gray-800 mb-2">ORDER SENT!</h2>
-            <p class="text-gray-500 text-sm mb-6">Please pay at the counter to finalize.</p>
-            <div class="bg-gray-100 p-6 rounded-xl border-2 border-dashed border-gray-300 mb-6">
-                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Your Order Code</p>
-                <p class="text-6xl font-black text-[#800000] tracking-tighter">${code}</p>
+        <div class="bg-white p-8 rounded-[2rem] w-11/12 max-w-sm shadow-2xl text-center relative overflow-hidden animate-fade-in-up">
+            <div class="absolute top-0 left-0 w-full h-3 bg-[#800000]"></div>
+            
+            <div class="w-20 h-20 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-6 mt-4">
+                <i class="ph-duotone ph-check-circle text-green-500 text-5xl"></i>
             </div>
-            <div class="text-center mb-6">
-                <span class="font-bold text-gray-600">Total Due: </span>
-                <span class="font-black text-xl text-[#800000]">${formatCurrency(total)}</span>
+
+            <h2 class="text-4xl font-black text-gray-800 mb-2 tracking-tighter">ORDER SENT!</h2>
+            <p class="text-gray-500 text-sm mb-8 leading-relaxed">Please proceed to the counter to pay and finalize your order.</p>
+
+            <div class="bg-gray-50 p-6 rounded-2xl border-2 border-dashed border-gray-200 mb-8 relative">
+                <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-2">Your Order Code</p>
+                <p class="text-6xl font-black text-[#800000] tracking-tighter tabular-nums">${code}</p>
+                <div class="absolute -top-3 -left-3 w-6 h-6 bg-white rounded-full"></div>
+                <div class="absolute -top-3 -right-3 w-6 h-6 bg-white rounded-full"></div>
+                <div class="absolute -bottom-3 -left-3 w-6 h-6 bg-white rounded-full"></div>
+                <div class="absolute -bottom-3 -right-3 w-6 h-6 bg-white rounded-full"></div>
             </div>
-            <button onclick="hideOrderConfirmation()" class="w-full py-4 bg-gray-800 text-white font-bold rounded-xl hover:bg-gray-900 transition shadow-lg">Start New Order</button>
+
+            <div class="flex justify-between items-center mb-8 px-2">
+                <span class="text-gray-500 font-bold uppercase text-[10px] tracking-widest">Total Due:</span>
+                <span class="font-black text-2xl text-[#800000]">${formatCurrency(total)}</span>
+            </div>
+
+            <button onclick="hideOrderConfirmation()" class="w-full py-5 bg-gray-900 text-white font-black rounded-2xl hover:bg-black transition-all shadow-xl active:scale-95 uppercase tracking-widest text-sm">
+                Back to Menu
+            </button>
         </div>
     `;
     modal.classList.remove('hidden');
@@ -574,73 +692,51 @@ function hideOrderConfirmation() {
     fetchMenuData();
 }
 
-// --- ORDER HISTORY FUNCTIONS ---
-async function openOrderHistory() {
-    console.log('openOrderHistory called');
-    const modal = document.getElementById('order-history-modal');
-    if (!modal) {
-        console.error('Modal not found!');
-        alert('Order history modal not found in page');
+// Removed openOrderHistory, closeOrderHistory, fetchOrderHistory
+
+function switchStore(value) {
+    if (value === CURRENT_STORE_ID) return;
+
+    if (cart && cart.length > 0) {
+        const modal = document.getElementById('modal-container');
+        modal.innerHTML = `
+            <div class="bg-white p-8 rounded-3xl w-11/12 max-w-sm shadow-2xl text-center relative animate-fade-in-up border-t-8 border-[#800000]">
+                <div class="w-20 h-20 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="ph-duotone ph-warning-circle text-[#800000] text-4xl"></i>
+                </div>
+                <h3 class="text-2xl font-black text-gray-800 mb-2">Switch Stores?</h3>
+                <p class="text-gray-500 mb-8 leading-relaxed">You have items in your tray. Switching stores will clear your tray. Do you want to proceed?</p>
+                <div class="flex flex-col gap-3">
+                    <button id="store-confirm-btn" class="w-full py-4 bg-[#800000] text-white rounded-xl font-bold shadow-lg shadow-red-100 hover:bg-red-900 transition-all active:scale-95">Yes, Switch Store</button>
+                    <button onclick="cancelStoreSwitch()" class="w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">Cancel</button>
+                </div>
+            </div>
+        `;
+        modal.classList.remove('hidden');
+
+        document.getElementById('store-confirm-btn').onclick = () => {
+            executeStoreSwitch(value);
+        };
         return;
     }
-    modal.classList.remove('hidden');
-    console.log('Modal opened, fetching orders...');
 
-    try {
-        const response = await fetch('../server/api/get_student_orders.php');
-        console.log('Response status:', response.status);
-        const data = await response.json();
-        console.log('Orders data:', data);
-
-        if (data.success && data.orders && data.orders.length > 0) {
-            let html = '';
-            data.orders.forEach(order => {
-                const date = new Date(order.time_placed);
-                const dateStr = date.toLocaleDateString() + ' ' + date.toLocaleTimeString();
-                const statusColor = {
-                    'PENDING PAYMENT': 'bg-yellow-100 text-yellow-800',
-                    'PREPARING': 'bg-blue-100 text-blue-800',
-                    'READY': 'bg-green-100 text-green-800',
-                    'SERVED': 'bg-gray-100 text-gray-800',
-                    'CANCELLED': 'bg-red-100 text-red-800'
-                }[order.status] || 'bg-gray-100 text-gray-800';
-
-                html += `
-                    <div class="border border-gray-200 rounded-lg p-4 mb-3">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <p class="font-bold text-gray-800">Order #${order.pre_order_code}</p>
-                                <p class="text-xs text-gray-500">${dateStr}</p>
-                            </div>
-                            <span class="px-3 py-1 rounded-full text-xs font-semibold ${statusColor}">${order.status}</span>
-                        </div>
-                        <div class="bg-gray-50 rounded p-3 mb-2">
-                `;
-
-                order.items.forEach(item => {
-                    html += `<p class="text-sm text-gray-700"><span class="font-semibold">${item.quantity}x</span> ${item.name} - ${formatCurrency(item.price_at_sale)}</p>`;
-                });
-
-                html += `
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <p class="text-sm text-gray-600">Total:</p>
-                            <p class="font-bold text-lg text-[#800000]">${formatCurrency(order.total_amount)}</p>
-                        </div>
-                    </div>
-                `;
-            });
-            document.getElementById('order-history-list').innerHTML = html;
-        } else {
-            document.getElementById('order-history-list').innerHTML = '<p class="text-center text-gray-500 py-8">No orders yet. Start ordering!</p>';
-        }
-    } catch (error) {
-        console.error('Error loading order history:', error);
-        document.getElementById('order-history-list').innerHTML = '<p class="text-center text-red-500 py-8">Failed to load order history: ' + error.message + '</p>';
-    }
+    executeStoreSwitch(value);
 }
 
-function closeOrderHistory() {
-    document.getElementById('order-history-modal').classList.add('hidden');
+function cancelStoreSwitch() {
+    closeModal();
+    // Dropdown UI updates are automatically reverted by closing the dropdown itself
+}
+
+function executeStoreSwitch(value) {
+    if (value === 'paws-place') {
+        window.location.href = '2_kiosk_ordering.php';
+    } else if (value === 'pup-stop') {
+        window.location.href = 'cafeteria_ordering.php?store=Pup+Stop&location_id=13';
+    } else if (value === 'kennel-main') {
+        window.location.href = 'cafeteria_ordering.php?store=Kennel+Main&location_id=1';
+    } else if (value === 'kennel-north') {
+        window.location.href = 'cafeteria_ordering.php?store=Kennel+North&location_id=2';
+    }
 }
 

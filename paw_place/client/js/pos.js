@@ -1,6 +1,72 @@
 // --- API URL PREFIX ---
 const API_BASE = '../server/api';
 
+// Helper to set monthly date defaults (1st of month to Today)
+function setDefaultDateRange(fromId, toId) {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+
+    const fromEl = document.getElementById(fromId);
+    const toEl = document.getElementById(toId);
+    if (fromEl) fromEl.value = `${year}-${month}-01`;
+    if (toEl) toEl.value = `${year}-${month}-${day}`;
+}
+
+let viewMode = 'grid'; // For inventory
+let posViewMode = 'grid'; // For order processing
+
+// Helper to clean item names (remove @ price and (Hot))
+function cleanName(name) {
+    if (!name) return "";
+    return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
+}
+
+function setViewMode(mode) {
+    viewMode = mode;
+
+    // Update UI
+    const gridBtn = document.getElementById('view-grid-btn');
+    const listBtn = document.getElementById('view-list-btn');
+
+    if (mode === 'grid') {
+        gridBtn.classList.add('bg-white', 'shadow-sm', 'text-maroon');
+        gridBtn.classList.remove('text-gray-400');
+        listBtn.classList.remove('bg-white', 'shadow-sm', 'text-maroon');
+        listBtn.classList.add('text-gray-400');
+    } else {
+        listBtn.classList.add('bg-white', 'shadow-sm', 'text-maroon');
+        listBtn.classList.remove('text-gray-400');
+        gridBtn.classList.remove('bg-white', 'shadow-sm', 'text-maroon');
+        gridBtn.classList.add('text-gray-400');
+    }
+
+    renderInventoryMenu();
+}
+
+function setPosViewMode(mode) {
+    posViewMode = mode;
+
+    // Update UI
+    const gridBtn = document.getElementById('pos-view-grid-btn');
+    const listBtn = document.getElementById('pos-view-list-btn');
+
+    if (mode === 'grid') {
+        gridBtn.classList.add('bg-maroon', 'text-white', 'shadow-sm');
+        gridBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
+        listBtn.classList.remove('bg-maroon', 'text-white', 'shadow-sm');
+        listBtn.classList.add('text-gray-400', 'hover:text-gray-600');
+    } else {
+        listBtn.classList.add('bg-maroon', 'text-white', 'shadow-sm');
+        listBtn.classList.remove('text-gray-400', 'hover:text-gray-600');
+        gridBtn.classList.remove('bg-maroon', 'text-white', 'shadow-sm');
+        gridBtn.classList.add('text-gray-400', 'hover:text-gray-600');
+    }
+
+    renderPendingOrders();
+}
+
 // --- STATE MANAGEMENT ---
 let currentCart = [];
 let currentPendingOrderId = null;
@@ -139,7 +205,10 @@ function switchView(viewName) {
     if (viewName === 'ready') loadReadyOrders();
     if (viewName === 'tracker') loadOrderTracker();
     if (viewName === 'inventory') loadInventoryView();
-    if (viewName === 'history') loadHistory();
+    if (viewName === 'history') {
+        setDefaultDateRange('history-date-from', 'history-date-to');
+        loadHistory();
+    }
 }
 
 function logout() {
@@ -175,12 +244,15 @@ async function loadPreparingOrders() {
             const card = document.createElement('div');
             card.className = 'bg-white rounded-lg p-4 border-2 border-yellow-200 shadow-md';
 
-            const itemsList = order.order_items.map(item => `
+            const itemsList = order.order_items.map(item => {
+                const hasModifiers = item.modifiers && item.modifiers.trim() && item.modifiers !== '[]';
+                return `
                 <div class="text-xs py-1 border-b border-gray-100 last:border-0">
-                    <span class="font-bold">${item.name}</span> <span class="text-gray-500">×${item.quantity}</span>
-                    ${item.modifiers && item.modifiers.trim() ? `<div class="text-gray-400">+ ${item.modifiers}</div>` : ''}
+                    <span class="font-bold">${cleanName(item.name)}</span> <span class="text-gray-500">×${item.quantity}</span>
+                    ${hasModifiers ? `<div class="text-gray-400">+ ${item.modifiers}</div>` : ''}
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
@@ -241,12 +313,15 @@ async function loadReadyOrders() {
             const card = document.createElement('div');
             card.className = 'bg-white rounded-lg p-4 border-2 border-green-200 shadow-md';
 
-            const itemsList = order.order_items.map(item => `
+            const itemsList = order.order_items.map(item => {
+                const hasModifiers = item.modifiers && item.modifiers.trim() && item.modifiers !== '[]';
+                return `
                 <div class="text-xs py-1 border-b border-gray-100 last:border-0">
-                    <span class="font-bold">${item.name}</span> <span class="text-gray-500">×${item.quantity}</span>
-                    ${item.modifiers && item.modifiers.trim() ? `<div class="text-gray-400">+ ${item.modifiers}</div>` : ''}
+                    <span class="font-bold">${cleanName(item.name)}</span> <span class="text-gray-500">×${item.quantity}</span>
+                    ${hasModifiers ? `<div class="text-gray-400">+ ${item.modifiers}</div>` : ''}
                 </div>
-            `).join('');
+            `;
+            }).join('');
 
             card.innerHTML = `
                 <div class="flex justify-between items-start mb-3">
@@ -356,11 +431,19 @@ async function fetchPendingOrders(isAuto = false) {
 
 function renderPendingOrders() {
     const grid = document.getElementById('pending-orders-grid');
+    if (!grid) return;
+
+    // Apply layout class
+    if (posViewMode === 'list') {
+        grid.className = "flex flex-col gap-3";
+    } else {
+        grid.className = "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4";
+    }
+
     grid.innerHTML = '';
 
     allOrders.forEach(order => {
         const card = document.createElement('div');
-        // Apply styling: Default + Selection highlight if this is the currently selected order
         let className = 'pending-order-card bg-white rounded-lg p-4 border-2 border-gray-200 cursor-pointer transition-all hover:shadow-md';
         if (currentPendingOrderId === order.order_id) {
             className += ' selected ring-2 ring-[#800000] bg-red-50';
@@ -369,32 +452,60 @@ function renderPendingOrders() {
         card.onclick = () => selectOrder(order.order_id, order);
 
         const itemsText = order.order_items.length + ' item' + (order.order_items.length !== 1 ? 's' : '');
-        // Match screenshot layout: Name prominent red, Order ID + Time gray small, Items count, Status bold
         const timeString = new Date(order.time_placed).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-        card.innerHTML = `
-            <div class="mb-1">
-                <h3 class="font-black text-lg text-[#800000] leading-tight uppercase truncate">
-                    ${formatCardName(order.customer_name)}
-                </h3>
-                <div class="flex items-center text-xs font-bold text-gray-500 mt-1">
-                    <span>#${order.pre_order_code}</span>
-                    <span class="mx-1">•</span>
-                    <span>${timeString}</span>
+        if (posViewMode === 'grid') {
+            card.innerHTML = `
+                <div class="mb-1">
+                    <h3 class="font-black text-lg text-[#800000] leading-tight uppercase truncate">
+                        ${formatCardName(order.customer_name)}
+                    </h3>
+                    <div class="flex items-center text-xs font-bold text-gray-500 mt-1">
+                        <span>#${order.pre_order_code}</span>
+                        <span class="mx-1">•</span>
+                        <span>${timeString}</span>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="mb-3">
-                 <p class="text-xs text-gray-500 font-medium">${itemsText}</p>
-            </div>
+                
+                <div class="mb-3">
+                     <p class="text-xs text-gray-500 font-medium">${itemsText}</p>
+                </div>
 
-            <div class="flex justify-between items-end">
-                <span class="text-[10px] font-black text-gray-700 uppercase tracking-wide">
-                    ${order.status}
-                </span>
-                <span class="text-lg font-black text-[#800000]">${formatCurrency(order.total_amount)}</span>
-            </div>
-        `;
+                <div class="flex justify-between items-end">
+                    <span class="text-[10px] font-black text-gray-700 uppercase tracking-wide">
+                        ${order.status}
+                    </span>
+                    <span class="text-lg font-black text-[#800000]">${formatCurrency(order.total_amount)}</span>
+                </div>
+            `;
+        } else {
+            // List View Layout for POS
+            card.innerHTML = `
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center text-[#800000] font-black text-xl">
+                            ${order.customer_name ? order.customer_name.charAt(0).toUpperCase() : 'W'}
+                        </div>
+                        <div>
+                            <h3 class="font-black text-base text-[#800000] leading-tight uppercase">
+                                ${formatCardName(order.customer_name)}
+                            </h3>
+                            <div class="flex items-center text-[10px] font-bold text-gray-400 uppercase mt-0.5">
+                                <span>#${order.pre_order_code}</span>
+                                <span class="mx-1">•</span>
+                                <span>${timeString}</span>
+                                <span class="mx-2">|</span>
+                                <span>${itemsText}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-lg font-black text-[#800000]">${formatCurrency(order.total_amount)}</p>
+                        <p class="text-[10px] font-black text-gray-400 uppercase">${order.status}</p>
+                    </div>
+                </div>
+            `;
+        }
         grid.appendChild(card);
     });
 }
@@ -428,18 +539,21 @@ function renderCart() {
     const cartList = document.getElementById('cart-list');
     const subtotal = currentCart.reduce((sum, item) => sum + (item.price_at_sale * item.quantity), 0);
 
-    cartList.innerHTML = currentCart.map(item => `
+    cartList.innerHTML = currentCart.map(item => {
+        const hasModifiers = item.modifiers && item.modifiers.trim() && item.modifiers !== '[]';
+        return `
         <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
             <div class="flex justify-between items-start">
                 <div class="flex-1">
-                    <p class="font-bold text-gray-800">${item.name || 'Unknown Item'}</p>
-                    <p class="text-xs text-gray-500">${item.modifiers ? `Add ons: ${item.modifiers}` : ''}</p>
+                    <p class="font-bold text-gray-800">${cleanName(item.name || 'Unknown Item')}</p>
+                    ${hasModifiers ? `<p class="text-xs text-gray-500">Add ons: ${item.modifiers}</p>` : ''}
                     <p class="text-sm text-gray-600 mt-1">× ${item.quantity}</p>
                 </div>
                 <p class="font-bold text-maroon">${formatCurrency(item.price_at_sale * item.quantity)}</p>
             </div>
         </div>
-    `).join('');
+    `;
+    }).join('');
 
     document.getElementById('cart-subtotal').textContent = formatCurrency(subtotal);
     document.getElementById('cart-total').textContent = formatCurrency(subtotal);
@@ -629,22 +743,49 @@ function renderInventoryMenu() {
     const grid = document.getElementById('inventory-menu-grid');
     if (!grid) return;
 
+    if (viewMode === 'list') {
+        grid.className = "flex flex-col gap-2 overflow-y-auto pr-2 custom-scroll flex-1";
+    } else {
+        grid.className = "grid grid-cols-2 md:grid-cols-4 xl:grid-cols-6 gap-6 overflow-y-auto pr-2 custom-scroll flex-1";
+    }
+
     const filtered = inventoryMenu.filter(item => item.category === activeInventoryCategory);
-    grid.innerHTML = filtered.map(item => `
-        <div onclick="toggleMenuAvailability(${item.item_id}, ${!item.is_available})" class="relative h-fit group cursor-pointer bg-white rounded-xl shadow-sm border-2 transition-all hover:shadow-md ${item.is_available ? 'border-transparent' : 'border-red-200 opacity-75'}">
-            <div class="p-4 flex flex-col items-center">
-                <div class="text-4xl mb-2">${item.icon}</div>
-                <p class="text-sm font-bold text-gray-800 text-center line-clamp-2 h-10">${item.name}</p>
-                <div class="mt-2 text-[10px] font-black px-2 py-1 rounded-full w-28 text-center ${item.is_available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
-                    ${item.is_available ? 'AVAILABLE' : 'UNAVAILABLE'}
+
+    if (viewMode === 'grid') {
+        grid.innerHTML = filtered.map(item => `
+            <div onclick="toggleMenuAvailability(${item.item_id}, ${!item.is_available})" class="relative h-fit group cursor-pointer bg-white rounded-xl shadow-sm border-2 transition-all hover:shadow-md ${item.is_available ? 'border-transparent' : 'border-red-200 opacity-75'}">
+                <div class="p-4 flex flex-col items-center">
+                    <div class="text-4xl mb-2">${item.icon}</div>
+                    <p class="text-sm font-bold text-gray-800 text-center line-clamp-2 h-10">${cleanName(item.name)}</p>
+                    <div class="mt-2 text-[10px] font-black px-2 py-1 rounded-full w-28 text-center ${item.is_available ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}">
+                        ${item.is_available ? 'AVAILABLE' : 'UNAVAILABLE'}
+                    </div>
+                </div>
+                ${!item.is_available ? '<div class="absolute inset-0 bg-red-50 bg-opacity-20 flex items-center justify-center rounded-xl"></div>' : ''}
+                <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div class="bg-gray-800 text-white text-[10px] px-2 py-0.5 rounded">Click to Toggle</div>
                 </div>
             </div>
-            ${!item.is_available ? '<div class="absolute inset-0 bg-red-50 bg-opacity-20 flex items-center justify-center rounded-xl"></div>' : ''}
-            <div class="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <div class="bg-gray-800 text-white text-[10px] px-2 py-0.5 rounded">Click to Toggle</div>
+        `).join('');
+    } else {
+        grid.innerHTML = filtered.map(item => `
+            <div onclick="toggleMenuAvailability(${item.item_id}, ${!item.is_available})" class="flex items-center justify-between p-4 bg-white rounded-xl shadow-sm border-2 transition-all hover:shadow-md cursor-pointer ${item.is_available ? 'border-transparent' : 'border-red-200 opacity-75'}">
+                <div class="flex items-center gap-4">
+                    <div>
+                        <h5 class="font-bold text-gray-800">${cleanName(item.name)}</h5>
+                    </div>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="text-[10px] font-black uppercase tracking-widest ${item.is_available ? 'text-green-600' : 'text-red-600'}">
+                        ${item.is_available ? 'Active' : 'Inactive'}
+                    </span>
+                    <div class="w-12 h-6 rounded-full relative transition-all ${item.is_available ? 'bg-green-500' : 'bg-gray-300'}">
+                        <div class="absolute w-4 h-4 bg-white rounded-full top-1 transition-all ${item.is_available ? 'right-1' : 'left-1'}"></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    `).join('');
+        `).join('');
+    }
 }
 
 async function toggleMenuAvailability(menuItemId, newStatus) {
@@ -700,13 +841,14 @@ function renderHistoryPage() {
     tbody.innerHTML = pageOrders.length === 0
         ? '<tr><td colspan="6" class="p-4 text-center text-gray-500">No orders found</td></tr>'
         : pageOrders.map(order => {
-            const itemsList = order.order_items.map(i => `${i.name}×${i.quantity}`).join(', ');
+            const itemsList = order.order_items.map(i => `${cleanName(i.name)}×${i.quantity}`).join(', ');
             return `
                 <tr class="border-b hover:bg-gray-50">
                     <td class="p-4">#${order.pre_order_code} ${order.customer_name ? `<br><span class='text-xs text-gray-500'>${order.customer_name}</span>` : ''}</td>
                     <td class="p-4">${new Date(order.time_placed).toLocaleString()}</td>
                     <td class="p-4 text-xs font-bold uppercase">${order.order_source}</td>
                     <td class="p-4 text-sm">${itemsList}</td>
+                    <td class="p-4 text-xs font-medium text-gray-600">${order.cashier_name || '<span class="italic text-gray-400">Self-Service</span>'}</td>
                     <td class="p-4 font-bold">${formatCurrency(order.total_amount)}</td>
                     <td class="p-4"><span class="text-xs font-bold px-2 py-1 rounded ${order.status === 'SERVED' ? 'bg-green-100 text-green-800' : (order.status === 'CANCELLED' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800')}">${order.status}</span></td>
                 </tr>

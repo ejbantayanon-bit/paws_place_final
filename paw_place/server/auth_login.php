@@ -25,8 +25,9 @@ $role = isset($_POST['role']) ? $_POST['role'] : '';
 $username = isset($_POST['username']) ? trim($_POST['username']) : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-if (empty($role) || empty($password)) {
-    echo json_encode(['success' => false, 'message' => 'Missing parameters']);
+// Role is now optional for unified login; username and password are required.
+if (empty($password)) {
+    echo json_encode(['success' => false, 'message' => 'Password is required']);
     exit;
 }
 
@@ -40,7 +41,7 @@ function verify_pass($input, $stored) {
 
 // Kiosk: username hidden, allow Admin or Cashier to unlock with their own password
 if (strtoupper($role) === 'KIOSK') {
-    $stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role FROM users WHERE role IN ('Admin','Cashier')");
+    $stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role, assigned_store FROM users WHERE role IN ('Admin','Cashier')");
     $stmt->execute();
     $res = $stmt->get_result();
     $found = false;
@@ -51,6 +52,7 @@ if (strtoupper($role) === 'KIOSK') {
             $_SESSION['username'] = $row['username'];
             $_SESSION['role'] = $row['role'];
             $_SESSION['full_name'] = $row['full_name'];
+            $_SESSION['assigned_store'] = $row['assigned_store'] ?? 'Paws Place';
             $found = true;
             $userRow = $row;
 
@@ -83,7 +85,7 @@ if (empty($username)) {
     exit;
 }
 
-$stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role FROM users WHERE username = ? LIMIT 1");
+$stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role, assigned_store FROM users WHERE username = ? LIMIT 1");
 $stmt->bind_param('s', $username);
 $stmt->execute();
 $res = $stmt->get_result();
@@ -101,6 +103,7 @@ if ($res->num_rows === 0) {
             // If MIS provides a role, use it; otherwise default to Cashier
             $_SESSION['role'] = $emp['role'] ?? 'Cashier';
             $_SESSION['full_name'] = $emp['full_name'] ?? ($emp['name'] ?? $username);
+            $_SESSION['assigned_store'] = 'All';
 
             $redirect = ($_SESSION['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
 
@@ -173,6 +176,7 @@ $_SESSION['user_id'] = (int)$row['user_id'];
 $_SESSION['username'] = $row['username'];
 $_SESSION['role'] = $row['role'];
 $_SESSION['full_name'] = $row['full_name'];
+$_SESSION['assigned_store'] = $row['assigned_store'] ?? 'Paws Place';
 
 // Log Activity (Only for Admin/Cashier)
 if (in_array($row['role'], ['Admin', 'Cashier'])) {

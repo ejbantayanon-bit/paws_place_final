@@ -6,7 +6,6 @@ require_once __DIR__ . '/../GrubhoundAPI.php';
 $excludedCategories = [
     'Optimum Cash Incentives',
     'Catering',
-    'Consignment',
     'Room Rental',
     'School',
     'School Supply',
@@ -20,9 +19,31 @@ $excludedCategories = [
     'Inventory Kit',
     'Kit Items',
     'Kit Components',
+    'Uniform',
+    'School Uniform',
+    'Medicine',
+    'Personal Care',
+    'Cleaning',
 ];
 
-$locationId = $_GET['location_id'] ?? null;
+// Mapping of ugly MIS category names to user-friendly names
+$friendlyCategoryMap = [
+    'Coffee And Milktea 2-paws Place' => 'Coffee',
+    'Milktea And Ice Coffee' => 'Milk Tea',
+    'Drinks' => 'Drinks',
+    'Fruits' => 'Fruits',
+    'Ice Cream' => 'Ice Cream',
+    'Ice Cream in Cups' => 'Ice Cream',
+    'Snacks' => 'Snacks',
+    'Bread' => 'Bread',
+    'Candy' => 'Candy',
+    'Food' => 'Food',
+    'Consignment' => 'Consignment',
+    'Supply' => 'Supply',
+];
+
+$locationIdParam = $_GET['location_id'] ?? '';
+$locationId = ($locationIdParam !== '') ? (int)$locationIdParam : null;
 
 try {
     $api = new GrubhoundAPI();
@@ -37,42 +58,51 @@ try {
         $rawCategories = $result;
     }
 
-    $categories = [];
-    foreach ($rawCategories as $cat) {
-        $name = is_string($cat) ? $cat : ($cat['name'] ?? $cat['category'] ?? '');
-        $name = trim($name);
-        if (!$name) continue;
+// Strict Whitelists for specific locations as requested by the user
+$locationWhitelists = [
+    1 => ['Bread', 'Candy', 'Drinks', 'Food', 'Fruits', 'Ice Cream', 'Snacks', 'Supply'],
+    2 => ['Bread', 'Candy', 'Drinks', 'Food', 'Fruits', 'Ice Cream', 'Snacks', 'Supply'], // Default for Kennel North
+    13 => ['Bread', 'Candy', 'Consignment', 'Drinks', 'Food', 'Fruits', 'Snacks']
+];
 
-        // Skip excluded categories (case-insensitive)
-        $lowerName = strtolower($name);
+// 1. Group raw categories by friendly names and determine visibility
+$groupedRawNames = [];
+foreach ($rawCategories as $cat) {
+    $rawName = is_string($cat) ? $cat : ($cat['name'] ?? $cat['category'] ?? '');
+    $rawName = trim($rawName);
+    if (!$rawName) continue;
+
+    $friendlyName = $friendlyCategoryMap[$rawName] ?? $rawName;
+    
+    // Whitelist/Blacklist Filtering
+    if ($locationId !== null && isset($locationWhitelists[$locationId])) {
+        // Use friendly name for whitelist check
+        if (!in_array($friendlyName, $locationWhitelists[$locationId])) continue;
+    } else {
+        // Global blacklist using raw name (lowercase comparison)
+        $lowerRawName = strtolower($rawName);
         $lowerExcluded = array_map('strtolower', $excludedCategories);
-        if (in_array($lowerName, $lowerExcluded)) continue;
-
-        // If location_id is provided, check if this category has items in that location
-        if ($locationId) {
-            try {
-                $itemCheck = $api->getCafeteriaItemsByCategoryLocation($locationId, $name);
-                $hasItems = false;
-                if (is_array($itemCheck)) {
-                    if (isset($itemCheck['items']) && count($itemCheck['items']) > 0) $hasItems = true;
-                    elseif (isset($itemCheck['data']) && count($itemCheck['data']) > 0) $hasItems = true;
-                    elseif (!isset($itemCheck['success']) && count($itemCheck) > 0) $hasItems = true;
-                }
-                
-                if (!$hasItems) continue; // Skip category if it has no items for this location
-            } catch (Exception $e) {
-                // If check fails, we might still want to show the category or skip it
-                // For safety, let's skip it to ensure we ONLY show categories with items
-                continue;
-            }
-        }
-
-        $categories[] = [
-            'id' => $name,
-            'category' => $name,
-            'name' => $name
-        ];
+        if (in_array($lowerRawName, $lowerExcluded)) continue;
+        
+        // Also check friendly name against blacklist
+        $lowerFriendly = strtolower($friendlyName);
+        if (in_array($lowerFriendly, $lowerExcluded)) continue;
     }
+
+    if (!isset($groupedRawNames[$friendlyName])) {
+        $groupedRawNames[$friendlyName] = [];
+    }
+    $groupedRawNames[$friendlyName][] = $rawName;
+}
+
+foreach ($groupedRawNames as $friendlyName => $rawNames) {
+    $categories[] = [
+        'id' => $friendlyName,
+        'category' => $friendlyName,
+        'name' => $friendlyName,
+        'raw_name' => $rawNames[0]
+    ];
+}
     
     // Sort categories alphabetically
     usort($categories, function($a, $b) {

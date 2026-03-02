@@ -9,3 +9,4 @@ if (!isset($_SESSION['user_id'])) {
 $current_user_id = $_SESSION['user_id'];
 $current_user_role = isset($_SESSION['role']) ? $_SESSION['role'] : null;
 $current_user_name = isset($_SESSION['full_name']) ? $_SESSION['full_name'] : null;
+$current_assigned_store = isset($_SESSION['assigned_store']) ? $_SESSION['assigned_store'] : 'Paws Place';

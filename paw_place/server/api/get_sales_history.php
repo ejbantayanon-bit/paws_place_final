@@ -58,7 +58,7 @@ $result = $stmt->get_result();
 $orders = [];
 while ($row = $result->fetch_assoc()) {
     // Get item details
-    $itemsStmt = $conn->prepare("SELECT oi.quantity, mi.name FROM order_items oi LEFT JOIN menu_items mi ON oi.menu_item_id = mi.item_id WHERE oi.order_id = ?");
+    $itemsStmt = $conn->prepare("SELECT oi.quantity, COALESCE(mi.name, oi.external_item_name) AS name FROM order_items oi LEFT JOIN menu_items mi ON oi.menu_item_id = mi.item_id WHERE oi.order_id = ?");
     $itemsStmt->bind_param('i', $row['order_id']);
     $itemsStmt->execute();
     $itemsRes = $itemsStmt->get_result();
