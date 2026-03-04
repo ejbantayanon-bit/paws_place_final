@@ -37,7 +37,9 @@ $initial = strtoupper(substr($firstName, 0, 1));
         <aside class="sidebar">
             <div class="sidebar-top">
                 <div class="brand">
-                    <div class="brand-icon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
+                    <div class="brand-icon">
+                        <img src="img/lgoo.png" alt="Logo" class="object-contain">
+                    </div>
                     <div>
                         <div class="brand-name">GrabHound</div>
                         <div class="brand-sub">Foundation University</div>

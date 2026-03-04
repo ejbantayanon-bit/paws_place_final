@@ -46,8 +46,10 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
             </div>
         </div>
         <div id="right-panel" class="lg:col-span-2 p-6 sm:p-10 flex flex-col justify-center items-center bg-white shadow-2xl z-10">
-            <header class="text-center mb-6 sm:mb-10 w-full max-w-sm">
-                <div class="text-maroon mb-2 sm:mb-4"><i class="ph-duotone ph-shopping-cart text-[48px] sm:text-[64px]"></i></div>
+            <header class="text-center mb-6 sm:mb-10 w-full max-w-sm flex flex-col items-center">
+                <div class="mb-2 sm:mb-4">
+                    <img src="img/lgoo.png" alt="GrabHound Logo" class="h-16 sm:h-20 object-contain">
+                </div>
                 <h2 class="text-2xl sm:text-3xl font-black text-gray-800 tracking-tight uppercase">CUSTOMER ACCESS</h2>
                 <div class="h-1 w-12 sm:w-16 bg-maroon mx-auto mt-2 sm:mt-4 rounded-full bg-[#800000]"></div>
             </header>
@@ -96,7 +98,18 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
                             START ORDERING
                         </button>
 
+                        <!-- 
+<div class="relative py-2 flex items-center">
+    <div class="flex-grow border-t border-gray-100"></div>
+    <span class="flex-shrink mx-4 text-[10px] font-bold text-gray-300 uppercase tracking-widest">OR</span>
+    <div class="flex-grow border-t border-gray-100"></div>
+</div>
 
+<button type="button" onclick="continueAsGuest()" 
+    class="w-full py-3 bg-gray-50 text-gray-400 font-bold tracking-widest text-[10px] rounded-lg border-2 border-dashed border-gray-200 hover:border-maroon hover:text-maroon transition-all uppercase">
+    Continue as Guest
+</button>
+-->
                         
                         <div class="text-center">
                             <button type="button" onclick="toggleHelpdeskBox()" 

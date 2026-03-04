@@ -43,7 +43,9 @@ $initial = strtoupper(substr($firstName, 0, 1));
         <aside class="sidebar">
             <div class="sidebar-top">
                 <div class="brand">
-                    <div class="brand-icon"><i class="ph-duotone ph-paw-print" style="font-size:28px"></i></div>
+                    <div class="brand-icon">
+                        <img src="img/lgoo.png" alt="Logo" class="object-contain">
+                    </div>
                     <div>
                         <div class="brand-name">GrabHound</div>
                         <div class="brand-sub">Foundation University</div>
@@ -115,10 +117,10 @@ $initial = strtoupper(substr($firstName, 0, 1));
             <div class="filters-bar" style="display: flex; gap: 12px; margin-bottom: 24px; background: #ffffff; padding: 16px; border-radius: 16px; border: 1px solid #e5e7eb; flex-wrap: wrap; align-items: center;">
                 <div style="flex: 1; min-width: 200px; position: relative;">
                     <i class="ph-duotone ph-magnifying-glass" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: #9ca3af;"></i>
-                    <input type="text" id="search-code" placeholder="Search order code..." style="width: 100%; padding: 10px 10px 10px 38px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; outline: none; transition: border-color 0.2s;" oninput="applyFilters()">
+                    <input type="text" id="search-code" placeholder="Search order code or items..." style="width: 100%; padding: 10px 10px 10px 38px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; outline: none; transition: border-color 0.2s;" oninput="applyFilters()">
                 </div>
                 
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <div style="display: flex; gap: 8px; flex-wrap: wrap; align-items: center;">
                     <div style="display: flex; align-items: center; gap: 6px; background: #f9fafb; padding: 4px 12px; border: 1px solid #e5e7eb; border-radius: 10px;">
                         <span style="font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase;">From:</span>
                         <input type="date" id="filter-date-from" style="border: none; background: transparent; font-size: 13px; color: #4b5563; outline: none; cursor: pointer;" onchange="applyFilters()">
@@ -129,11 +131,11 @@ $initial = strtoupper(substr($firstName, 0, 1));
                     </div>
                     <select id="filter-status" style="padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; color: #4b5563; background: #f9fafb; outline: none; cursor: pointer;" onchange="applyFilters()">
                         <option value="all">All Status</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Preparing">Preparing</option>
-                        <option value="Ready">Ready</option>
-                        <option value="Completed">Completed</option>
-                        <option value="Cancelled">Cancelled</option>
+                        <option value="SERVED">Completed</option>
+                        <option value="READY">Ready</option>
+                        <option value="PREPARING">Preparing</option>
+                        <option value="PENDING PAYMENT">Pending</option>
+                        <option value="CANCELLED">Cancelled</option>
                     </select>
 
                     <select id="filter-store" style="padding: 10px 14px; border: 1px solid #e5e7eb; border-radius: 10px; font-size: 13px; color: #4b5563; background: #f9fafb; outline: none; cursor: pointer;" onchange="applyFilters()">
@@ -143,13 +145,36 @@ $initial = strtoupper(substr($firstName, 0, 1));
                         <option value="Kennel Main">Kennel Main</option>
                         <option value="Kennel North">Kennel North</option>
                     </select>
+
+                    <button onclick="resetFilters()" style="padding: 10px 16px; background: #f3f4f6; color: #4b5563; border-radius: 10px; border: 1px solid #e5e7eb; font-size: 12px; font-weight: 700; cursor: pointer; transition: all 0.2s; text-transform: uppercase;">Reset</button>
                 </div>
             </div>
 
-            <div id="full-history-list" class="recent-orders-list">
-                <div class="loading-placeholder" style="padding: 60px; text-align: center; color: #9ca3af; background: #ffffff; border-radius: 20px; border: 1px dashed #e5e7eb;">
-                    Fetching your complete order history...
-                </div>
+            <div class="history-container" style="background: white; border-radius: 16px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background: #f9fafb; border-bottom: 2px solid #f3f4f6;">
+                        <tr>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Order ID</th>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Date & Time</th>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Store</th>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px;">Items</th>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: right;">Total</th>
+                            <th style="padding: 16px 20px; font-size: 11px; font-weight: 800; color: #6b7280; text-transform: uppercase; letter-spacing: 0.5px; text-align: center;">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <tr>
+                            <td colspan="6" style="padding: 60px; text-align: center; color: #9ca3af;">
+                                Fetching your complete order history...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div id="pagination-controls" style="display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 24px;">
+                <!-- Populated by JS -->
             </div>
 
         </main>
@@ -164,12 +189,17 @@ $initial = strtoupper(substr($firstName, 0, 1));
     <script>
         const userId = '<?php echo $userId; ?>';
         let allOrders = [];
+        let filteredOrders = [];
+        let currentPage = 1;
+        const itemsPerPage = 10;
+
+        function cleanName(name) {
+            if (!name) return "";
+            return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
+        }
 
         async function fetchFullHistory() {
-            if (!userId) {
-                console.warn('No userId found for history fetch');
-                return;
-            }
+            if (!userId) return;
             try {
                 const res = await fetch(`../server/api/get_student_orders.php?student_id=${encodeURIComponent(userId)}`);
                 const data = await res.json();
@@ -180,8 +210,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
                 }
             } catch (err) {
                 console.error('Error fetching history:', err);
-                const hList = document.getElementById('full-history-list');
-                if (hList) hList.innerHTML = '<div class="p-8 text-center text-gray-400">Unable to load history at this time.</div>';
+                document.getElementById('history-table-body').innerHTML = '<tr><td colspan="6" style="padding: 40px; text-align: center; color: #ef4444;">Unable to load history.</td></tr>';
             }
         }
 
@@ -199,7 +228,6 @@ $initial = strtoupper(substr($firstName, 0, 1));
                 if (status === 'READY') {
                     currentReadyOrders.push(order);
                     if (!isFirstLoadNotif && oldStatus && oldStatus !== 'READY') {
-                        console.log(`Notification Triggered (History): Order #${id} is now READY`);
                         showNotifToast(`Order #${order.final_code || order.pre_order_code} is READY!`, order.order_source);
                         playNotifSound();
                     }
@@ -207,18 +235,12 @@ $initial = strtoupper(substr($firstName, 0, 1));
                 lastNotifStatuses[id] = status;
             });
 
-            const currentReadyIds = currentReadyOrders.map(o => o.order_id.toString());
             const badge = document.getElementById('notif-badge');
+            const currentReadyIds = currentReadyOrders.map(o => o.order_id.toString());
             const hasUndismissed = currentReadyIds.some(id => !dismissedHistoryNotifs.includes(id));
-            
-            if (badge) {
-                if (hasUndismissed) badge.classList.remove('hidden');
-                else badge.classList.add('hidden');
-            }
+            if (badge) badge.classList.toggle('hidden', !hasUndismissed);
 
-            // Update Panel List
             updateNotifPanel(currentReadyOrders);
-
             dismissedHistoryNotifs = dismissedHistoryNotifs.filter(id => currentReadyIds.includes(id));
             localStorage.setItem(`dismissed_notifs_${userId}`, JSON.stringify(dismissedHistoryNotifs));
             isFirstLoadNotif = false;
@@ -230,12 +252,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
             const undismissed = readyOrders.filter(o => !dismissedHistoryNotifs.includes(o.order_id.toString()));
 
             if (undismissed.length === 0) {
-                list.innerHTML = `
-                    <div class="notif-empty">
-                        <i class="ph-duotone ph-bell-slash"></i>
-                        <p>No active notifications</p>
-                    </div>
-                `;
+                list.innerHTML = `<div class="notif-empty"><i class="ph-duotone ph-bell-slash"></i><p>No active notifications</p></div>`;
                 return;
             }
 
@@ -244,40 +261,32 @@ $initial = strtoupper(substr($firstName, 0, 1));
                     <div class="notif-item-icon"><i class="ph-duotone ph-bowl-food"></i></div>
                     <div class="notif-item-content">
                         <div class="notif-item-title">Order #${o.final_code || o.pre_order_code} is READY</div>
-                        <div class="notif-item-desc">Pick up your order at <b>${o.order_source}</b></div>
-                        <div class="notif-item-time">${new Date(o.time_placed).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}</div>
+                        <div class="notif-item-desc">Pick up at <b>${o.order_source || 'Paws Place'}</b></div>
                     </div>
                 </div>
             `).join('');
         }
 
         function dismissAllNotifs() {
-            Object.keys(lastNotifStatuses).forEach(id => {
-                if (lastNotifStatuses[id] === 'READY' && !dismissedHistoryNotifs.includes(id.toString())) {
-                    dismissedHistoryNotifs.push(id.toString());
+            allOrders.forEach(o => {
+                if ((o.status || '').toUpperCase() === 'READY') {
+                    if (!dismissedHistoryNotifs.includes(o.order_id.toString())) {
+                        dismissedHistoryNotifs.push(o.order_id.toString());
+                    }
                 }
             });
             localStorage.setItem(`dismissed_notifs_${userId}`, JSON.stringify(dismissedHistoryNotifs));
-            const badge = document.getElementById('notif-badge');
-            if (badge) badge.classList.add('hidden');
-            document.getElementById('notif-panel').classList.remove('show');
+            document.getElementById('notif-badge')?.classList.add('hidden');
             updateNotifPanel([]);
         }
 
-        // Notification Bell Click -> Toggle Panel
-        document.getElementById('nav-notifications').onclick = function(e) {
+        document.getElementById('nav-notifications').onclick = (e) => {
             e.stopPropagation();
-            const panel = document.getElementById('notif-panel');
-            if (panel) panel.classList.toggle('show');
+            document.getElementById('notif-panel').classList.toggle('show');
         };
-
-        // Close panel when clicking outside
         document.addEventListener('click', () => {
-            const panel = document.getElementById('notif-panel');
-            if (panel) panel.classList.remove('show');
+            document.getElementById('notif-panel')?.classList.remove('show');
         });
-        const panelEl = document.getElementById('notif-panel');
-        if (panelEl) panelEl.onclick = (e) => e.stopPropagation();
 
         function showNotifToast(message, store) {
             const toast = document.getElementById('toast');
@@ -298,14 +307,8 @@ $initial = strtoupper(substr($firstName, 0, 1));
 
         function playNotifSound() {
             const sound = document.getElementById('notif-sound');
-            if (sound) {
-                sound.currentTime = 0;
-                sound.play().catch(e => {});
-            }
+            if (sound) { sound.currentTime = 0; sound.play().catch(e => {}); }
         }
-
-        // Refresh History & Check notifications every 10 seconds
-        setInterval(fetchFullHistory, 10000);
 
         function applyFilters() {
             const status = document.getElementById('filter-status').value;
@@ -314,73 +317,95 @@ $initial = strtoupper(substr($firstName, 0, 1));
             const dateFrom = document.getElementById('filter-date-from').value;
             const dateTo = document.getElementById('filter-date-to').value;
 
-            const filtered = allOrders.filter(o => {
+            filteredOrders = allOrders.filter(o => {
                 const matchStatus = status === 'all' || (o.status || '').toUpperCase() === status.toUpperCase();
                 const matchStore = store === 'all' || (o.order_source || 'Paws Place') === store;
-                const matchSearch = String(o.final_code || o.pre_order_code).toLowerCase().includes(search);
                 
-                // Date filtering
+                const itemsText = (o.items || []).map(i => cleanName(i.name)).join(' ').toLowerCase();
+                const matchSearch = String(o.final_code || o.pre_order_code).toLowerCase().includes(search) || itemsText.includes(search);
+                
                 let matchDate = true;
                 if (o.time_placed) {
-                    const orderDate = new Date(o.time_placed).toISOString().split('T')[0];
-                    if (dateFrom && orderDate < dateFrom) matchDate = false;
-                    if (dateTo && orderDate > dateTo) matchDate = false;
+                    const d = new Date(o.time_placed);
+                    const orderDateStr = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+                    if (dateFrom && orderDateStr < dateFrom) matchDate = false;
+                    if (dateTo && orderDateStr > dateTo) matchDate = false;
                 }
 
                 return matchStatus && matchStore && matchSearch && matchDate;
             });
 
-            renderFullHistory(filtered);
+            currentPage = 1;
+            renderHistory();
         }
 
-        function renderFullHistory(orders) {
-            const list = document.getElementById('full-history-list');
-            if (orders.length === 0) {
-                list.innerHTML = '<div class="p-12 text-center text-gray-400 bg-white rounded-2xl border border-dashed border-gray-200">No orders match your filters.</div>';
+        function renderHistory() {
+            const tbody = document.getElementById('history-table-body');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pageOrders = filteredOrders.slice(start, end);
+
+            if (filteredOrders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="padding: 60px; text-align: center; color: #9ca3af;">No orders found match your filters.</td></tr>';
+                renderPagination(0);
                 return;
             }
 
-            list.innerHTML = orders.map(o => {
-                const statusClass = 'status-' + o.status.toLowerCase();
-                const itemsList = o.items.map(i => `${i.quantity}x ${i.name}`).join(', ');
-                
+            tbody.innerHTML = pageOrders.map(o => {
+                const itemsList = (o.items || []).map(i => `<span style="font-weight:700;">${i.quantity}x</span> ${cleanName(i.name)}`).join(', ');
+                const date = new Date(o.time_placed);
+                const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+                let statusColor = '#9ca3af'; let statusBg = '#f3f4f6';
+                const s = (o.status || '').toUpperCase();
+                if (s === 'SERVED') { statusColor = '#15803d'; statusBg = '#dcfce7'; }
+                else if (s === 'READY') { statusColor = '#1d4ed8'; statusBg = '#dbeafe'; }
+                else if (s === 'PREPARING') { statusColor = '#854d0e'; statusBg = '#fef9c3'; }
+                else if (s === 'CANCELLED') { statusColor = '#b91c1c'; statusBg = '#fee2e2'; }
+
                 return `
-                    <div class="order-history-item" style="margin-bottom: 8px;">
-                        <div class="order-main-info">
-                            <div class="order-icon-circle"><i class="ph-duotone ph-receipt"></i></div>
-                            <div class="order-details-text">
-                                <div class="order-store" style="display: flex; align-items: center; gap: 8px;">
-                                    ${o.order_source || 'Paws Place'}
-                                    <span style="font-size: 10px; padding: 2px 6px; background: #f3f4f6; border-radius: 4px; color: #6b7280;">#${o.final_code || o.pre_order_code}</span>
-                                </div>
-                                <div class="order-meta">${new Date(o.time_placed).toLocaleString()}</div>
-                                <div style="font-size: 12px; color: #4b5563; margin-top: 4px;">${itemsList}</div>
-                            </div>
-                        </div>
-                        <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
-                            <span class="order-status-pill ${statusClass}">${o.status}</span>
-                            <div class="order-amount">₱${parseFloat(o.total_amount).toFixed(2)}</div>
-                        </div>
-                    </div>
+                    <tr style="border-bottom: 1px solid #f3f4f6;">
+                        <td style="padding: 16px 20px;"><div style="font-weight: 800; color: #1f2937;">#${o.final_code || o.pre_order_code}</div></td>
+                        <td style="padding: 16px 20px;"><div style="font-size: 13px; font-weight: 600; color: #374151;">${dateStr}</div><div style="font-size: 11px; color: #9ca3af;">${timeStr}</div></td>
+                        <td style="padding: 16px 20px;"><div style="font-size: 12px; font-weight: 700; color: #800000; text-transform: uppercase;">${o.order_source || 'Paws Place'}</div></td>
+                        <td style="padding: 16px 20px; max-width: 250px;"><div style="font-size: 12px; color: #4b5563; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;" title="${itemsList.replace(/<[^>]*>/g, '')}">${itemsList}</div></td>
+                        <td style="padding: 16px 20px; text-align: right; font-weight: 800; color: #1f2937;">₱${parseFloat(o.total_amount).toFixed(2)}</td>
+                        <td style="padding: 16px 20px; text-align: center;"><span style="display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 9px; font-weight: 800; text-transform: uppercase; background: ${statusBg}; color: ${statusColor};">${o.status === 'PENDING PAYMENT' ? 'PENDING' : o.status}</span></td>
+                    </tr>
                 `;
             }).join('');
+
+            renderPagination(Math.ceil(filteredOrders.length / itemsPerPage));
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Set default dates: 1st of month to Today
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            
-            const firstOfMonth = `${year}-${month}-01`;
-            const today = `${year}-${month}-${day}`;
-            
-            document.getElementById('filter-date-from').value = firstOfMonth;
-            document.getElementById('filter-date-to').value = today;
-            
-            fetchFullHistory();
-        });
+        function renderPagination(totalPages) {
+            const container = document.getElementById('pagination-controls');
+            if (totalPages <= 1) { container.innerHTML = ''; return; }
+            let btns = `<button onclick="changePage(currentPage - 1)" ${currentPage === 1 ? 'disabled' : ''} style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: white; font-weight: 700; font-size: 11px; cursor: pointer; opacity: ${currentPage === 1 ? 0.4 : 1};">Prev</button>`;
+            for (let i = 1; i <= totalPages; i++) {
+                const active = i === currentPage;
+                btns += `<button onclick="changePage(${i})" style="width: 32px; height: 32px; border: 1px solid ${active ? '#800000' : '#e5e7eb'}; border-radius: 8px; background: ${active ? '#800000' : 'white'}; color: ${active ? 'white' : '#4b5563'}; font-weight: 700; font-size: 11px; cursor: pointer;">${i}</button>`;
+            }
+            btns += `<button onclick="changePage(currentPage + 1)" ${currentPage === totalPages ? 'disabled' : ''} style="padding: 6px 12px; border: 1px solid #e5e7eb; border-radius: 8px; background: white; font-weight: 700; font-size: 11px; cursor: pointer; opacity: ${currentPage === totalPages ? 0.4 : 1};">Next</button>`;
+            container.innerHTML = btns;
+        }
+
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredOrders.length / itemsPerPage);
+            if (page < 1 || page > totalPages) return;
+            currentPage = page; renderHistory(); window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetFilters() {
+            const now = new Date(); const year = now.getFullYear(); const month = String(now.getMonth() + 1).padStart(2, '0'); const day = String(now.getDate()).padStart(2, '0');
+            document.getElementById('filter-date-from').value = `${year}-${month}-01`;
+            document.getElementById('filter-date-to').value = `${year}-${month}-${day}`;
+            document.getElementById('filter-status').value = 'all'; document.getElementById('filter-store').value = 'all'; document.getElementById('search-code').value = '';
+            applyFilters();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { resetFilters(); setInterval(fetchFullHistory, 15000); });
     </script>
 </body>
 </html>

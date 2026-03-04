@@ -152,6 +152,29 @@ function proceedToKiosk() {
     setTimeout(() => { form.submit(); }, 500);
 }
 
+function continueAsGuest() {
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '../server/api/set_kiosk_session.php';
+
+    const inputs = {
+        'full_name': 'Guest',
+        'user_id': 'GUEST'
+    };
+
+    for (const [key, value] of Object.entries(inputs)) {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = key;
+        input.value = value;
+        form.appendChild(input);
+    }
+
+    document.body.appendChild(form);
+    alertUser('Continuing as Guest...', 'info');
+    setTimeout(() => { form.submit(); }, 500);
+}
+
 
 function alertUser(message, type = 'info') {
     const container = document.getElementById('alert-container');

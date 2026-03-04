@@ -41,7 +41,7 @@ function verify_pass($input, $stored) {
 
 // Kiosk: username hidden, allow Admin or Cashier to unlock with their own password
 if (strtoupper($role) === 'KIOSK') {
-    $stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role, assigned_store FROM users WHERE role IN ('Admin','Cashier')");
+    $stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role, assigned_store FROM users WHERE role IN ('Admin','Cashier','Kitchen','Barista')");
     $stmt->execute();
     $res = $stmt->get_result();
     $found = false;
@@ -107,8 +107,8 @@ if ($res->num_rows === 0) {
 
             $redirect = ($_SESSION['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
 
-            // Log API Login (Only for Admin/Cashier)
-            if (in_array($_SESSION['role'], ['Admin', 'Cashier'])) {
+            // Log API Login (Only for Admin/Cashier/Kitchen/Barista)
+            if (in_array($_SESSION['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
                 $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in via GrabHound API')";
                 $logStmt = $conn->prepare($logSql);
                 $logStmt->bind_param('is', $_SESSION['user_id'], $_SESSION['role']);
@@ -132,8 +132,8 @@ if ($res->num_rows === 0) {
 }
 $row = $res->fetch_assoc();
 
-// check role matches (allow Admin/Cashier only)
-if (!in_array($row['role'], ['Admin','Cashier'])) {
+// check role matches (allow Admin/Cashier/Kitchen/Barista only)
+if (!in_array($row['role'], ['Admin','Cashier','Kitchen','Barista'])) {
     echo json_encode(['success' => false, 'message' => 'User role not allowed']);
     $stmt->close();
     $conn->close();
@@ -178,8 +178,8 @@ $_SESSION['role'] = $row['role'];
 $_SESSION['full_name'] = $row['full_name'];
 $_SESSION['assigned_store'] = $row['assigned_store'] ?? 'Paws Place';
 
-// Log Activity (Only for Admin/Cashier)
-if (in_array($row['role'], ['Admin', 'Cashier'])) {
+// Log Activity (Only for Admin/Cashier/Kitchen/Barista)
+if (in_array($row['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
     $logSql = "INSERT INTO activity_logs (user_id, user_role, activity_type, description) VALUES (?, ?, 'LOGIN', 'User logged in')";
     $logStmt = $conn->prepare($logSql);
     $logStmt->bind_param('is', $row['user_id'], $row['role']);
@@ -187,7 +187,13 @@ if (in_array($row['role'], ['Admin', 'Cashier'])) {
     $logStmt->close();
 }
 
-$redirect = ($row['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
+if ($row['role'] === 'Admin') {
+    $redirect = '../client/5_adminDashboard.php';
+} elseif ($row['role'] === 'Kitchen') {
+    $redirect = '../client/kitchen_terminal.php';
+} else {
+    $redirect = '../client/3_index.php';
+}
 
 echo json_encode(['success' => true, 'role' => $row['role'], 'full_name' => $row['full_name'], 'user_id' => $row['user_id'], 'redirect' => $redirect]);
 

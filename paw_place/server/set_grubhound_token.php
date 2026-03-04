@@ -1,6 +1,6 @@
 <?php
 /**
- * Local helper to set Grubhound tokens in config file.
+ * Local helper to set Grabhound tokens in config file.
  * Usage: POST JSON { access_token, refresh_token, expires_at }
  * Restriction: only callable from localhost for safety.
  */

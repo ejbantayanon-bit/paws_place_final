@@ -32,14 +32,55 @@ try {
     // 2. Try Employee Login if student failed
     if (!$result) {
         try {
-            $employee = $api->employeeLogin($id, $password); // Map to internal call
+            $employee = $api->employeeLogin($id, $password);
             if ($employee) {
                 $result = $employee;
                 $type = 'EMPLOYEE';
             }
         } catch (Exception $e) {
-            // Both failed
-            throw new Exception("Invalid ID or Password. Please try again.");
+            // Both API calls failed or API is down
+            // 3. Fallback to local DB for Admin/Cashier (Staff Unlocking Kiosk)
+            $DB_HOST = 'localhost';
+            $DB_USER = 'root';
+            $DB_PASS = '';
+            $DB_NAME = 'paws_place_db';
+
+            $conn = new mysqli($DB_HOST, $DB_USER, $DB_PASS, $DB_NAME);
+            if (!$conn->connect_error) {
+                // Check if it's a local staff account
+                $stmt = $conn->prepare("SELECT user_id, username, password_hash, full_name, role FROM users WHERE username = ? AND role IN ('Admin', 'Cashier') LIMIT 1");
+                $stmt->bind_param('s', $id);
+                $stmt->execute();
+                $dbRes = $stmt->get_result();
+                
+                if ($dbRes->num_rows > 0) {
+                    $row = $dbRes->fetch_assoc();
+                    
+                    // Verify password (supporting both hash and plain text fallback like auth_login.php)
+                    $valid = false;
+                    if (password_get_info($row['password_hash'])['algo'] !== 0) {
+                        $valid = password_verify($password, $row['password_hash']);
+                    } else {
+                        $valid = hash_equals($row['password_hash'], $password);
+                    }
+
+                    if ($valid) {
+                        $result = [
+                            'id' => $row['user_id'],
+                            'full_name' => $row['full_name'],
+                            'username' => $row['username'],
+                            'role' => $row['role']
+                        ];
+                        $type = 'STAFF_FALLBACK';
+                    }
+                }
+                $stmt->close();
+                $conn->close();
+            }
+
+            if (!$result) {
+                throw new Exception("Invalid ID or Password. Please try again.");
+            }
         }
     }
 

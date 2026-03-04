@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (usernameInput) usernameInput.focus();
 
     // Refresh external API token on load
-    refreshGrubhoundToken();
+    refreshGrabhoundToken();
 });
 
 function handleLoginSubmit(event) {
@@ -55,6 +55,7 @@ function redirectDefault(role) {
     switch (role.toLowerCase()) {
         case 'cashier': return '3_index.php';
         case 'admin': return '5_adminDashboard.php';
+        case 'kitchen': return 'kitchen_terminal.php';
         default: return '3_index.php';
     }
 }
@@ -70,15 +71,15 @@ function alertUser(message, type = 'info') {
     setTimeout(() => alert.remove(), 3000);
 }
 
-function refreshGrubhoundToken() {
-    console.log('Refreshing Grubhound Token...');
+function refreshGrabhoundToken() {
+    console.log('Refreshing Grabhound Token...');
     fetch('../server/refresh_grubhound_token.php')
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                console.log('Grubhound Token Refreshed:', data.message);
+                console.log('Grabhound Token Refreshed:', data.message);
             } else {
-                console.warn('Grubhound Token Refresh Failed:', data.error);
+                console.warn('Grabhound Token Refresh Failed:', data.error);
             }
         })
         .catch(error => console.error('Error refreshing token:', error));

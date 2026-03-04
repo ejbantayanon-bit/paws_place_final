@@ -1,6 +1,6 @@
 <?php
 /**
- * Manually refresh Grubhound API token
+ * Manually refresh Grabhound API token
  * Visit this file in browser to refresh the token
  * URL: http://localhost/paws_place_final/paw_place/server/refresh_grubhound_token.php
  */

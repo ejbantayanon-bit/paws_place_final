@@ -11,7 +11,7 @@ use Exception;
 class GrubhoundAPI {
     private $configPath = WRITEPATH . 'grubhound_config.json';
     private $config;
-    private $baseUrl = 'https://mis.foundationu.com/api/grubhound';
+    private $baseUrl = 'https://mis.foundationu.com/api/grabhound';
 
     public function __construct() {
         $this->loadConfig();

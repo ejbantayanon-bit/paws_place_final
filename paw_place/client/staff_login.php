@@ -1,8 +1,11 @@
 <?php
 session_start();
 // If already logged in as staff/admin, redirect to dashboard
-if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier'])) {
-    header('Location: ' . ($_SESSION['role'] === 'Admin' ? '5_adminDashboard.php' : '3_index.php'));
+if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
+    $redirect = '3_index.php';
+    if ($_SESSION['role'] === 'Admin') $redirect = '5_adminDashboard.php';
+    if ($_SESSION['role'] === 'Kitchen') $redirect = 'kitchen_terminal.php';
+    header('Location: ' . $redirect);
     exit;
 }
 ?>
@@ -46,8 +49,10 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier']
             </div>
         </div>
         <div id="right-panel" class="lg:col-span-1 p-8 flex flex-col justify-center items-center bg-white shadow-2xl z-10">
-            <header class="text-center mb-10 w-full max-w-xs">
-                <div class="text-maroon mb-4"><i class="ph-duotone ph-shield-check" style="font-size:64px"></i></div>
+            <header class="text-center mb-10 w-full max-w-xs flex flex-col items-center">
+                <div class="mb-4">
+                    <img src="img/lgoo.png" alt="GrabHound Logo" class="h-16 sm:h-20 object-contain">
+                </div>
                 <h2 class="text-3xl font-black text-gray-800 tracking-tight">STAFF ACCESS</h2>
                 <div class="h-1 w-16 bg-maroon mx-auto mt-4 rounded-full bg-[#800000]"></div>
             </header>

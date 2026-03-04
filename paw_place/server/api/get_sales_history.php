@@ -2,7 +2,7 @@
 header('Content-Type: application/json; charset=utf-8');
 session_start();
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'Admin') {
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin', 'Kitchen'])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;

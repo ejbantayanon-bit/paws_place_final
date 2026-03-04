@@ -7,9 +7,11 @@
 class GrubhoundAPI {
     private $configPath = __DIR__ . '/config/grubhound_config.json';
     private $config;
-    private $baseUrl = 'https://mis.foundationu.com/api/grubhound';
+    private $baseUrl = 'https://mis.foundationu.com/api/grabhound';
 
     public function __construct() {
+        // Standardize timezone to UTC to avoid mismatches with MIS API
+        date_default_timezone_set('UTC');
         $this->loadConfig();
     }
 
@@ -35,6 +37,8 @@ class GrubhoundAPI {
      * Check if access token is expired and refresh if needed
      */
     private function ensureValidToken() {
+        if ($this->config['mock_mode'] ?? false) return;
+
         // Default to a past time if missing
         $expiresAt = isset($this->config['expires_at']) ? strtotime($this->config['expires_at']) : 0;
         $now = time();
@@ -53,11 +57,11 @@ class GrubhoundAPI {
     /**
      * Refresh the access token using refresh token
      */
-    private function refreshToken() {
+    private function refreshToken($force = false) {
         $refreshUrl = $this->config['refresh_url'] ?? 'https://mis.foundationu.com/api/token/refresh';
         $refreshToken = $this->config['refresh_token'];
         $logDir = __DIR__ . '/logs';
-        if (!is_dir($logDir)) mkdir($logDir, 0777, true);
+        if (!is_dir($logDir)) @mkdir($logDir, 0777, true);
         $logFile = $logDir . '/api_errors.log';
         $lockFile = $logDir . '/refresh.lock';
 
@@ -71,11 +75,14 @@ class GrubhoundAPI {
         try {
             // Re-load config inside the lock to check if someone else already refreshed it
             $currentConfig = json_decode(file_get_contents($this->configPath), true);
-            $expiresAt = isset($currentConfig['expires_at']) ? strtotime($currentConfig['expires_at']) : 0;
-            if ($expiresAt > (time() + 300)) { 
-                // Token was refreshed by another process while we were waiting for the lock
-                $this->config = $currentConfig;
-                return;
+            
+            if (!$force) {
+                $expiresAt = isset($currentConfig['expires_at']) ? strtotime($currentConfig['expires_at']) : 0;
+                if ($expiresAt > (time() + 300)) { 
+                    // Token was refreshed by another process while we were waiting for the lock
+                    $this->config = $currentConfig;
+                    return;
+                }
             }
 
             $ch = curl_init();
@@ -91,7 +98,8 @@ class GrubhoundAPI {
                     'Accept: application/json'
                 ],
                 CURLOPT_SSL_VERIFYPEER => false,
-                CURLOPT_SSL_VERIFYHOST => false
+                CURLOPT_SSL_VERIFYHOST => false,
+                CURLOPT_TIMEOUT => 20
             ]);
 
             $response = curl_exec($ch);
@@ -116,13 +124,13 @@ class GrubhoundAPI {
                 $this->config['access_token'] = $newTokenData['access_token'];
                 $this->config['refresh_token'] = $newTokenData['refresh_token'] ?? $this->config['refresh_token'];
                 
-                // Handle expiration
+                // Handle expiration explicitly in UTC
                 if (isset($newTokenData['expires_at'])) {
                     $this->config['expires_at'] = $newTokenData['expires_at'];
                 } elseif (isset($newTokenData['expires_in'])) {
-                    $this->config['expires_at'] = date('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
+                    $this->config['expires_at'] = gmdate('Y-m-d H:i:s', time() + (int)$newTokenData['expires_in']);
                 } else {
-                    $this->config['expires_at'] = date('Y-m-d H:i:s', time() + 7200);
+                    $this->config['expires_at'] = gmdate('Y-m-d H:i:s', time() + 7200);
                 }
 
                 $this->saveConfig();
@@ -133,8 +141,8 @@ class GrubhoundAPI {
             }
         } finally {
             // Release the lock
-            flock($fp, LOCK_UN);
-            fclose($fp);
+            @flock($fp, LOCK_UN);
+            @fclose($fp);
         }
     }
 
@@ -149,6 +157,10 @@ class GrubhoundAPI {
      * Make API request to GrabHound
      */
     public function request($endpoint, $method = 'GET', $data = null) {
+        if ($this->config['mock_mode'] ?? false) {
+            return $this->handleMockRequest($endpoint, $method, $data);
+        }
+
         $this->ensureValidToken();
 
         $response = $this->executeRequest($endpoint, $method, $data);
@@ -156,7 +168,7 @@ class GrubhoundAPI {
         // If 401 Unauthorized, try refreshing token once and retry
         if ($response['http_code'] === 401) {
             try {
-                $this->refreshToken();
+                $this->refreshToken(true); // Force refresh on 401
                 $response = $this->executeRequest($endpoint, $method, $data);
             } catch (Exception $e) {
                 // If refresh fails or retry fails, throw the original error or new error
@@ -175,6 +187,38 @@ class GrubhoundAPI {
     }
 
     /**
+     * Handle Mock requests when mock_mode is enabled
+     */
+    private function handleMockRequest($endpoint, $method, $data) {
+        // Handle student/employee login mocks
+        if ($endpoint === '/student-login' || $endpoint === '/employee-login') {
+            $id = $data['student_id'] ?? $data['employee_id'] ?? 'MOCK001';
+            return [
+                'status' => 'success',
+                'data' => [
+                    'student_id' => $id,
+                    'employee_id' => $id,
+                    'first_name' => 'MOCK',
+                    'last_name' => 'USER',
+                    'full_name' => 'MOCK USER (' . $id . ')',
+                    'program' => 'MOCK DEP',
+                    'department_name' => 'MOCK DEPT'
+                ]
+            ];
+        }
+
+        // Handle item list mocks
+        if (strpos($endpoint, '/cafeteria/item-category') !== false) {
+            $path = realpath(__DIR__ . '/../../api_items_food.json');
+            if ($path && file_exists($path)) {
+                return json_decode(file_get_contents($path), true);
+            }
+        }
+
+        return ['success' => true, 'message' => 'Mock mode enabled', 'data' => []];
+    }
+
+    /**
      * Internal method to execute cURL request
      */
     private function executeRequest($endpoint, $method, $data) {
@@ -189,7 +233,7 @@ class GrubhoundAPI {
             CURLOPT_URL => $url,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => $headers,
-            CURLOPT_TIMEOUT => 10,
+            CURLOPT_TIMEOUT => 15, // Increased timeout
             CURLOPT_SSL_VERIFYPEER => false,
             CURLOPT_SSL_VERIFYHOST => false
         ]);

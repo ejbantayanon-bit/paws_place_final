@@ -851,3 +851,80 @@ from the upstream server or application.</p>
 from the upstream server or application.</p>
 </body></html>
 
+[2026-03-02 06:59:30] Token refresh failed (HTTP 500): 
+[2026-03-02 06:59:40] Token refresh failed (HTTP 500): 
+[2026-03-02 06:59:51] Token refresh failed (HTTP 500): 
+[2026-03-02 07:41:59] Token refresh failed (HTTP 500): 
+[2026-03-02 07:41:59] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:13] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:14] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:18] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:19] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:32] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:33] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:57] Token refresh failed (HTTP 500): 
+[2026-03-02 07:42:57] Token refresh failed (HTTP 500): 
+[2026-03-02 07:43:59] Token refresh failed (HTTP 500): 
+[2026-03-02 07:43:59] Token refresh failed (HTTP 500): 
+[2026-03-02 07:46:30] Token refresh failed (HTTP 500): 
+[2026-03-02 07:46:30] Token refresh failed (HTTP 500): 
+[2026-03-02 07:46:36] Token refresh failed (HTTP 500): 
+[2026-03-02 07:46:37] Token refresh failed (HTTP 500): 
+[2026-03-02 07:51:23] Token refresh failed (HTTP 500): 
+[2026-03-02 07:51:24] Token refresh failed (HTTP 500): 
+[2026-03-02 17:51:54] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:21:05] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:52:59] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:53:12] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:56:01] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:56:39] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+
+[2026-03-02 21:56:49] Token refresh failed (HTTP 403): <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<html><head>
+<title>403 Forbidden</title>
+</head><body>
+<h1>Forbidden</h1>
+<p>You don't have permission to access this resource.</p>
+</body></html>
+

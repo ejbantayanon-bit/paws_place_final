@@ -5,5 +5,5 @@
     "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7Im93bmVyIjoiZ3J1YmhvdW5kIiwic3lzdGVtIjoiZ3J1YmhvdW5kIiwidHlwZSI6InJlZnJlc2hfdG9rZW4ifSwiaWF0IjoxNzY5NDc5MDc5fQ.W_QL_FPHAydS_V16Ya4jwO_Ef3BIWGBW7UYsEuBIR7g",
     "refresh_url": "https://mis.foundationu.com/api/token/refresh",
     "system": "grubhound",
-    "base_url": "https://mis.foundationu.com/api/grubhound"
+    "base_url": "https://mis.foundationu.com/api/grabhound"
 }

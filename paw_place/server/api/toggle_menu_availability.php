@@ -3,7 +3,7 @@ header('Content-Type: application/json; charset=utf-8');
 session_start();
 
 // Only Admin and Cashier can toggle availability
-if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin', 'Cashier'])) {
+if (!isset($_SESSION['role']) || !in_array($_SESSION['role'], ['Admin', 'Cashier', 'Kitchen'])) {
     http_response_code(403);
     echo json_encode(['success' => false, 'message' => 'Unauthorized']);
     exit;

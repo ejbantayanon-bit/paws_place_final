@@ -100,7 +100,8 @@ $storeName = $_GET['store'] ?? 'Cafeteria';
                         </svg>
                     </button>
                     <div>
-                        <div class="flex items-baseline gap-2">
+                        <div class="flex items-center gap-3">
+                            <img src="img/lgoo.png" alt="Logo" class="h-6 sm:h-8 object-contain">
                             <h1 class="text-2xl sm:text-4xl font-black text-[#800000] tracking-tighter uppercase leading-none"><?php echo htmlspecialchars(strtoupper($storeName)); ?></h1>
                         </div>
                         <p class="text-[10px] sm:text-xs font-black text-[#800000] mt-1 uppercase tracking-widest leading-none opacity-70">Welcome, <?php echo explode(' ', trim($userName))[0]; ?>!</p>
