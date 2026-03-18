@@ -51,12 +51,12 @@ function handleLoginSubmit(event) {
 }
 
 function redirectDefault(role) {
-    if (!role) return '3_index.php';
+    if (!role) return 'index.php';
     switch (role.toLowerCase()) {
-        case 'cashier': return '3_index.php';
-        case 'admin': return '5_adminDashboard.php';
+        case 'cashier': return 'index.php';
+        case 'admin': return 'adminDashboard.php';
         case 'kitchen': return 'kitchen_terminal.php';
-        default: return '3_index.php';
+        default: return 'index.php';
     }
 }
 
