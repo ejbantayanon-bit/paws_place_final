@@ -2,8 +2,8 @@
 session_start();
 // If already logged in as staff/admin, redirect to dashboard
 if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
-    $redirect = '3_index.php';
-    if ($_SESSION['role'] === 'Admin') $redirect = '5_adminDashboard.php';
+    $redirect = 'index.php';
+    if ($_SESSION['role'] === 'Admin') $redirect = 'adminDashboard.php';
     if ($_SESSION['role'] === 'Kitchen') $redirect = 'kitchen_terminal.php';
     header('Location: ' . $redirect);
     exit;

@@ -3,8 +3,8 @@ session_start();
 // If already logged in as staff, redirect accordingly
 if (isset($_SESSION['role'])) {
     $role = $_SESSION['role'];
-    if ($role === 'Admin') { header('Location: 5_adminDashboard.php'); exit; }
-    if ($role === 'Cashier') { header('Location: 3_index.php'); exit; }
+    if ($role === 'Admin') { header('Location: adminDashboard.php'); exit; }
+    if ($role === 'Cashier') { header('Location: index.php'); exit; }
 }
 
 // If not logged in at all, redirect to customer login
@@ -122,7 +122,7 @@ $initial = strtoupper(substr($firstName, 0, 1));
             <div class="store-grid">
 
                 <!-- Paws Place (Active) -->
-                <div class="store-card active" onclick="window.location.href='2_kiosk_ordering.php'">
+                <div class="store-card active" onclick="window.location.href='kiosk_ordering.php'">
                     <div class="card-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
                     </div>

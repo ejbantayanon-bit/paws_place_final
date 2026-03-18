@@ -69,7 +69,7 @@ if (strtoupper($role) === 'KIOSK') {
         }
     }
     if ($found) {
-        echo json_encode(['success' => true, 'role' => $userRow['role'], 'full_name' => $userRow['full_name'], 'user_id' => $userRow['user_id'], 'redirect' => '../client/2_kiosk_ordering.php']);
+        echo json_encode(['success' => true, 'role' => $userRow['role'], 'full_name' => $userRow['full_name'], 'user_id' => $userRow['user_id'], 'redirect' => '../client/kiosk_ordering.php']);
     } else {
         echo json_encode(['success' => false, 'message' => 'Invalid kiosk password']);
     }
@@ -105,7 +105,7 @@ if ($res->num_rows === 0) {
             $_SESSION['full_name'] = $emp['full_name'] ?? ($emp['name'] ?? $username);
             $_SESSION['assigned_store'] = 'All';
 
-            $redirect = ($_SESSION['role'] === 'Admin') ? '../client/5_adminDashboard.php' : '../client/3_index.php';
+            $redirect = ($_SESSION['role'] === 'Admin') ? '../client/adminDashboard.php' : '../client/index.php';
 
             // Log API Login (Only for Admin/Cashier/Kitchen/Barista)
             if (in_array($_SESSION['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
@@ -188,11 +188,9 @@ if (in_array($row['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
 }
 
 if ($row['role'] === 'Admin') {
-    $redirect = '../client/5_adminDashboard.php';
+    $redirect = '../client/adminDashboard.php';
 } elseif ($row['role'] === 'Kitchen') {
-    $redirect = '../client/kitchen_terminal.php';
-} else {
-    $redirect = '../client/3_index.php';
+    $redirect = '../client/index.php';
 }
 
 echo json_encode(['success' => true, 'role' => $row['role'], 'full_name' => $row['full_name'], 'user_id' => $row['user_id'], 'redirect' => $redirect]);

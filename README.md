@@ -42,9 +42,9 @@ Once the setup is complete, you can access the different modules via these URLs:
 
 | Module | URL | Access |
 |--------|-----|--------|
-| **Kiosk Login** | [Link](http://localhost/paws_place_final/paw_place/client/1_login.php) | Select "Customer Kiosk" |
-| **POS Terminal** | [Link](http://localhost/paws_place_final/paw_place/client/1_login.php) | Select "Staff/POS" |
-| **Admin Panel** | [Link](http://localhost/paws_place_final/paw_place/client/1_login.php) | Select "Admin Dashboard" |
+| **Kiosk Login** | [Link](http://localhost/paws_place_final/paw_place/client/customer_login.php) | Select "Customer Kiosk" |
+| **POS Terminal** | [Link](http://localhost/paws_place_final/paw_place/client/staff_login.php) | Select "Staff/POS" |
+| **Admin Panel** | [Link](http://localhost/paws_place_final/paw_place/client/staff_login.php) | Select "Admin Dashboard" |
 
 ### Default Credentials
 - **Admin**: `admin01` / `password` (after migration)

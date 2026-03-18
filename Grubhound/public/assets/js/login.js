@@ -6,7 +6,7 @@ let kioskLookupTimeout = null;
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('login-form');
     if (form) form.addEventListener('submit', handleLoginSubmit);
-    
+
     // Kiosk ID input listener for real-time lookup while typing
     const kioskIdInput = document.getElementById('kiosk-student-id');
     if (kioskIdInput) {
@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', () => {
 function handleRoleSelect(role) {
     selectedRole = role;
     verifiedStudent = null;
-    
+
     // UI Updates
     document.getElementById('selected-role').textContent = role.replace('_', ' ');
     document.getElementById('role-selection').classList.add('hidden');
     document.getElementById('login-form-container').classList.remove('hidden');
-    
+
     const usernameGroup = document.getElementById('username-group');
     const kioskIdGroup = document.getElementById('kiosk-id-group');
     const studentInfoGroup = document.getElementById('student-info-group');
@@ -70,7 +70,7 @@ function resetSelection() {
 function debounceKioskLookup() {
     // Clear previous timeout
     if (kioskLookupTimeout) clearTimeout(kioskLookupTimeout);
-    
+
     // Wait 500ms after user stops typing before making API call
     kioskLookupTimeout = setTimeout(() => {
         handleKioskStudentIdLookup();
@@ -82,26 +82,26 @@ async function handleKioskStudentIdLookup() {
     const studentInfoGroup = document.getElementById('student-info-group');
     const studentNameDisplay = document.getElementById('student-name-display');
     const loginBtn = document.getElementById('login-btn');
-    
+
     if (!studentId) {
         studentInfoGroup.classList.add('hidden');
         loginBtn.style.display = 'none';
         verifiedStudent = null;
         return;
     }
-    
+
     try {
         // Use server-backed Grubhound lookup (server holds token)
         const endpoint = '../server/api/get_student.php';
-        
+
         const response = await fetch(endpoint, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ student_id: studentId })
         });
-        
+
         const data = await response.json();
-        
+
         if (data.success && data.student) {
             // Get student name and department from response
             const studentName = data.student.name || data.student.full_name || 'Unknown Student';
@@ -112,7 +112,7 @@ async function handleKioskStudentIdLookup() {
                 department: studentDept,
                 data: data.student
             };
-            
+
             studentNameDisplay.textContent = studentName;
             document.getElementById('student-department-display').textContent = studentDept;
             studentInfoGroup.classList.remove('hidden');
@@ -136,56 +136,56 @@ async function handleKioskStudentIdLookup() {
 
 function handleLoginSubmit(event) {
     event.preventDefault();
-    
+
     // For Kiosk: Check if student is verified
     if (selectedRole === 'KIOSK') {
         if (!verifiedStudent) {
             alertUser('Please enter and verify your student ID first', 'error');
             return;
         }
-        
+
         const loginButton = document.getElementById('login-btn');
         loginButton.disabled = true;
         loginButton.textContent = 'Launching Kiosk...';
-        
+
         // Store student info in localStorage and via form submission to set session
         localStorage.setItem('userRole', 'KIOSK');
         localStorage.setItem('userName', verifiedStudent.name);
         localStorage.setItem('userId', verifiedStudent.id);
         localStorage.setItem('studentData', JSON.stringify(verifiedStudent.data));
-        
+
         // Create hidden form to submit to set PHP session
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '../server/api/set_kiosk_session.php';
-        
+
         const nameInput = document.createElement('input');
         nameInput.type = 'hidden';
         nameInput.name = 'full_name';
         nameInput.value = verifiedStudent.name;
-        
+
         const idInput = document.createElement('input');
         idInput.type = 'hidden';
         idInput.name = 'user_id';
         idInput.value = verifiedStudent.id;
-        
+
         const deptInput = document.createElement('input');
         deptInput.type = 'hidden';
         deptInput.name = 'department';
         deptInput.value = verifiedStudent.department;
-        
+
         form.appendChild(nameInput);
         form.appendChild(idInput);
         form.appendChild(deptInput);
         document.body.appendChild(form);
-        
+
         alertUser(`Welcome, ${verifiedStudent.name}!`, 'success');
         setTimeout(() => {
             form.submit();
         }, 400);
         return;
     }
-    
+
     // For Staff/Admin: Regular authentication
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -229,12 +229,12 @@ function redirectToDashboard(role) {
 }
 
 function redirectDefault(role) {
-    if (!role) return '3_index.html';
+    if (!role) return 'index.php';
     switch (role.toLowerCase()) {
-        case 'cashier': return '3_index.php';
-        case 'admin': return '5_adminDashboard.php';
+        case 'cashier': return 'index.php';
+        case 'admin': return 'adminDashboard.php';
         case 'barista': return '4_baristaKDS.html';
-        default: return '3_index.php';
+        default: return 'index.php';
     }
 }
 

@@ -18,10 +18,10 @@ The GrabHound cafe POS and Inventory Management system has been successfully upd
 ```
 paw_place/
 ├── client/
-│   ├── 1_login.php              (Login page - role selection + auth)
-│   ├── 2_kiosk_ordering.php     (Customer kiosk interface - session-protected)
-│   ├── 3_index.php              (POS page - order processing)
-│   ├── 5_adminDashboard.php     (Admin page - dashboard & management)
+│   ├── login.php              (Login page - role selection + auth)
+│   ├── kiosk_ordering.php     (Customer kiosk interface - session-protected)
+│   ├── index.php              (POS page - order processing)
+│   ├── adminDashboard.php     (Admin page - dashboard & management)
 │   ├── css/
 │   │   ├── login.css            (Login page styles + responsive)
 │   │   ├── kiosk.css            (Kiosk styles + responsive + scrollable categories)
@@ -80,7 +80,7 @@ paw_place/
 ## 🔐 Authentication & Role-Based Access Control
 
 ### Login Flow
-1. User visits `client/1_login.php`
+1. User visits `client/login.php`
 2. Session check: If logged in → redirects to dashboard
 3. User selects role (KIOSK / CASHIER / ADMIN)
 4. Form POST to `server/auth_login.php` via fetch
@@ -90,8 +90,8 @@ paw_place/
 
 ### Role Access Rules
 - **KIOSK Access**: Any Admin or Cashier password unlocks (both staff roles can unlock kiosk)
-- **CASHIER (POS) Access**: Only Cashier or Admin users → redirects to `3_index.php`
-- **ADMIN Access**: Only Admin users → redirects to `5_adminDashboard.php`
+- **CASHIER (POS) Access**: Only Cashier or Admin users → redirects to `index.php`
+- **ADMIN Access**: Only Admin users → redirects to `adminDashboard.php`
 - **Admin Privilege**: Admin can authenticate for any requested role (full system access)
 - **Cashier Restriction**: Cashiers can only authenticate for KIOSK or CASHIER; denied for ADMIN
 
@@ -104,13 +104,13 @@ paw_place/
 
 ## 📋 Page Functionality
 
-### 1_login.php
+### login.php
 - **Role Selection**: CUSTOMER KIOSK, STAFF/POS, ADMIN DASHBOARD buttons
 - **Login Form**: Username/Password inputs (conditional based on role)
 - **CSS**: Linked to `css/login.css`
 - **Auth**: Uses `js/login.js` → calls `server/auth_login.php`
 
-### 3_index.php (POS Terminal)
+### index.php (POS Terminal)
 - **Access**: Cashier + Admin only
 - **Session Protection**: Includes `auth_check.php`
 - **Views**: 
@@ -126,7 +126,7 @@ paw_place/
   - `get_menu_items.php` - availability view
   - `get_inventory.php` - raw material status
 
-### 5_adminDashboard.php (Management)
+### adminDashboard.php (Management)
 - **Access**: Admin only
 - **Session Protection**: Includes `auth_check.php`
 - **Views**:
@@ -169,7 +169,7 @@ paw_place/
 
 ### Start the System
 1. Open XAMPP Control Panel → Start Apache + MySQL
-2. Navigate to `http://localhost/paws_place_final/paw_place/client/1_login.php`
+2. Navigate to `http://localhost/paws_place_final/paw_place/client/login.php`
 3. Select role and login with database credentials
 
 ### Testing Roles
@@ -195,7 +195,7 @@ paw_place/
 7. Cashier marks as "SERVED"
 
 ### Inventory Consumption Flow
-1. Customer orders via kiosk (2_kiosk_ordering.html)
+1. Customer orders via kiosk (kiosk_ordering.html)
 2. POST to `place_order.php`:
    - Creates order record
    - For each item: queries recipes table
@@ -208,10 +208,10 @@ paw_place/
 
 ## ✅ Completed Tasks
 
-- [x] Link CSS files in 1_login.php, 3_index.php, 5_adminDashboard.php
+- [x] Link CSS files in login.php, index.php, adminDashboard.php
 - [x] Replace inline styles with external CSS files
-- [x] Update 3_index.php to call API endpoints instead of localStorage
-- [x] Update 5_adminDashboard.php to call API endpoints
+- [x] Update index.php to call API endpoints instead of localStorage
+- [x] Update adminDashboard.php to call API endpoints
 - [x] Implement dashboard stats (total sales, order count, low stock)
 - [x] Implement order tracker (PREPARING / READY status display)
 - [x] Implement inventory view with low-stock indicators
@@ -251,9 +251,9 @@ paw_place/
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| Login Interface | `1_login.php` | Role selection + authentication |
-| POS Terminal | `3_index.php` | Order processing for cashiers |
-| Admin Panel | `5_adminDashboard.php` | Management & reporting |
+| Login Interface | `login.php` | Role selection + authentication |
+| POS Terminal | `index.php` | Order processing for cashiers |
+| Admin Panel | `adminDashboard.php` | Management & reporting |
 | Auth Logic | `server/auth_login.php` | Verify credentials |
 | Session Check | `server/auth_check.php` | Protect pages |
 | Menu API | `server/api/get_menu_items.php` | Menu data |

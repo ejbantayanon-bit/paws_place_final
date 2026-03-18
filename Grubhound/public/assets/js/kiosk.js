@@ -53,10 +53,10 @@ function exitKiosk() {
         try {
             // Clear session and redirect to main login
             await fetch('../server/api/logout.php', { method: 'POST' });
-            window.location.href = '1_login.php';
+            window.location.href = 'customer_login.php';
         } catch (e) {
             console.error('Logout error', e);
-            window.location.href = '1_login.php';
+            window.location.href = 'customer_login.php';
         }
     };
 }
