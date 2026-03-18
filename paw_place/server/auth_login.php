@@ -190,6 +190,8 @@ if (in_array($row['role'], ['Admin', 'Cashier', 'Kitchen', 'Barista'])) {
 if ($row['role'] === 'Admin') {
     $redirect = '../client/adminDashboard.php';
 } elseif ($row['role'] === 'Kitchen') {
+    $redirect = '../client/kitchen_terminal.php';
+} else {
     $redirect = '../client/index.php';
 }
 
