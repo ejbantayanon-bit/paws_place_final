@@ -98,18 +98,16 @@ if (isset($_SESSION['role']) && $_SESSION['role'] === 'KIOSK') {
                             START ORDERING
                         </button>
 
-                        <!-- 
-<div class="relative py-2 flex items-center">
-    <div class="flex-grow border-t border-gray-100"></div>
-    <span class="flex-shrink mx-4 text-[10px] font-bold text-gray-300 uppercase tracking-widest">OR</span>
-    <div class="flex-grow border-t border-gray-100"></div>
-</div>
+                        <div class="relative py-2 flex items-center">
+                            <div class="flex-grow border-t border-gray-100"></div>
+                            <span class="flex-shrink mx-4 text-[10px] font-bold text-gray-300 uppercase tracking-widest">OR</span>
+                            <div class="flex-grow border-t border-gray-100"></div>
+                        </div>
 
-<button type="button" onclick="continueAsGuest()" 
-    class="w-full py-3 bg-gray-50 text-gray-400 font-bold tracking-widest text-[10px] rounded-lg border-2 border-dashed border-gray-200 hover:border-maroon hover:text-maroon transition-all uppercase">
-    Continue as Guest
-</button>
--->
+                        <button type="button" onclick="continueAsGuest()" 
+                            class="w-full py-3 bg-gray-50 text-gray-400 font-bold tracking-widest text-[10px] rounded-lg border-2 border-dashed border-gray-200 hover:border-maroon hover:text-maroon transition-all uppercase">
+                            Continue as Guest
+                        </button>
                         
                         <div class="text-center">
                             <button type="button" onclick="toggleHelpdeskBox()" 

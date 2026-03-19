@@ -35,8 +35,8 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier',
 
     <div id="alert-container" class="fixed top-4 right-4 z-50"></div>
 
-    <div class="grid grid-cols-1 lg:grid-cols-4 min-h-screen">
-        <div class="lg:col-span-3 cafe-context p-0">
+    <div class="grid grid-cols-1 lg:grid-cols-5 min-h-screen">
+        <div class="lg:col-span-3 cafe-context p-0 h-[30vh] lg:h-auto">
             <div class="w-full h-full flex items-stretch">
                 <div class="w-full h-full image-placeholder overflow-hidden relative">
                     <img src="../image/Paws place.jpeg" alt="Cafe" class="object-cover w-full h-full">
@@ -48,16 +48,16 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier',
                 </div>
             </div>
         </div>
-        <div id="right-panel" class="lg:col-span-1 p-8 flex flex-col justify-center items-center bg-white shadow-2xl z-10">
-            <header class="text-center mb-10 w-full max-w-xs flex flex-col items-center">
-                <div class="mb-4">
+        <div id="right-panel" class="lg:col-span-2 p-6 sm:p-10 flex flex-col justify-center items-center bg-white shadow-2xl z-10">
+            <header class="text-center mb-6 sm:mb-10 w-full max-w-sm flex flex-col items-center">
+                <div class="mb-2 sm:mb-4">
                     <img src="img/lgoo.png" alt="GrabHound Logo" class="h-16 sm:h-20 object-contain">
                 </div>
-                <h2 class="text-3xl font-black text-gray-800 tracking-tight">STAFF ACCESS</h2>
-                <div class="h-1 w-16 bg-maroon mx-auto mt-4 rounded-full bg-[#800000]"></div>
+                <h2 class="text-2xl sm:text-3xl font-black text-gray-800 tracking-tight uppercase">STAFF ACCESS</h2>
+                <div class="h-1 w-12 sm:w-16 bg-maroon mx-auto mt-2 sm:mt-4 rounded-full bg-[#800000]"></div>
             </header>
 
-            <div id="login-form-container" class="mt-8 w-full max-w-xs">
+            <div id="login-form-container" class="mt-8 w-full max-w-sm">
                 <form id="login-form" class="space-y-5">
                     <div>
                         <input type="text" id="username" name="username" placeholder="Username" class="input-field w-full placeholder-gray-400 text-gray-800" required autofocus>
@@ -75,7 +75,7 @@ if (isset($_SESSION['role']) && in_array($_SESSION['role'], ['Admin', 'Cashier',
             
             <!-- Back to Main Menu removed -->
             
-            <p class="text-center text-[10px] text-gray-300 mt-8 w-full max-w-xs uppercase tracking-widest">
+            <p class="text-center text-[10px] text-gray-300 mt-8 w-full max-w-sm uppercase tracking-widest">
                 Authorized Personnel Only
             </p>
 

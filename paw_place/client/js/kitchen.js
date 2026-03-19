@@ -180,19 +180,20 @@ function switchView(viewName) {
     }
 }
 
-function toggleStoreDropdown(e) {
-    if (e) e.stopPropagation();
-    const dropdown = document.getElementById('store-dropdown');
-    dropdown.classList.toggle('hidden');
+function openStoreSelectionModal() {
+    const modal = document.getElementById('store-selection-overlay');
+    if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+}
 
-    // Close on outside click
-    const closer = (event) => {
-        if (!event.target.closest('#store-switcher-btn') && !event.target.closest('#store-dropdown')) {
-            dropdown.classList.add('hidden');
-            document.removeEventListener('click', closer);
-        }
-    };
-    document.addEventListener('click', closer);
+function closeStoreSelectionModal() {
+    const modal = document.getElementById('store-selection-overlay');
+    if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
 }
 
 async function switchStore(store) {
@@ -205,7 +206,7 @@ async function switchStore(store) {
         const data = await res.json();
         if (data.success) {
             document.getElementById('current-store-label').textContent = store;
-            document.getElementById('store-dropdown').classList.add('hidden');
+            closeStoreSelectionModal();
             // Refresh current view
             const activeNav = document.querySelector('.sidebar-link.active');
             if (activeNav) {

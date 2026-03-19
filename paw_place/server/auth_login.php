@@ -103,7 +103,7 @@ if ($res->num_rows === 0) {
             // If MIS provides a role, use it; otherwise default to Cashier
             $_SESSION['role'] = $emp['role'] ?? 'Cashier';
             $_SESSION['full_name'] = $emp['full_name'] ?? ($emp['name'] ?? $username);
-            $_SESSION['assigned_store'] = 'All';
+            $_SESSION['assigned_store'] = 'Paws Place';
 
             $redirect = ($_SESSION['role'] === 'Admin') ? '../client/adminDashboard.php' : '../client/index.php';
 

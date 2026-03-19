@@ -93,20 +93,11 @@ if (!in_array($current_user_role, ['Admin','Kitchen'])) {
 
                 <div class="flex items-center gap-3">
                     <div class="relative">
-                        <button id="store-switcher-btn" onclick="toggleStoreDropdown(event)" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-maroon rounded-xl border border-red-100 font-black text-xs uppercase tracking-wider transition-all hover:bg-red-100">
+                        <button id="store-switcher-btn" onclick="openStoreSelectionModal()" class="flex items-center gap-2 px-4 py-2 bg-red-50 text-maroon rounded-xl border border-red-100 font-black text-xs uppercase tracking-wider transition-all hover:bg-red-100 shadow-sm">
                             <i class="ph-duotone ph-storefront text-lg"></i>
                             <span id="current-store-label"><?= htmlspecialchars($current_assigned_store) ?></span>
-                            <i class="ph ph-caret-down font-bold"></i>
+                            <i class="ph-bold ph-arrows-left-right font-bold ml-1"></i>
                         </button>
-                        <div id="store-dropdown" class="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-xl shadow-xl hidden z-50 overflow-hidden transform origin-top-right">
-                            <?php foreach ($allowed_stores as $s): 
-                                if ($s === $current_assigned_store) continue; // Hide current store
-                            ?>
-                                <button onclick="switchStore('<?= $s ?>')" class="w-full text-left px-4 py-3 text-xs font-bold text-gray-700 hover:bg-red-50 hover:text-maroon transition-colors flex items-center justify-between">
-                                    <?= htmlspecialchars($s) ?>
-                                </button>
-                            <?php endforeach; ?>
-                        </div>
                     </div>
                 </div>
             </header>
@@ -267,6 +258,58 @@ if (!in_array($current_user_role, ['Admin','Kitchen'])) {
         </div>
     </div>
 
+    <!-- Store Selection Modal -->
+    <div id="store-selection-overlay" class="fixed inset-0 bg-black bg-opacity-60 z-50 hidden flex-col items-center justify-center p-4 backdrop-blur-sm transition-opacity">
+        <div class="bg-[#f0f2f5] rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-gray-200 bg-white flex justify-between items-center z-10 shadow-sm relative">
+                <div>
+                    <h2 class="text-2xl font-black text-gray-800 uppercase tracking-tight">Select Store</h2>
+                    <p class="text-sm text-gray-500 font-medium mt-1">Choose a terminal location to manage orders</p>
+                </div>
+                <button onclick="closeStoreSelectionModal()" class="w-10 h-10 rounded-full bg-gray-100 text-gray-500 hover:bg-red-50 hover:text-maroon flex items-center justify-center transition-colors">
+                    <i class="ph-bold ph-x text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-8 overflow-y-auto no-scrollbar relative flex-1">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Paws Place -->
+                    <div onclick="switchStore('Paws Place')" class="relative bg-white rounded-2xl p-8 text-center cursor-pointer border-2 border-transparent transition-all flex flex-col items-center gap-2 hover:-translate-y-1 hover:shadow-xl active:scale-95 shadow-sm group">
+                        <div class="w-16 h-16 flex items-center justify-center bg-red-50 text-maroon rounded-2xl mb-2 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 8h1a4 4 0 1 1 0 8h-1"/><path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/><line x1="6" y1="2" x2="6" y2="4"/><line x1="10" y1="2" x2="10" y2="4"/><line x1="14" y1="2" x2="14" y2="4"/></svg>
+                        </div>
+                        <div class="text-lg font-black tracking-wide uppercase text-gray-800 group-hover:text-maroon transition-colors">Paws Place</div>
+                        <div class="mt-4 text-xs font-bold text-white bg-gradient-to-br from-maroon to-red-700 px-6 py-2.5 rounded-full tracking-wider shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Manage →</div>
+                    </div>
+                    <!-- Pup Stop -->
+                    <div onclick="switchStore('Pup Stop')" class="relative bg-white rounded-2xl p-8 text-center cursor-pointer border-2 border-transparent transition-all flex flex-col items-center gap-2 hover:-translate-y-1 hover:shadow-xl active:scale-95 shadow-sm group">
+                        <div class="w-16 h-16 flex items-center justify-center bg-red-50 text-maroon rounded-2xl mb-2 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/></svg>
+                        </div>
+                        <div class="text-lg font-black tracking-wide uppercase text-gray-800 group-hover:text-maroon transition-colors">Pup Stop</div>
+                        <div class="mt-4 text-xs font-bold text-white bg-gradient-to-br from-maroon to-red-700 px-6 py-2.5 rounded-full tracking-wider shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Manage →</div>
+                    </div>
+                    <!-- Kennel Main -->
+                    <div onclick="switchStore('Kennel Main')" class="relative bg-white rounded-2xl p-8 text-center cursor-pointer border-2 border-transparent transition-all flex flex-col items-center gap-2 hover:-translate-y-1 hover:shadow-xl active:scale-95 shadow-sm group">
+                        <div class="w-16 h-16 flex items-center justify-center bg-red-50 text-maroon rounded-2xl mb-2 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h.01"/><path d="M9 12h.01"/><path d="M9 15h.01"/><path d="M9 18h.01"/></svg>
+                        </div>
+                        <div class="text-lg font-black tracking-wide uppercase text-gray-800 group-hover:text-maroon transition-colors">Kennel Main</div>
+                        <div class="mt-4 text-xs font-bold text-white bg-gradient-to-br from-maroon to-red-700 px-6 py-2.5 rounded-full tracking-wider shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Manage →</div>
+                    </div>
+                    <!-- Kennel North -->
+                    <div onclick="switchStore('Kennel North')" class="relative bg-white rounded-2xl p-8 text-center cursor-pointer border-2 border-transparent transition-all flex flex-col items-center gap-2 hover:-translate-y-1 hover:shadow-xl active:scale-95 shadow-sm group">
+                        <div class="w-16 h-16 flex items-center justify-center bg-red-50 text-maroon rounded-2xl mb-2 group-hover:scale-110 transition-transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+                        </div>
+                        <div class="text-lg font-black tracking-wide uppercase text-gray-800 group-hover:text-maroon transition-colors">Kennel North</div>
+                        <div class="mt-4 text-xs font-bold text-white bg-gradient-to-br from-maroon to-red-700 px-6 py-2.5 rounded-full tracking-wider shadow-md opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Manage →</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Generic Modal -->
     <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center">
         <div class="bg-white rounded-xl shadow-2xl p-6 w-96 max-w-md transform transition-all scale-100">
@@ -282,7 +325,7 @@ if (!in_array($current_user_role, ['Admin','Kitchen'])) {
     <!-- Alert Toast -->
     <div id="alert-container" class="fixed bottom-4 right-4 z-50"></div>
 
-    <script src="js/kitchen.js"></script>
+    <script src="js/kitchen.js?v=<?= filemtime('js/kitchen.js') ?>"></script>
 
 </body>
 </html>

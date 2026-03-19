@@ -928,3 +928,27 @@ from the upstream server or application.</p>
 <p>You don't have permission to access this resource.</p>
 </body></html>
 
+[2026-03-05 02:40:04] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:40:26] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:03] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:05] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:06] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:08] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:20] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:21] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:22] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:24] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:43] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:45] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:46] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:41:47] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:49:42] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:49:44] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:49:45] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 02:49:46] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:38:46] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:39:10] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:39:21] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:39:23] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:39:24] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
+[2026-03-05 05:39:27] Token refresh failed (HTTP 401): {"error":"Unauthorized Access"}
