@@ -20,13 +20,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $categoryId = isset($_GET['category_id']) ? intval($_GET['category_id']) : null;
     
     if ($categoryId) {
-        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items WHERE category_id = ?";
+        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url, temperature_type FROM menu_items WHERE category_id = ?";
         if (!$includeHidden) $sql .= " AND is_available = 1";
         $sql .= " ORDER BY name ASC";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('i', $categoryId);
     } else {
-        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url FROM menu_items";
+        $sql = "SELECT item_id, name, category_id, base_price, is_available, image_url, temperature_type FROM menu_items";
         if (!$includeHidden) $sql .= " WHERE is_available = 1";
         $sql .= " ORDER BY category_id ASC, name ASC";
         $stmt = $conn->prepare($sql);

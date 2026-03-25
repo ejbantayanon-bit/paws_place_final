@@ -76,34 +76,7 @@ let allMenuItems = [];
 let inventoryMenu = [];
 let activeInventoryCategory = 'Milktea';
 
-const CATEGORY_ICONS = {
-    'Coffee': '<i class="ph-duotone ph-coffee"></i>',
-    'Milktea': '<i class="ph-duotone ph-coffee"></i>',
-    'Milk Tea': '<i class="ph-duotone ph-coffee"></i>',
-    'Fruity Soda': '<svg viewBox="0 0 256 256" style="width:1em;height:1em;display:inline-block;vertical-align:middle;"><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="currentColor" opacity="0.2"/><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,104l16,112.5a16.2,16.2,0,0,0,16,13.8h48a16.2,16.2,0,0,0,16-13.8L184,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M144,72V56a8,8,0,0,1,8-8h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>',
-    'Fruity': '<i class="ph-duotone ph-orange-slice"></i>',
-    'Specialty': '<i class="ph-duotone ph-star"></i>',
-    'Add Ons': '<i class="ph-duotone ph-plus-circle"></i>',
-    'Ice Cream': '<i class="ph-duotone ph-ice-cream"></i>',
-    'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
-    'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
-    'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
-    'Default': '<i class="ph-duotone ph-fork-knife"></i>'
-};
 
-function getIconForCategoryName(name) {
-    const n = (name || '').toLowerCase();
-    if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
-    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'];
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
-    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'];
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
-    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'];
-    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
-    return CATEGORY_ICONS['Default'];
-}
 
 // --- UTILITY FUNCTIONS ---
 function showAlert(message, type = 'info') {
@@ -685,8 +658,12 @@ async function loadInventoryView() {
         const catRes = await fetch(`${API_BASE}/get_categories.php`);
         const catData = await catRes.json();
         const categoriesMap = {};
+        const categoriesIconMap = {};
         if (catData.success && Array.isArray(catData.categories)) {
-            catData.categories.forEach(c => { categoriesMap[c.category_id] = c.name; });
+            catData.categories.forEach(c => {
+                categoriesMap[c.category_id] = c.name;
+                categoriesIconMap[c.category_id] = c.icon;
+            });
         }
 
         // Fetch ALL menu items (including hidden)
@@ -697,7 +674,7 @@ async function loadInventoryView() {
             inventoryMenu = menuData.items.map(item => ({
                 ...item,
                 category: ([1, 2].includes(Number(item.category_id)) ? 'Coffee' : (categoriesMap[item.category_id] || 'Uncategorized')),
-                icon: getIconForCategoryName(categoriesMap[item.category_id] || '')
+                icon: categoriesIconMap[item.category_id] || '<i class="ph-duotone ph-fork-knife"></i>'
             }));
 
             // Set default category if not set or not in current menu
@@ -723,7 +700,8 @@ function renderInventoryCategories() {
     const categories = [...new Set(inventoryMenu.map(item => item.category))];
     container.innerHTML = categories.map(cat => {
         const isActive = cat === activeInventoryCategory;
-        const icon = getIconForCategoryName(cat);
+        const iconObj = inventoryMenu.find(c => c.category === cat);
+        const icon = iconObj?.icon || '<i class="ph-duotone ph-fork-knife"></i>';
         return `
             <button onclick="switchInventoryCategory('${cat}')" class="flex flex-col items-center justify-center p-2 rounded-xl border-2 transition-all w-24 h-20 flex-shrink-0 ${isActive ? 'bg-maroon text-white border-maroon shadow-md' : 'bg-white text-gray-600 border-gray-100 hover:border-maroon'}">
                 <span class="text-2xl mb-1">${icon}</span>

@@ -1,7 +1,5 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-session_start();
-
 $DB_HOST = 'localhost';
 $DB_USER = 'root';
 $DB_PASS = '';
@@ -13,23 +11,23 @@ if ($conn->connect_errno) {
     echo json_encode(['success' => false, 'message' => 'Database connection failed']);
     exit;
 }
+
 $conn->set_charset('utf8mb4');
 
-// GET /api/get_categories.php
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    // Optional: Filter by active status
-    $sql = "SELECT category_id, name, icon, is_active, sort_order FROM categories ORDER BY sort_order ASC, name ASC";
-    
-    $result = $conn->query($sql);
-    $categories = [];
-    
-    if ($result) {
-        while ($row = $result->fetch_assoc()) {
-            $categories[] = $row;
-        }
+    $res = $conn->query("SELECT location_id, slug, name FROM locations WHERE is_active = 1 ORDER BY location_id ASC");
+    if (!$res) {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => $conn->error]);
+        $conn->close();
+        exit;
     }
-    
-    echo json_encode(['success' => true, 'categories' => $categories]);
+    $locations = [];
+    while ($row = $res->fetch_assoc()) {
+        $locations[] = $row;
+    }
+    $res->free();
+    echo json_encode(['success' => true, 'locations' => $locations]);
     $conn->close();
     exit;
 }

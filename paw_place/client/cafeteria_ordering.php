@@ -118,20 +118,6 @@ $storeName = $_GET['store'] ?? 'Cafeteria';
                     <!-- Dropdown Menu -->
                     <div id="store-dropdown-menu" class="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl transition-all z-50 overflow-hidden transform opacity-0 invisible scale-95 origin-top-right">
                         <ul class="py-1 flex flex-col bg-white">
-                            <li><button onclick="switchStore('paws-place')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">Paws Place</button></li>
-                            <?php 
-                            $stores = ['pup-stop' => 'Pup Stop', 'kennel-main' => 'Kennel Main', 'kennel-north' => 'Kennel North'];
-                            foreach($stores as $id => $name):
-                                $isCurrent = ($id === strtolower(str_replace(' ', '-', $storeName)));
-                                if ($isCurrent): ?>
-                                    <li><button onclick="switchStore('<?php echo $id; ?>')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold flex items-center justify-between transition-colors border-l-4 border-[#800000] bg-red-50 text-[#800000] cursor-default">
-                                        <span><?php echo $name; ?></span>
-                                        <span class="text-[10px] bg-[#800000] text-white py-0.5 px-2 rounded-full uppercase tracking-widest font-black">Current</span>
-                                    </button></li>
-                                <?php else: ?>
-                                    <li><button onclick="switchStore('<?php echo $id; ?>')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]"><?php echo $name; ?></button></li>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
                         </ul>
                     </div>
                 </div>

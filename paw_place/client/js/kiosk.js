@@ -1,29 +1,7 @@
 // --- MENU DATA - LOADED FROM DATABASE ---
 let MENU = [];  // Will be populated from API
 
-const ADDON_PRICES = {
-    'Pearls': 10.00,
-    'Coffee': 10.00,
-    'Milk': 10.00,
-    'Caramel Syrup': 10.00,
-    'Coffee Jelly': 10.00,
-    'Fruit Jelly': 10.00
-};
-
-const CATEGORY_ICONS = {
-    'Coffee': '<i class="ph-duotone ph-coffee"></i>',
-    'Milktea': '<i class="ph-duotone ph-coffee"></i>',
-    'Milk Tea': '<i class="ph-duotone ph-coffee"></i>',
-    'Fruity Soda': '<svg viewBox="0 0 256 256" style="width:1em;height:1em;display:inline-block;vertical-align:middle;"><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="currentColor" opacity="0.2"/><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,104l16,112.5a16.2,16.2,0,0,0,16,13.8h48a16.2,16.2,0,0,0,16-13.8L184,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M144,72V56a8,8,0,0,1,8-8h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>',
-    'Fruity': '<i class="ph-duotone ph-orange-slice"></i>',
-    'Specialty': '<i class="ph-duotone ph-star"></i>',
-    'Add Ons': '<i class="ph-duotone ph-plus-circle"></i>',
-    'Ice Cream': '<i class="ph-duotone ph-ice-cream"></i>',
-    'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
-    'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
-    'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
-    'Default': '<i class="ph-duotone ph-fork-knife"></i>'
-};
+let ADDON_PRICES = {};
 
 let categories = [];
 let currentCategory = null;
@@ -59,6 +37,21 @@ function cleanName(name) {
     if (!name) return "";
     return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
 }
+
+function getAddOnsForCategory(categoryId) {
+    const addOnsMap = {
+        1: ['Milk (Extra)', 'Caramel Syrup', 'Coffee (Shot)'], // Hot Coffee
+        2: ['Milk (Extra)', 'Coffee Jelly', 'Coffee (Shot)', 'Caramel Syrup'], // Cold Coffee
+        3: ['Milk (Extra)', 'Coffee Jelly', 'Caramel Syrup', 'Coffee (Shot)'], // Specialty Drinks
+        4: ['Pearls', 'Coffee Jelly'], // Milk Tea
+        5: ['Fruit Jelly', 'Pearls'] // Fruity Soda
+    };
+
+    // Only return the add-ons that actually exist in the DB prices map
+    const mapped = addOnsMap[categoryId] || [];
+    return mapped.filter(addon => ADDON_PRICES.hasOwnProperty(addon));
+}
+
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
     const switcher = document.getElementById('store-switcher');
@@ -85,10 +78,43 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Load config and init
+    loadStoreLocations();
     fetchMenuData();
 });
 // Auto-poll menu every 2 seconds to sync availability changes immediately
 setInterval(() => fetchMenuData(true), 2000);
+
+async function loadStoreLocations() {
+    try {
+        const res = await fetch('../server/api/get_locations.php');
+        const data = await res.json();
+        if (data.success && data.locations) {
+            window.allLocations = data.locations;
+
+            const ul = document.querySelector('#store-dropdown-menu ul');
+            if (ul) {
+                ul.innerHTML = '';
+                data.locations.forEach(loc => {
+                    const isCurrent = loc.slug === CURRENT_STORE_ID;
+                    const li = document.createElement('li');
+
+                    if (isCurrent) {
+                        document.getElementById('current-store-display').textContent = loc.name;
+                        li.innerHTML = `<button onclick="switchStore('${loc.slug}')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold flex items-center justify-between transition-colors border-l-4 border-[#800000] bg-red-50 text-[#800000] cursor-default">
+                                <span>${loc.name}</span>
+                                <span class="text-[10px] bg-[#800000] text-white py-0.5 px-2 rounded-full uppercase tracking-widest font-black">Current</span>
+                            </button>`;
+                    } else {
+                        li.innerHTML = `<button onclick="switchStore('${loc.slug}')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">${loc.name}</button>`;
+                    }
+                    ul.appendChild(li);
+                });
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load store locations:', e);
+    }
+}
 
 function exitKiosk() {
     // If cart is empty, bypass confirmation and go back to dashboard
@@ -136,21 +162,20 @@ async function fetchMenuData(isAuto = false) {
         const catRes = await fetch('../server/api/get_categories.php');
         const catData = await catRes.json();
         const categoriesMap = {};
+        const categoriesIconMap = {};
         if (catData.success && Array.isArray(catData.categories)) {
-            catData.categories.forEach(c => { categoriesMap[c.category_id] = c.name; });
+            catData.categories.forEach(c => {
+                categoriesMap[c.category_id] = c.name;
+                categoriesIconMap[c.category_id] = c.icon;
+            });
         }
 
         // Load modifiers mapping (category -> modifiers)
         const modRes = await fetch('../server/api/get_modifiers.php');
         const modData = await modRes.json();
-        const modifiersMap = {};
         if (modData.success && Array.isArray(modData.modifiers)) {
             modData.modifiers.forEach(m => {
-                const catId = m.applicable_category_id ? Number(m.applicable_category_id) : null;
-                if (catId) {
-                    modifiersMap[catId] = modifiersMap[catId] || [];
-                    modifiersMap[catId].push(m.name);
-                }
+                ADDON_PRICES[m.name] = parseFloat(m.price_add) || 0;
             });
         }
 
@@ -167,9 +192,9 @@ async function fetchMenuData(isAuto = false) {
                 base_price: parseFloat(item.base_price) || 0,
                 is_available: (item.is_available === 1 || item.is_available === '1' || item.is_available === true),
                 image_url: item.image_url || null,
-                type: inferItemType(item, categoriesMap[item.category_id]),
-                icon: getIconForCategoryName(categoriesMap[item.category_id] || ''),
-                add_ons: modifiersMap[Number(item.category_id)] || getAddOnsForCategory(item.category_id)
+                type: item.temperature_type && item.temperature_type !== 'None' ? item.temperature_type : null,
+                icon: categoriesIconMap[item.category_id] || '<i class="ph-duotone ph-fork-knife"></i>',
+                add_ons: getAddOnsForCategory(Number(item.category_id))
             }));
 
             // SMART CHECK: If auto-polling, only re-render if availability or price actually changed
@@ -205,50 +230,15 @@ async function fetchMenuData(isAuto = false) {
     }
 }
 
-function getIconForCategoryName(name) {
-    const n = (name || '').toLowerCase();
-    if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
-    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'];
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
-    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'];
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
-    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'];
-    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
-    return CATEGORY_ICONS['Default'];
-}
 
-function getAddOnsForCategory(categoryId) {
-    const addOnsMap = {
-        // These map to category_id values; adjust if your categories differ
-        4: ['Pearls', 'Coffee Jelly'],  // Milk Tea (example)
-        1: ['Milk', 'Caramel Syrup'],   // Hot Coffee (example)
-        2: ['Milk', 'Coffee Jelly']     // Cold Coffee (example)
-    };
-    return addOnsMap[categoryId] || [];
-}
-
-function inferItemType(item, categoryName) {
-    // Prefer explicit type from API if present
-    if (item.type && typeof item.type === 'string' && item.type.trim() !== '') return item.type;
-
-    const name = (item.name || '').toLowerCase();
-    const cat = (categoryName || '').toLowerCase();
-
-    // Only infer hot/cold for Coffee or Specialty categories
-    if (cat.includes('coffee') || cat.includes('specialty')) {
-        if (name.includes('iced') || name.includes('cold') || name.includes('ice') || name.includes('frappe') || name.includes('blended') || name.includes('frozen')) return 'Cold Brew';
-        return 'Hot Brew';
-    }
-
-    return item.type || null;
-}
 
 // --- UI Functions ---
 function getCategories(menu) {
-    const categories = new Set(menu.map(item => item.category));
-    return Array.from(categories);
+    const categories = [];
+    menu.forEach(item => {
+        if (!categories.some(c => c.name === item.category)) categories.push({ name: item.category, icon: item.icon });
+    });
+    return categories;
 }
 
 function renderMenu(menu, filter = activeCategory) {
@@ -270,9 +260,10 @@ function renderMenu(menu, filter = activeCategory) {
     categoryFilter.style.padding = '12px 0'; // Sync with cafeteria
     categoryFilter.style.whiteSpace = 'nowrap';
 
-    categories.forEach(cat => {
+    categories.forEach(catObj => {
+        const cat = catObj.name;
+        const icon = catObj.icon;
         const isActive = cat === activeCategory;
-        const icon = getIconForCategoryName(cat);
 
         const card = document.createElement('div');
         card.className = `category-card flex-shrink-0 ${isActive ? 'active' : ''}`;
@@ -300,8 +291,11 @@ function renderMenu(menu, filter = activeCategory) {
 
     if (hasHotItems && hasColdItems) {
         // Render Hot/Cold Switcher
+        const stickyWrapper = document.createElement('div');
+        stickyWrapper.className = 'sticky top-0 z-20 w-full flex justify-start bg-white pt-1 pb-4 mb-2';
+
         const switchBar = document.createElement('div');
-        switchBar.className = 'sub-filter-bar flex gap-2 mb-6 p-1 bg-gray-100 rounded-xl w-max self-center';
+        switchBar.className = 'sub-filter-bar flex gap-2 p-1 bg-gray-100 rounded-xl w-max';
 
         const types = ['Hot Brew', 'Cold Brew'];
         types.forEach(type => {
@@ -315,7 +309,9 @@ function renderMenu(menu, filter = activeCategory) {
             };
             switchBar.appendChild(btn);
         });
-        menuContainer.appendChild(switchBar);
+
+        stickyWrapper.appendChild(switchBar);
+        menuContainer.appendChild(stickyWrapper);
 
         // Filter items based on switch
         const grid = document.createElement('div');
@@ -730,13 +726,12 @@ function cancelStoreSwitch() {
 
 function executeStoreSwitch(value) {
     if (value === 'paws-place') {
-        window.location.href = '2_kiosk_ordering.php';
-    } else if (value === 'pup-stop') {
-        window.location.href = 'cafeteria_ordering.php?store=Pup+Stop&location_id=13';
-    } else if (value === 'kennel-main') {
-        window.location.href = 'cafeteria_ordering.php?store=Kennel+Main&location_id=1';
-    } else if (value === 'kennel-north') {
-        window.location.href = 'cafeteria_ordering.php?store=Kennel+North&location_id=2';
+        window.location.href = 'kiosk_ordering.php';
+    } else {
+        const loc = (window.allLocations || []).find(l => l.slug === value);
+        if (loc) {
+            window.location.href = `cafeteria_ordering.php?store=${encodeURIComponent(loc.name)}&location_id=${loc.location_id}`;
+        }
     }
 }
 

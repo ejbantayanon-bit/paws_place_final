@@ -114,13 +114,7 @@ $isKiosk = $_SESSION['role'] === 'KIOSK';
                     <!-- Dropdown Menu -->
                     <div id="store-dropdown-menu" class="absolute right-0 mt-2 w-56 bg-white border border-gray-100 rounded-xl shadow-xl transition-all z-50 overflow-hidden transform opacity-0 invisible scale-95 origin-top-right">
                         <ul class="py-1 flex flex-col bg-white">
-                            <li><button onclick="switchStore('paws-place')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold flex items-center justify-between transition-colors border-l-4 border-[#800000] bg-red-50 text-[#800000] cursor-default">
-                                <span>Paws Place</span>
-                                <span class="text-[10px] bg-[#800000] text-white py-0.5 px-2 rounded-full uppercase tracking-widest font-black">Current</span>
-                            </button></li>
-                            <li><button onclick="switchStore('pup-stop')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">Pup Stop</button></li>
-                            <li><button onclick="switchStore('kennel-main')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">Kennel Main</button></li>
-                            <li><button onclick="switchStore('kennel-north')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">Kennel North</button></li>
+                            <!-- Locations loaded dynamically via JS -->
                         </ul>
                     </div>
                 </div>

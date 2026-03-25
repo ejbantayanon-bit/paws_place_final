@@ -40,50 +40,7 @@ function cleanName(name) {
     return name.replace(/\s*@\s*[\d.]+/g, '').replace(/\s*\(Hot\)/gi, '').trim();
 }
 
-const CATEGORY_ICONS = {
-    'Coffee': '<i class="ph-duotone ph-coffee"></i>',
-    'Milktea': '<i class="ph-duotone ph-coffee"></i>',
-    'Milk Tea': '<i class="ph-duotone ph-coffee"></i>',
-    'Fruity Soda': '<svg viewBox="0 0 256 256" style="width:1em;height:1em;display:inline-block;vertical-align:middle;"><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="currentColor" opacity="0.2"/><path d="M192,104H64a8,8,0,0,1-8-8V80a8,8,0,0,1,8-8H192a8,8,0,0,1,8,8V96A8,8,0,0,1,192,104Z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M72,104l16,112.5a16.2,16.2,0,0,0,16,13.8h48a16.2,16.2,0,0,0,16-13.8L184,104" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/><path d="M144,72V56a8,8,0,0,1,8-8h16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="16"/></svg>',
-    'Fruity': '<i class="ph-duotone ph-orange-slice"></i>',
-    'Specialty': '<i class="ph-duotone ph-star"></i>',
-    'Add Ons': '<i class="ph-duotone ph-plus-circle"></i>',
-    'Ice Cream': '<i class="ph-duotone ph-ice-cream"></i>',
-    'Ice Cream in Cups': '<i class="ph-duotone ph-bowl-food"></i>',
-    'Ice Cream Bar': '<i class="ph-duotone ph-popsicle"></i>',
-    'Milk Drink': '<i class="ph-duotone ph-beer-bottle"></i>',
-    'Drinks': '<i class="ph-duotone ph-drop"></i>',
-    'Snacks': '<i class="ph-duotone ph-cookie"></i>',
-    'Bread': '<i class="ph-duotone ph-hamburger"></i>',
-    'Food': '<i class="ph-duotone ph-fork-knife"></i>',
-    'Candy': '<i class="ph-duotone ph-cookie"></i>',
-    'Fruits': '<i class="ph-duotone ph-apple"></i>',
-    'Consignment': '<i class="ph-duotone ph-package"></i>',
-    'Supply': '<i class="ph-duotone ph-wrench"></i>',
-    'Default': '<i class="ph-duotone ph-fork-knife"></i>'
-};
 
-function getIconForCategoryName(name) {
-    const n = (name || '').toLowerCase();
-    if (!n) return CATEGORY_ICONS['Default'];
-    if (n.includes('coffee')) return CATEGORY_ICONS['Coffee'];
-    if (n.includes('milk tea') || n.includes('milktea') || (n.includes('milk') && n.includes('tea'))) return CATEGORY_ICONS['Milk Tea'];
-    if (n.includes('milk') && !n.includes('tea')) return CATEGORY_ICONS['Milk Drink'];
-    if (n.includes('soda') || n.includes('fruity')) return CATEGORY_ICONS['Fruity Soda'];
-    if (n.includes('specialty')) return CATEGORY_ICONS['Specialty'];
-    if (n.includes('add') || n.includes('addon') || n.includes('add ons')) return CATEGORY_ICONS['Add Ons'];
-    if (n.includes('ice cream bar') || n.includes('ice-cream bar')) return CATEGORY_ICONS['Ice Cream Bar'];
-    if (n.includes('ice cream') || n.includes('ice')) return CATEGORY_ICONS['Ice Cream'];
-    if (n.includes('snack')) return CATEGORY_ICONS['Snacks'];
-    if (n.includes('food')) return CATEGORY_ICONS['Food'];
-    if (n.includes('bread')) return CATEGORY_ICONS['Bread'];
-    if (n.includes('candy')) return CATEGORY_ICONS['Candy'];
-    if (n.includes('fruit')) return CATEGORY_ICONS['Fruits'];
-    if (n.includes('drink')) return CATEGORY_ICONS['Drinks'];
-    if (n.includes('consignment')) return CATEGORY_ICONS['Consignment'];
-    if (n.includes('supply')) return CATEGORY_ICONS['Supply'];
-    return CATEGORY_ICONS['Default'];
-}
 
 // ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
@@ -111,10 +68,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const switcher = document.getElementById('store-switcher');
     if (switcher) initialStoreValue = switcher.value;
 
+    loadStoreLocations();
     loadCategories();
     // Auto-poll menu every 2 seconds to sync availability changes immediately (like Paws Place)
     setInterval(() => loadCategories(true), 2000);
 });
+
+async function loadStoreLocations() {
+    try {
+        const res = await fetch('../server/api/get_locations.php');
+        const data = await res.json();
+        if (data.success && data.locations) {
+            window.allLocations = data.locations;
+
+            const ul = document.querySelector('#store-dropdown-menu ul');
+            if (ul) {
+                ul.innerHTML = '';
+                data.locations.forEach(loc => {
+                    const isCurrent = typeof LOCATION_ID !== 'undefined' && Number(loc.location_id) === Number(LOCATION_ID);
+                    const li = document.createElement('li');
+
+                    if (isCurrent) {
+                        const displayEl = document.getElementById('current-store-display');
+                        if (displayEl) displayEl.textContent = loc.name;
+                        li.innerHTML = `<button onclick="switchStore('${loc.slug}')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold flex items-center justify-between transition-colors border-l-4 border-[#800000] bg-red-50 text-[#800000] cursor-default">
+                                <span>${loc.name}</span>
+                                <span class="text-[10px] bg-[#800000] text-white py-0.5 px-2 rounded-full uppercase tracking-widest font-black">Current</span>
+                            </button>`;
+                    } else {
+                        li.innerHTML = `<button onclick="switchStore('${loc.slug}')" class="appearance-none w-full text-left px-4 py-3 text-sm font-bold text-gray-700 hover:bg-red-50 hover:text-[#800000] focus:bg-red-50 focus:text-[#800000] transition-colors border-l-4 border-transparent hover:border-[#800000]">${loc.name}</button>`;
+                    }
+                    ul.appendChild(li);
+                });
+            }
+        }
+    } catch (e) {
+        console.error('Failed to load store locations:', e);
+    }
+}
 
 function goBack() {
     window.location.href = 'store_selection.php';
@@ -176,7 +167,7 @@ function renderCategories() {
 
     categories.forEach(cat => {
         const name = typeof cat === 'string' ? cat : (cat.category || cat.name || cat.category_name || '');
-        const icon = getIconForCategoryName(name);
+        const icon = cat.icon || '<i class="ph-duotone ph-fork-knife"></i>';
         const isActive = name === currentCategory;
 
         const card = document.createElement('div');
@@ -274,7 +265,8 @@ function renderItems(items) {
         const available = item.availability !== false && item.availability !== 0 && item.status !== 'unavailable';
 
         const categoryName = item.category_name || currentCategory || 'Default';
-        const iconHtml = getIconForCategoryName(categoryName);
+        const activeCatObj = categories.find(c => c.name === categoryName || c.category === categoryName);
+        const iconHtml = activeCatObj?.icon || '<i class="ph-duotone ph-fork-knife"></i>';
 
         const card = document.createElement('div');
         card.id = `item-card-${id}`;
@@ -679,12 +671,11 @@ function cancelStoreSwitch() {
 
 function executeStoreSwitch(value) {
     if (value === 'paws-place') {
-        window.location.href = '2_kiosk_ordering.php';
-    } else if (value === 'pup-stop') {
-        window.location.href = 'cafeteria_ordering.php?store=Pup+Stop&location_id=13';
-    } else if (value === 'kennel-main') {
-        window.location.href = 'cafeteria_ordering.php?store=Kennel+Main&location_id=1';
-    } else if (value === 'kennel-north') {
-        window.location.href = 'cafeteria_ordering.php?store=Kennel+North&location_id=2';
+        window.location.href = 'kiosk_ordering.php';
+    } else {
+        const loc = (window.allLocations || []).find(l => l.slug === value);
+        if (loc) {
+            window.location.href = `cafeteria_ordering.php?store=${encodeURIComponent(loc.name)}&location_id=${loc.location_id}`;
+        }
     }
 }

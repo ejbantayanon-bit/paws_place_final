@@ -66,12 +66,6 @@ textarea {
     display: none;
 }
 
-/* Sub-filter Bar (Hot/Cold) */
-.sub-filter-bar {
-    margin-top: 0.5rem;
-    align-self: flex-start;
-}
-
 /* Quantity Input Styling */
 .quantity-input {
     appearance: none;
